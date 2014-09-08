@@ -1,11 +1,8 @@
 package com.cundong.izhihu.task;
 
-import java.util.ArrayList;
-
 import android.text.TextUtils;
 
 import com.cundong.izhihu.ZhihuApplication;
-import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
 
 public abstract class BaseGetNewsTask extends BaseDownloadTask {
 

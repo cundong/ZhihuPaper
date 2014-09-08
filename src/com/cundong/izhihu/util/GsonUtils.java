@@ -28,7 +28,7 @@ public class GsonUtils {
 		return null;
 	}
 	
-	public static BaseEntity getEntity(String content){
+	public static BaseEntity getEntity(String content, Class<?> clazz){
 		
 		if(TextUtils.isEmpty(content))
 			return null;
@@ -36,7 +36,7 @@ public class GsonUtils {
 		Gson gson = new Gson();
 		
 		try {
-			BaseEntity baseEntity = gson.fromJson(content, BaseEntity.class);
+			BaseEntity baseEntity = (BaseEntity) gson.fromJson(content, clazz);
 			return baseEntity;
 		} catch (Exception e) {
 			e.printStackTrace();

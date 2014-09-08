@@ -3,7 +3,6 @@ package com.cundong.izhihu.fragment;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,18 +25,18 @@ public class NewsDetailFragment extends BaseFragment implements ResponseListener
 	
 	private WebView mWebView;
 	
-	private String mNewsId = null;
+	private long mNewsId = 0;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		Bundle bundle = getArguments();
-		mNewsId = bundle != null ? bundle.getString("id") : "";
+		mNewsId = bundle != null ? bundle.getLong("id") : 0;
 		
 		//String content = ZhihuApplication.getDataSource().getContent("detail_" + mNewsId);
 		
-		new GetNewsDetailTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, mNewsId);
+		new GetNewsDetailTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(mNewsId));
 	}
 	
 	@Override
@@ -99,10 +98,10 @@ public class NewsDetailFragment extends BaseFragment implements ResponseListener
 			
 			//TODO content
 			
-			NewsDetailEntity detailEntity = (NewsDetailEntity)GsonUtils.getEntity(content);
+			NewsDetailEntity detailEntity = (NewsDetailEntity)GsonUtils.getEntity(content, NewsDetailEntity.class);
 			mWebView.loadUrl(detailEntity.share_url);
 		}else{
-			Log.e("@Cundong", "onComplete() fuck added()==false");
+			
 		}
 	}
 
@@ -116,8 +115,8 @@ public class NewsDetailFragment extends BaseFragment implements ResponseListener
 					
 				}
 			});
-		}else{
-			Log.e("@Cundong", "onFail() fuck added()==false");
+		} else {
+
 		}
 	}
 }

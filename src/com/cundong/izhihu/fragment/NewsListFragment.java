@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +22,7 @@ import com.cundong.izhihu.task.GetNewsTask;
 import com.cundong.izhihu.task.MyAsyncTask;
 import com.cundong.izhihu.task.ResponseListener;
 import com.cundong.izhihu.util.GsonUtils;
+import com.cundong.izhihu.util.Logger;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -86,13 +86,15 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 			
 			if(isAdded()){
 				if (result != null && !result.isEmpty()) {
-					mAdapter = new NewsAdapter(getActivity(), result);
+					
+					mNewsList = result;
+					mAdapter = new NewsAdapter(getActivity(), mNewsList);
 					mListView.setAdapter(mAdapter);
 				} else {
 					Crouton.makeText(getActivity(), "no init data", Style.ALERT).show();
 				}
 			}else{
-				Log.e("@Cundong", "LoadCacheNewsTask onPostExecute fuck added()==false");
+				Logger.getLogger().e("LoadCacheNewsTask onPostExecute fuck added()==false");
 			}
 		}
 	}
@@ -127,7 +129,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 	            }
 	        }
 		}else{
-			Log.e("@Cundong", "onComplete() fuck added()==false");
+			Logger.getLogger().e("onComplete() fuck added()==false");
 		}
 	}
 
@@ -142,7 +144,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 				}
 			});
 		}else{
-			Log.e("@Cundong", "onFail() fuck added()==false");
+			Logger.getLogger().e("onFail() fuck added()==false");
 		}
 	}
 
