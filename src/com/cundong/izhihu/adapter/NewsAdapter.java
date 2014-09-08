@@ -50,6 +50,11 @@ public class NewsAdapter extends BaseAdapter {
 		mNewsList = newsList;
 	}
 	
+	public void updateData(ArrayList<NewsEntity> newsList){
+		mNewsList = newsList;
+		this.notifyDataSetChanged();
+	}
+	
 	@Override
 	public int getCount() {
 		return mNewsList != null ? mNewsList.size() : 0;

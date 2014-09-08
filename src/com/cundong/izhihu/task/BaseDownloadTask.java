@@ -15,11 +15,7 @@ public abstract class BaseDownloadTask extends MyAsyncTask<String, Void, String>
 
 	protected ResponseListener mListener = null;
 	
-	public BaseDownloadTask( ResponseListener listener ){
-		mListener = listener;
-	}
-	
-	public BaseDownloadTask( String date, ResponseListener listener ){
+	public BaseDownloadTask(ResponseListener listener) {
 		mListener = listener;
 	}
 	

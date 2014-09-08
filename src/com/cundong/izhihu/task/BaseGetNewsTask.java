@@ -2,6 +2,8 @@ package com.cundong.izhihu.task;
 
 import java.util.ArrayList;
 
+import android.text.TextUtils;
+
 import com.cundong.izhihu.ZhihuApplication;
 import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
 
@@ -9,17 +11,12 @@ public abstract class BaseGetNewsTask extends BaseDownloadTask {
 
 	public BaseGetNewsTask(ResponseListener listener) {
 		super(listener);
-		// TODO Auto-generated constructor stub
 	}
 
 	protected boolean isRefreshSuccess = true;
 
 	protected boolean isContentSame = false;
-
-	protected String mDate;
-
-
-
+	
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
@@ -40,16 +37,14 @@ public abstract class BaseGetNewsTask extends BaseDownloadTask {
 		mListener.onComplete(content, isRefreshSuccess, isContentSame);
 	}
 
-	protected boolean checkIsContentSame(ArrayList<NewsEntity> externalNewsList) {
-
-		ArrayList<NewsEntity> currentList = ZhihuApplication.getDataSource()
-				.getNewsList(mDate);
-
-		if (externalNewsList == null || currentList == null
-				|| externalNewsList.isEmpty() || currentList.isEmpty()) {
+	protected boolean checkIsContentSame(String date, String input) {
+		
+		String content = ZhihuApplication.getDataSource().getContent(date);
+		
+		if (TextUtils.isEmpty(content)||TextUtils.isEmpty(input)) {
 			return false;
 		}
 
-		return externalNewsList.equals(currentList);
+		return input.equals(content);
 	}
 }

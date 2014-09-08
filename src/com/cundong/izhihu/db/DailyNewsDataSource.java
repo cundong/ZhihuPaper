@@ -55,7 +55,7 @@ public final class DailyNewsDataSource {
 		}
 	}
 
-	private boolean isContentExist( String key ){
+	private boolean isContentExist(String key) {
 		
 		boolean result = false;
 		

@@ -2,16 +2,15 @@ package com.cundong.izhihu.activity;
 
 import java.util.Calendar;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.cundong.izhihu.Constants;
 import com.cundong.izhihu.R;
 import com.cundong.izhihu.fragment.NewsListFragment;
+import com.cundong.izhihu.util.DateUtils;
 
 public class MainActivity extends BaseActivity{
 
@@ -21,8 +20,8 @@ public class MainActivity extends BaseActivity{
 
 		Calendar dateToGetUrl = Calendar.getInstance();
 		dateToGetUrl.add(Calendar.DAY_OF_YEAR, 1);
-		String date = Constants.Date.simpleDateFormat.format(dateToGetUrl.getTime());
-		
+		String date = DateUtils.getCurrentDate(DateUtils.YYYYMMDD);
+				
 		Bundle bundle = new Bundle();
 		bundle.putString("date", date);
 		

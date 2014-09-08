@@ -1,7 +1,5 @@
 package com.cundong.izhihu;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 public final class Constants {
 	

@@ -1,4 +1,4 @@
-package com.mycos.common.util;
+package com.cundong.izhihu.util;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;

@@ -1,8 +1,5 @@
 package com.cundong.izhihu.fragment;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -14,12 +11,12 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.cundong.izhihu.Constants;
 import com.cundong.izhihu.R;
-import com.cundong.izhihu.ZhihuApplication;
+import com.cundong.izhihu.entity.NewsDetailEntity;
 import com.cundong.izhihu.task.GetNewsDetailTask;
 import com.cundong.izhihu.task.MyAsyncTask;
 import com.cundong.izhihu.task.ResponseListener;
+import com.cundong.izhihu.util.GsonUtils;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -38,8 +35,7 @@ public class NewsDetailFragment extends BaseFragment implements ResponseListener
 		Bundle bundle = getArguments();
 		mNewsId = bundle != null ? bundle.getString("id") : "";
 		
-		String content = ZhihuApplication.getDataSource().getContent("detail_" + mNewsId);
-		Document doc = Jsoup.parse(content);
+		//String content = ZhihuApplication.getDataSource().getContent("detail_" + mNewsId);
 		
 		new GetNewsDetailTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, mNewsId);
 	}
@@ -79,7 +75,7 @@ public class NewsDetailFragment extends BaseFragment implements ResponseListener
 			}
 		});
 
-		mWebView.loadUrl( Constants.TEMPLATE_URL );
+//		mWebView.loadUrl( Constants.URL_DETAIL );
 		
 		return rootView;
 	}
@@ -91,7 +87,6 @@ public class NewsDetailFragment extends BaseFragment implements ResponseListener
 	
 	@Override
 	public void onPre() {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -102,7 +97,10 @@ public class NewsDetailFragment extends BaseFragment implements ResponseListener
 			// Notify PullToRefreshLayout that the refresh has finished
 			mPullToRefreshLayout.setRefreshComplete();
 			
+			//TODO content
 			
+			NewsDetailEntity detailEntity = (NewsDetailEntity)GsonUtils.getEntity(content);
+			mWebView.loadUrl(detailEntity.share_url);
 		}else{
 			Log.e("@Cundong", "onComplete() fuck added()==false");
 		}

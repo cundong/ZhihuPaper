@@ -40,6 +40,8 @@ public class DateUtils {
 	 */
 	public static final String YYYY_MM_DD = "yyyy-MM-dd";
 
+	public static final String YYYYMMDD = "yyyyMMdd";
+	
 	/**
 	 * 时间格式：HH:mm:ss
 	 */
@@ -67,10 +69,10 @@ public class DateUtils {
 	 * 
 	 * @return
 	 */
-	public static String getCurrentDate() {
+	public static String getCurrentDate(String format) {
 
 		Date date = Calendar.getInstance().getTime();
-		SimpleDateFormat sf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+		SimpleDateFormat sf = new SimpleDateFormat(format, Locale.getDefault());
 
 		return sf.format(date);
 	}

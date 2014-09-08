@@ -45,7 +45,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		
 		new LoadCacheNewsTask().executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, mDate);
 		
-		new GetNewsTask(mDate, this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR);
+		new GetNewsTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, mDate);
 	}
 	
 	@Override
@@ -152,13 +152,16 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		// Hide the list
 		setListShown( mNewsList==null ||mNewsList.isEmpty() ? false : true );
 		
-		new GetNewsTask(mDate, this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR);
+		new GetNewsTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, mDate);
 	}
 	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		
-		NewsEntity newsEntity = mNewsList.get(position);
+		NewsEntity newsEntity = mNewsList!=null ? mNewsList.get(position) : null;
+		
+		if(newsEntity==null)
+			return;
 		
 		Intent intent = new Intent();
 		intent.putExtra("id", newsEntity.id);

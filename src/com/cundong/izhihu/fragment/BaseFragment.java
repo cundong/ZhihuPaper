@@ -21,7 +21,7 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
 	
 	@Override
 	public void onRefreshStarted(View view) {
-		doRefresh
+		doRefresh();
 	}
 	
 	protected void doRefresh(){

@@ -132,4 +132,6 @@
     <item type="color" name="vpi__bright_foreground_inverse_holo_dark">@color/vpi__bright_foreground_holo_light</item>
     <item type="color" name="vpi__bright_foreground_inverse_holo_light">@color/vpi__bright_foreground_holo_dark</item>
     <color name="white">#ffffffff</color>
+    
+    <drawable name="ab_bg_black">#aa000000</drawable>
 </resources>

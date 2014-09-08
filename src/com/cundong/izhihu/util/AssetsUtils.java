@@ -3,8 +3,6 @@ package com.cundong.izhihu.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.logging.Logger;
-
 import android.content.Context;
 import android.content.res.AssetManager;
 

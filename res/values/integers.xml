@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="abc_max_action_buttons">2</integer>
+    <integer name="config_activityDefaultDur">220</integer>
+    <integer name="config_activityShortDur">150</integer>
+    <integer name="config_longAnimTime">500</integer>
+    <integer name="config_maxResolverActivityColumns">2</integer>
+    <integer name="config_mediumAnimTime">400</integer>
+    <integer name="config_shortAnimTime">200</integer>
+    <integer name="date_year_view_num_columns">3</integer>
+    <integer name="default_circle_indicator_orientation">0</integer>
+    <integer name="default_title_indicator_footer_indicator_style">2</integer>
+    <integer name="default_title_indicator_line_position">0</integer>
+    <integer name="default_underline_indicator_fade_delay">300</integer>
+    <integer name="default_underline_indicator_fade_length">400</integer>
+    <integer name="ga_dispatchPeriod">120</integer>
+    <integer name="preference_fragment_scrollbarStyle">0x2000000</integer>
+    <integer name="preference_screen_header_scrollbarStyle">0x2000000</integer>
+    <integer name="preferences_left_pane_weight">4</integer>
+    <integer name="preferences_right_pane_weight">6</integer>
+    <integer name="spb_default_interpolator">0</integer>
+    <integer name="spb_default_sections_count">4</integer>
+</resources>
