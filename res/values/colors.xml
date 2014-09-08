@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ab_background">#ff20b4f1</color>
+    <color name="ab_background_light">#ff00a2ed</color>
+    <color name="ab_title_dark">#ffffffff</color>
+    <color name="ab_title_light">#ffffffff</color>
+    <color name="abc_search_url_text_normal">#ff7fa87f</color>
+    <item type="color" name="abc_search_url_text_pressed">@*android:color/black</item>
+    <item type="color" name="abc_search_url_text_selected">@*android:color/black</item>
+    <color name="background_dark">#ff000000</color>
+    <color name="background_holo_dark">#ff000000</color>
+    <color name="background_holo_light">#fff3f3f3</color>
+    <color name="background_light">#ffffffff</color>
+    <color name="bg_showcase">#aa000000</color>
+    <color name="black">#ff000000</color>
+    <item type="color" name="bright_foreground_dark">@color/background_light</item>
+    <color name="bright_foreground_dark_disabled">#80ffffff</color>
+    <item type="color" name="bright_foreground_dark_inverse">@color/bright_foreground_light</item>
+    <color name="bright_foreground_disabled_holo_dark">#ff4c4c4c</color>
+    <color name="bright_foreground_disabled_holo_light">#ffb2b2b2</color>
+    <item type="color" name="bright_foreground_holo_dark">@color/background_holo_light</item>
+    <item type="color" name="bright_foreground_holo_light">@color/background_holo_dark</item>
+    <item type="color" name="bright_foreground_inverse_holo_dark">@color/bright_foreground_holo_light</item>
+    <item type="color" name="bright_foreground_inverse_holo_light">@color/bright_foreground_holo_dark</item>
+    <item type="color" name="bright_foreground_light">@color/background_dark</item>
+    <color name="bright_foreground_light_disabled">#80000000</color>
+    <item type="color" name="bright_foreground_light_inverse">@color/bright_foreground_dark</item>
+    <color name="card_shadow">#8c666666</color>
+    <color name="comment_compose_text">#ffcecece</color>
+    <color name="comment_header">#ff333333</color>
+    <color name="comment_header_dark">#ffb8b8b8</color>
+    <color name="comment_item_author">#ff333333</color>
+    <color name="comment_item_author_dark">#ff666666</color>
+    <color name="comment_item_content">#ff666666</color>
+    <color name="comment_item_time">#ffb8b8b8</color>
+    <color name="comment_no_comment_prompt_text">#ffe4e4e4</color>
+    <color name="comment_no_comment_prompt_text_dark">#ff505050</color>
+    <color name="common_action_bar_splitter">#ffd2d2d2</color>
+    <item type="color" name="common_signin_btn_dark_text_default">@*android:color/white</item>
+    <color name="common_signin_btn_dark_text_disabled">#ffaaaaaa</color>
+    <item type="color" name="common_signin_btn_dark_text_focused">@*android:color/white</item>
+    <item type="color" name="common_signin_btn_dark_text_pressed">@*android:color/white</item>
+    <color name="common_signin_btn_default_background">#ffdd4b39</color>
+    <color name="common_signin_btn_light_text_default">#ff737373</color>
+    <color name="common_signin_btn_light_text_disabled">#ffaaaaaa</color>
+    <color name="common_signin_btn_light_text_focused">#ff737373</color>
+    <item type="color" name="common_signin_btn_light_text_pressed">@*android:color/white</item>
+    <color name="dark_slate_gray">#ff2f4f4f</color>
+    <color name="default_circle_indicator_fill_color">#ffffffff</color>
+    <color name="default_circle_indicator_page_color">#00000000</color>
+    <color name="default_circle_indicator_stroke_color">#ffdddddd</color>
+    <color name="default_line_indicator_selected_color">#ff33b5e5</color>
+    <color name="default_line_indicator_unselected_color">#ffbbbbbb</color>
+    <color name="default_progress_bar_color">#ff33b5e5</color>
+    <color name="default_title_indicator_footer_color">#ff33b5e5</color>
+    <color name="default_title_indicator_selected_color">#ffffffff</color>
+    <color name="default_title_indicator_text_color">#bbffffff</color>
+    <color name="default_underline_indicator_selected_color">#ff33b5e5</color>
+    <color name="dim_foreground_dark">#ffbebebe</color>
+    <color name="dim_foreground_dark_inverse">#ff323232</color>
+    <color name="dim_foreground_disabled_holo_dark">#80bebebe</color>
+    <color name="dim_foreground_disabled_holo_light">#80323232</color>
+    <color name="dim_foreground_holo_dark">#ffbebebe</color>
+    <color name="dim_foreground_holo_light">#ff323232</color>
+    <color name="dim_foreground_inverse_disabled_holo_dark">#80323232</color>
+    <color name="dim_foreground_inverse_disabled_holo_light">#80bebebe</color>
+    <color name="dim_foreground_inverse_holo_dark">#ff323232</color>
+    <color name="dim_foreground_inverse_holo_light">#ffbebebe</color>
+    <color name="divider">#ffe7e7e7</color>
+    <color name="drawer_bg_dark">#ff343434</color>
+    <color name="drawer_bg_light">#ffffffff</color>
+    <color name="gray_1">#ffc0c0c0</color>
+    <color name="gray_2">#ffafafaf</color>
+    <color name="highlighted_text_holo_dark">#6633b5e5</color>
+    <color name="highlighted_text_holo_light">#6633b5e5</color>
+    <color name="hint_foreground_holo_dark">#ff808080</color>
+    <color name="hint_foreground_holo_light">#ff808080</color>
+    <color name="holo_blue_bright">#ff00ddff</color>
+    <color name="holo_blue_dark">#ff0099cc</color>
+    <color name="holo_blue_light">#ff33b5e5</color>
+    <color name="holo_green_dark">#ff669900</color>
+    <color name="holo_green_light">#ff99cc00</color>
+    <color name="holo_orange_dark">#ffff8800</color>
+    <color name="holo_orange_light">#ffffbb33</color>
+    <color name="holo_purple_dark">#ff9933cc</color>
+    <color name="holo_purple_light">#ffaa66cc</color>
+    <color name="holo_red_dark">#ffcc0000</color>
+    <color name="holo_red_light">#ffff4444</color>
+    <color name="home_list_header_bg_dark">#ff444444</color>
+    <color name="home_list_header_bg_light">#ff009dd7</color>
+    <color name="link_text_holo_dark">#ff5c5cff</color>
+    <color name="link_text_holo_light">#ff0000ee</color>
+    <color name="list_item_bg_dark_highlight">#ff393939</color>
+    <color name="list_item_bg_dark_normal">#ff404040</color>
+    <color name="list_item_bg_light_highlight">#ffe9e9e9</color>
+    <color name="list_item_bg_light_normal">#ffffffff</color>
+    <color name="list_item_intro_dark">#ff696969</color>
+    <color name="list_item_intro_light">#ffb7b7b7</color>
+    <color name="list_item_title_dark">#fff3f3f3</color>
+    <color name="list_item_title_light">#ff000000</color>
+    <color name="list_item_title_read_dark">#ff888888</color>
+    <color name="list_item_title_read_light">#ff777777</color>
+    <color name="list_view_bg_dark">#ff343434</color>
+    <color name="list_view_bg_light">#fff3f3f3</color>
+    <color name="list_view_divider">#ffe7e7e7</color>
+    <color name="navigation_divider_dark">#ff2a2a2a</color>
+    <color name="navigation_divider_light">#ffcccccc</color>
+    <color name="news_tool_bar_bg_dark">#ff383838</color>
+    <color name="news_tool_bar_bg_dark_click">#ff888888</color>
+    <color name="news_tool_bar_bg_light">#fff9f9f9</color>
+    <color name="news_tool_bar_bg_light_click">#ff5d5d5d</color>
+    <color name="spb_default_color">#ff33b5e5</color>
+    <color name="subscribe_theme_mask_highlight">#99000000</color>
+    <color name="subscribe_theme_mask_normal">#66000000</color>
+    <color name="subscribe_theme_title_divider">#4dffffff</color>
+    <color name="theme_editor_bio_dark">#ff6f6f6f</color>
+    <color name="theme_editor_bio_light">#ff999999</color>
+    <color name="theme_editor_name_dark">#ffb8b8b8</color>
+    <color name="theme_editor_name_light">#ff333333</color>
+    <color name="transparent">#00000000</color>
+    <color name="user_bind_sina_weibo_text">#ffbc543f</color>
+    <color name="user_bind_tencent_weibo_text">#ff347fa6</color>
+    <color name="user_logout_text_color_dark">#ff9f2929</color>
+    <color name="user_logout_text_color_light">#ffcc0000</color>
+    <color name="user_weibo_unbind">#ffd8d8d8</color>
+    <color name="vpi__background_holo_dark">#ff000000</color>
+    <color name="vpi__background_holo_light">#fff3f3f3</color>
+    <color name="vpi__bright_foreground_disabled_holo_dark">#ff4c4c4c</color>
+    <color name="vpi__bright_foreground_disabled_holo_light">#ffb2b2b2</color>
+    <item type="color" name="vpi__bright_foreground_holo_dark">@color/vpi__background_holo_light</item>
+    <item type="color" name="vpi__bright_foreground_holo_light">@color/vpi__background_holo_dark</item>
+    <item type="color" name="vpi__bright_foreground_inverse_holo_dark">@color/vpi__bright_foreground_holo_light</item>
+    <item type="color" name="vpi__bright_foreground_inverse_holo_light">@color/vpi__bright_foreground_holo_dark</item>
+    <color name="white">#ffffffff</color>
+</resources>
