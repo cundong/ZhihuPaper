@@ -4,15 +4,22 @@ import java.util.Calendar;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.cundong.izhihu.R;
 import com.cundong.izhihu.fragment.NewsListFragment;
+import com.cundong.izhihu.task.MyAsyncTask;
+import com.cundong.izhihu.task.OfflineDownloadTask;
+import com.cundong.izhihu.task.ResponseListener;
 import com.cundong.izhihu.util.DateUtils;
 
-public class MainActivity extends BaseActivity{
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+
+public class MainActivity extends BaseActivity implements ResponseListener {
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -49,8 +56,9 @@ public class MainActivity extends BaseActivity{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_first:
-			Toast.makeText(this, "First Action Item", Toast.LENGTH_SHORT)
-					.show();
+			
+			new OfflineDownloadTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR);
+			
 			return true;
 		case R.id.action_second:
 			Toast.makeText(this, "Second Action Item", Toast.LENGTH_SHORT)
@@ -58,5 +66,36 @@ public class MainActivity extends BaseActivity{
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onPre() {
+		Crouton.makeText(this, "正在离线最新内容", Style.INFO).show();
+	}
+
+	@Override
+	public void onComplete(String content, boolean isRefreshSuccess,
+			boolean isContentSame) {
+		
+		if (!TextUtils.isEmpty(content) && content.equals("success")) {
+			Crouton.makeText(this, "离线最新内容完成", Style.INFO).show();
+		} 
+	}
+
+	@Override
+	public void onFail(final Exception e) {
+		if (!isFinishing()) {
+			runOnUiThread(new Runnable() {
+				public void run() {
+
+					Crouton.makeText(
+							mInstance,
+							"error:" + e != null && e.fillInStackTrace() != null ? e.fillInStackTrace().toString() : "NULL",
+							Style.ALERT).show();
+				}
+			});
+		} else {
+			mLogger.e("onFail() fuck added()==false");
+		}
 	}
 }

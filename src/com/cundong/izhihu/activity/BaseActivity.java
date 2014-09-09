@@ -7,11 +7,14 @@ import android.support.v4.app.Fragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.cundong.izhihu.util.Logger;
 
 public abstract class BaseActivity extends SherlockFragmentActivity {
 
 	protected Activity mInstance = null;
-
+	
+	protected Logger mLogger = Logger.getLogger();
+	
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);

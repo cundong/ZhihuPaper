@@ -1,10 +1,14 @@
 package com.cundong.izhihu.util;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
+
 import android.content.Context;
-import android.content.res.AssetManager;
 
 /**
  * AssetsUtils
@@ -13,72 +17,38 @@ import android.content.res.AssetManager;
  */
 public class AssetsUtils {
 
-	private static final String DEFAULT_VALUE = "0";
+	private static final String ENCODING = "utf-8";
 
-	// 配置信息路径
-	private static final String ASSET_PATH = "chart/config.properties";
-
-	private static Properties urlProps = null;
-
-	public static void loadProperties(Context context) {
-		Properties props = new Properties();
-
-		AssetManager asset = context.getAssets();
-
-		InputStream in = null;
-
+	public static String loadText(Context context, String assetFielPath){
+		InputStream is = null;
 		try {
-			in = asset.open(ASSET_PATH);
-			props.load(in);
-			urlProps = props;
+			is = context.getResources().getAssets().open(assetFielPath);
+			String textfile = convertStreamToString(is);
+		    return textfile;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		catch (IOException e) {
-			Logger.getLogger().e("no " + ASSET_PATH + " file, use default 0.");
-		}
-		finally {
-			if (in != null) {
-				StreamUtils.close(in);
-			}
-		}
-	}
-	
-	public static String get(Context context, String key) {
-
-		if (urlProps == null) {
-			loadProperties(context);
-		}
-
-		return urlProps != null ? urlProps.getProperty(key,
-				DEFAULT_VALUE) : DEFAULT_VALUE;
-	}
-	
-	/**
-	 * 从Asset目录中读取文本文件，解析为json
-	 * 
-	 * @param congtext
-	 * @param fileUrl
-	 * @return
-	 */
-	public static String loadJSONFromAsset(Context context, String fileUrl){
-		String json = null;
-	    try {
-
-	        InputStream is = context.getAssets().open(fileUrl);
-
-	        int size = is.available();
-
-	        byte[] buffer = new byte[size];
-
-	        is.read(buffer);
-	        
-	        is.close();
-
-	        json = new String(buffer, "UTF-8");
-	    } catch (IOException ex) {
-	        ex.printStackTrace();
-	        return null;
-	    }
 	    
-	    return json;
+		return null;
+	}
+	
+	public static String convertStreamToString(InputStream is)
+			throws IOException {
+		Writer writer = new StringWriter();
+
+		char[] buffer = new char[2048];
+		try {
+			Reader reader = new BufferedReader(new InputStreamReader(is,
+					ENCODING));
+			int n;
+			while ((n = reader.read(buffer)) != -1) {
+				writer.write(buffer, 0, n);
+			}
+		} finally {
+			is.close();
+		}
+		String text = writer.toString();
+		return text;
 	}
 }

@@ -1,5 +1,7 @@
 package com.cundong.izhihu.fragment;
 
+import com.cundong.izhihu.util.Logger;
+
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
@@ -10,6 +12,8 @@ import android.view.View;
 public abstract class BaseFragment extends Fragment implements OnRefreshListener {
 	
 	protected PullToRefreshLayout mPullToRefreshLayout;
+	
+	protected Logger mLogger = Logger.getLogger();
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -27,4 +31,6 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
 	protected void doRefresh(){
 		
 	}
+	
+	
 }

@@ -15,17 +15,17 @@ public final class DailyNewsDataSource {
 
 	private SQLiteDatabase database;
 	private DBHelper dbHelper;
-	private String[] allColumns = { DBHelper.COLUMN_ID, DBHelper.COLUMN_DATE,
+	private String[] allColumns = { DBHelper.COLUMN_ID, DBHelper.COLUMN_KEY,
 			DBHelper.COLUMN_CONTENT };
 
-	public DailyNewsDataSource(Context context) {
+	public DailyNewsDataSource(Context context) {   
 		dbHelper = new DBHelper(context);
 		database = dbHelper.getWritableDatabase();
 	}
 
-	public ArrayList<NewsEntity> insertDailyNewsList(String date, String content) {
+	public ArrayList<NewsEntity> insertDailyNewsList(String key, String content) {
 		ContentValues values = new ContentValues();
-		values.put(DBHelper.COLUMN_DATE, date);
+		values.put(DBHelper.COLUMN_KEY, key);
 		values.put(DBHelper.COLUMN_CONTENT, content);
 
 		long insertId = database.insert(DBHelper.TABLE_NAME, null, values);
@@ -36,22 +36,22 @@ public final class DailyNewsDataSource {
 		return newsList;
 	}
 
-	public void updateNewsList(String date, String content) {
+	public void updateNewsList(String key, String content) {
 		ContentValues values = new ContentValues();
-		values.put(DBHelper.COLUMN_DATE, date);
+		values.put(DBHelper.COLUMN_KEY, key);
 		values.put(DBHelper.COLUMN_CONTENT, content);
-		database.update(DBHelper.TABLE_NAME, values, DBHelper.COLUMN_DATE
-				+ "='" + date + "'", null);
+		database.update(DBHelper.TABLE_NAME, values, DBHelper.COLUMN_KEY
+				+ "='" + key + "'", null);
 	}
-
-	public void insertOrUpdateNewsList(String date, String content) {
+	
+	public void insertOrUpdateNewsList(String key, String content) {
 		if (TextUtils.isEmpty(content))
 			return;
 
-		if (isContentExist(date)) {
-			updateNewsList(date, content);
+		if (isContentExist(key)) {
+			updateNewsList(key, content);
 		} else {
-			insertDailyNewsList(date, content);
+			insertDailyNewsList(key, content);
 		}
 	}
 
@@ -60,7 +60,7 @@ public final class DailyNewsDataSource {
 		boolean result = false;
 		
 		Cursor cursor = database.query(DBHelper.TABLE_NAME, allColumns,
-				DBHelper.COLUMN_DATE + " = '" + key + "'", null, null, null, null);
+				DBHelper.COLUMN_KEY + " = '" + key + "'", null, null, null, null);
 		
 		if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
 			String content = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_CONTENT));
@@ -73,7 +73,7 @@ public final class DailyNewsDataSource {
 	
 	public String getContent(String key) {
 		Cursor cursor = database.query(DBHelper.TABLE_NAME, allColumns,
-				DBHelper.COLUMN_DATE + " = '" + key + "'", null, null, null,
+				DBHelper.COLUMN_KEY + " = '" + key + "'", null, null, null,
 				null);
 
 		if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -85,9 +85,9 @@ public final class DailyNewsDataSource {
 		}
 	}
 	
-	public ArrayList<NewsEntity> getNewsList(String date) {
+	public ArrayList<NewsEntity> getNewsList(String key) {
 		Cursor cursor = database.query(DBHelper.TABLE_NAME, allColumns,
-				DBHelper.COLUMN_DATE + " = '" + date + "'", null, null, null,
+				DBHelper.COLUMN_KEY + " = '" + key + "'", null, null, null,
 				null);
 
 		ArrayList<NewsEntity> newsList = cursorToNewsList(cursor);

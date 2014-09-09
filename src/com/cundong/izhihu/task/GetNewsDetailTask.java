@@ -10,7 +10,7 @@ public class GetNewsDetailTask extends BaseGetNewsTask {
 	public GetNewsDetailTask(ResponseListener listener) {
 		super(listener);
 	}
-
+	
 	@Override
 	protected String doInBackground(String... params) {
 		
@@ -18,8 +18,7 @@ public class GetNewsDetailTask extends BaseGetNewsTask {
 
 		try {
 			content = getUrl(Constants.Url.URL_DETAIL + params[0]);
-			ZhihuApplication.getDataSource().insertOrUpdateNewsList(
-					"detail_" + params[0], content);
+			ZhihuApplication.getDataSource().insertOrUpdateNewsList("detail_" + params[0], content);
 		} catch (IOException e) {
 			e.printStackTrace();
 

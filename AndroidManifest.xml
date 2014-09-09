@@ -11,12 +11,11 @@
         android:targetSdkVersion="21" />
 
     <application
+        android:name=".ZhihuApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" 
-        android:name=".ZhihuApplication"
-        >
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".activity.MainActivity"
             android:alwaysRetainTaskState="true"
@@ -28,13 +27,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name=".activity.NewsDetailActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" >
-
         </activity>
     </application>
 

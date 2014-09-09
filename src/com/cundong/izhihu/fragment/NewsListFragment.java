@@ -22,7 +22,6 @@ import com.cundong.izhihu.task.GetNewsTask;
 import com.cundong.izhihu.task.MyAsyncTask;
 import com.cundong.izhihu.task.ResponseListener;
 import com.cundong.izhihu.util.GsonUtils;
-import com.cundong.izhihu.util.Logger;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -35,7 +34,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 	
 	private ArrayList<NewsEntity> mNewsList = null;
 	private String mDate;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -76,7 +75,6 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 
 		@Override
 		protected ArrayList<NewsEntity> doInBackground(String... params) {
-
 			return ZhihuApplication.getDataSource().getNewsList(params[0]);
 		}
 
@@ -90,11 +88,9 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 					mNewsList = result;
 					mAdapter = new NewsAdapter(getActivity(), mNewsList);
 					mListView.setAdapter(mAdapter);
-				} else {
-					Crouton.makeText(getActivity(), "no init data", Style.ALERT).show();
-				}
+				} 
 			}else{
-				Logger.getLogger().e("LoadCacheNewsTask onPostExecute fuck added()==false");
+				mLogger.e("LoadCacheNewsTask onPostExecute fuck isAdded()==false");
 			}
 		}
 	}
@@ -129,7 +125,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 	            }
 	        }
 		}else{
-			Logger.getLogger().e("onComplete() fuck added()==false");
+			mLogger.e("onComplete() fuck added()==false");
 		}
 	}
 
@@ -138,13 +134,11 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		if (isAdded()) {
 			getActivity().runOnUiThread(new Runnable() {
 				public void run() {
-
-					Crouton.makeText(getActivity(), "error:" + e!=null && e.getCause()!=null ? e.getCause().toString() : "NULL", Style.ALERT).show();
-					
+					Crouton.makeText(getActivity(), "error:" + e != null && e.fillInStackTrace() != null ? e.fillInStackTrace().toString() : "NULL", Style.ALERT).show();
 				}
 			});
-		}else{
-			Logger.getLogger().e("onFail() fuck added()==false");
+		} else {
+			mLogger.e("onFail() fuck added()==false");
 		}
 	}
 
