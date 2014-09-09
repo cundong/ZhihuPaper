@@ -11,7 +11,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:orientation="vertical" 
+            android:background="@color/white"
+            >
 
             <FrameLayout
                 android:id="@+id/detail_image_wrap"
@@ -48,7 +50,9 @@
                 android:id="@+id/webview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical" 
+                android:background="@color/white"
+                />
         </LinearLayout>
     </ScrollView>
 

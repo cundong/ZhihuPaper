@@ -82,14 +82,14 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		protected void onPostExecute(ArrayList<NewsEntity> result) {
 			super.onPostExecute(result);
 			
-			if(isAdded()){
+			if (isAdded()) {
 				if (result != null && !result.isEmpty()) {
 					
 					mNewsList = result;
 					mAdapter = new NewsAdapter(getActivity(), mNewsList);
 					mListView.setAdapter(mAdapter);
 				} 
-			}else{
+			} else {
 				mLogger.e("LoadCacheNewsTask onPostExecute fuck isAdded()==false");
 			}
 		}
@@ -125,7 +125,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 	            }
 	        }
 		}else{
-			mLogger.e("onComplete() fuck added()==false");
+			mLogger.e("onComplete() fuck isAdded()==false");
 		}
 	}
 

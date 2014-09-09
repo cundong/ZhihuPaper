@@ -1,5 +1,6 @@
 package com.cundong.izhihu.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
@@ -54,8 +55,7 @@ public class NewsDetailActivity extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_first:
-			Toast.makeText(this, "First Action Item", Toast.LENGTH_SHORT)
-					.show();
+			startActivity( prepareIntent() );
 			return true;
 		case R.id.action_second:
 			Toast.makeText(this, "Second Action Item", Toast.LENGTH_SHORT)
@@ -64,4 +64,18 @@ public class NewsDetailActivity extends BaseActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+    private Intent prepareIntent() {
+        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        share.setType("text/plain");
+        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+
+        StringBuilder shareText = new StringBuilder();
+        
+        shareText.append( "正文 http://www.baidu.com" );
+        shareText.append(" 分享自知乎网");
+
+        share.putExtra(Intent.EXTRA_TEXT, shareText.toString());
+        return share;
+    }
 }

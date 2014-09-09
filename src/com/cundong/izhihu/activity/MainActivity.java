@@ -2,10 +2,11 @@ package com.cundong.izhihu.activity;
 
 import java.util.Calendar;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -61,8 +62,13 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 			
 			return true;
 		case R.id.action_second:
-			Toast.makeText(this, "Second Action Item", Toast.LENGTH_SHORT)
-					.show();
+			
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB ) {
+			    startActivity(new Intent(this, PrefsActivity.class));
+			} else {
+			    startActivity(new Intent(this, OtherPrefsActivity.class));
+			}
+			
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
