@@ -9,10 +9,13 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.cundong.izhihu.R;
+import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
 import com.cundong.izhihu.fragment.NewsDetailFragment;
 
 public class NewsDetailActivity extends BaseActivity {
 
+	private NewsEntity mNewsEntity;
+	
 	@Override
 	protected void onCreate(Bundle arg0) {
 		
@@ -27,7 +30,8 @@ public class NewsDetailActivity extends BaseActivity {
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.ab_bg_black));
         
         long id = getIntent().getLongExtra("id", 0);
-        
+        mNewsEntity = (NewsEntity) getIntent().getSerializableExtra("newsEntity");
+        		
 		Bundle bundle = new Bundle();
 		bundle.putLong("id", id);
 		
@@ -72,8 +76,7 @@ public class NewsDetailActivity extends BaseActivity {
 
         StringBuilder shareText = new StringBuilder();
         
-        shareText.append( "正文 http://www.baidu.com" );
-        shareText.append(" 分享自知乎网");
+        shareText.append( mNewsEntity.title + " " + mNewsEntity.share_url );
 
         share.putExtra(Intent.EXTRA_TEXT, shareText.toString());
         return share;

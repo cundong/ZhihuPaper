@@ -12,6 +12,8 @@ public class OtherPrefsActivity extends BaseActivity {
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
 		getFragmentManager().beginTransaction()
 				.replace(android.R.id.content, new PrefsFragment()).commit();
 	}

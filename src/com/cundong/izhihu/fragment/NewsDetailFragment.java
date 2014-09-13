@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cundong.izhihu.R;
@@ -38,6 +39,7 @@ public class NewsDetailFragment extends BaseFragment implements ResponseListener
 	private ImageView mImageView;
 	private TextView mTitleView;
 	
+	private ProgressBar mProgressBar;
 	private WebView mWebView;
 	
 	private long mNewsId = 0;
@@ -63,7 +65,6 @@ public class NewsDetailFragment extends BaseFragment implements ResponseListener
 		mNewsId = bundle != null ? bundle.getLong("id") : 0;
 		
 		new LoadCacheDetailTask().executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(mNewsId));
-		
 		new GetNewsDetailTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(mNewsId));
 	}
 	
@@ -80,10 +81,13 @@ public class NewsDetailFragment extends BaseFragment implements ResponseListener
 		
 		View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
+		mProgressBar = (ProgressBar) rootView.findViewById(R.id.progress);
+		
 		mPullToRefreshLayout = (PullToRefreshLayout) rootView.findViewById(R.id.ptr_layout);
 		
 		mTitleView = (TextView) rootView.findViewById(R.id.news_title);
 		mImageWrapView = (ViewGroup) rootView.findViewById(R.id.detail_image_wrap);
+		
 		mImageView = (ImageView) rootView.findViewById(R.id.detail_image);
 		mWebView = (WebView) rootView.findViewById(R.id.webview);
 		

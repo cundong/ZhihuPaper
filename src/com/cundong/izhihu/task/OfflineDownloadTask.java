@@ -31,6 +31,7 @@ public class OfflineDownloadTask extends BaseGetNewsTask {
 				for (NewsEntity newsEntity : stories) {
 					String detailContent = getUrl(Constants.Url.URL_DETAIL + newsEntity.id);
 					
+					//TODO 提取 detailContent 中所有的img结点
 					ZhihuApplication.getDataSource().insertOrUpdateNewsList("detail_" + newsEntity.id, detailContent);
 				}
 				

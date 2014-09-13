@@ -17,7 +17,7 @@
         android:id="@+id/list_item_image"
         android:layout_width="90.0dip"
         android:layout_height="72.0dip"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_launcher" />
 
@@ -25,8 +25,9 @@
         android:id="@+id/list_item_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/list_item_image"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/list_item_image"
+        android:layout_marginLeft="8.0dip"
         android:ellipsize="end"
         android:maxLines="3"
         android:minLines="2"

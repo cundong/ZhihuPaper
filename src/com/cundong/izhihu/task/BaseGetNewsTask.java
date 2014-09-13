@@ -34,14 +34,12 @@ public abstract class BaseGetNewsTask extends BaseDownloadTask {
 		mListener.onComplete(content, isRefreshSuccess, isContentSame);
 	}
 
-	protected boolean checkIsContentSame(String date, String input) {
+	protected boolean checkIsContentSame(String oldContent, String newContent) {
 		
-		String content = ZhihuApplication.getDataSource().getContent(date);
-		
-		if (TextUtils.isEmpty(content)||TextUtils.isEmpty(input)) {
+		if (TextUtils.isEmpty(oldContent)||TextUtils.isEmpty(newContent)) {
 			return false;
 		}
 
-		return input.equals(content);
+		return oldContent.equals(newContent);
 	}
 }

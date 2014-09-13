@@ -1,7 +1,5 @@
 package com.cundong.izhihu.activity;
 
-import java.util.Calendar;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,7 +13,6 @@ import com.cundong.izhihu.fragment.NewsListFragment;
 import com.cundong.izhihu.task.MyAsyncTask;
 import com.cundong.izhihu.task.OfflineDownloadTask;
 import com.cundong.izhihu.task.ResponseListener;
-import com.cundong.izhihu.util.DateUtils;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -25,17 +22,8 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
-
-		Calendar dateToGetUrl = Calendar.getInstance();
-		dateToGetUrl.add(Calendar.DAY_OF_YEAR, 1);
-		String date = DateUtils.getCurrentDate(DateUtils.YYYYMMDD);
-				
-		Bundle bundle = new Bundle();
-		bundle.putString("date", date);
 		
-		// Add the Sample Fragment if there is one
 		Fragment newFragment = getFragment();
-		newFragment.setArguments(bundle);
 		
 		if (newFragment != null) {
 			getSupportFragmentManager().beginTransaction().replace(android.R.id.content, newFragment).commit();

@@ -14,11 +14,13 @@ public class GetNewsTask extends BaseGetNewsTask {
 	@Override
 	protected String doInBackground(String... params) {
 		
-		String content = null;
+		String oldContent = ZhihuApplication.getDataSource().getContent(params[0]);
+		
+		String newContent = null;
 		
 		try {
-			content = getUrl( Constants.Url.URL_LATEST );
-			ZhihuApplication.getDataSource().insertOrUpdateNewsList(params[0], content);
+			newContent = getUrl( Constants.Url.URL_LATEST );
+			ZhihuApplication.getDataSource().insertOrUpdateNewsList(params[0], newContent);
 		} catch (IOException e) {
 			e.printStackTrace();
 			
@@ -26,8 +28,8 @@ public class GetNewsTask extends BaseGetNewsTask {
 			mListener.onFail(e);
 		}
 		
-		isContentSame = checkIsContentSame(params[0], content);
+		isContentSame = checkIsContentSame(oldContent, newContent);
 
-		return content;
+		return newContent;
 	}
 }

@@ -28,23 +28,21 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class NewsListFragment extends BaseFragment implements ResponseListener, OnItemClickListener {
 
+	private static final String LATEST_NEWS = "latestNews";
+	
 	private ListView mListView;
 	private ProgressBar mProgressBar;
 	private NewsAdapter mAdapter = null;
 	
 	private ArrayList<NewsEntity> mNewsList = null;
-	private String mDate;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		Bundle bundle = getArguments();
-		mDate = bundle != null ? bundle.getString("date") : "";
 		
-		new LoadCacheNewsTask().executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, mDate);
+		new LoadCacheNewsTask().executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, LATEST_NEWS);
 		
-		new GetNewsTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, mDate);
+		new GetNewsTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, LATEST_NEWS);
 	}
 	
 	@Override
@@ -134,7 +132,12 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		if (isAdded()) {
 			getActivity().runOnUiThread(new Runnable() {
 				public void run() {
-					Crouton.makeText(getActivity(), "error:" + e != null && e.fillInStackTrace() != null ? e.fillInStackTrace().toString() : "NULL", Style.ALERT).show();
+					Crouton.makeText(
+							getActivity(),
+							"error:" + e != null
+									&& e.fillInStackTrace() != null ? e
+									.fillInStackTrace().toString() : "NULL",
+							Style.ALERT).show();
 				}
 			});
 		} else {
@@ -148,7 +151,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		// Hide the list
 		setListShown( mNewsList==null ||mNewsList.isEmpty() ? false : true );
 		
-		new GetNewsTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, mDate);
+		new GetNewsTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, LATEST_NEWS);
 	}
 	
 	@Override
@@ -161,6 +164,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		
 		Intent intent = new Intent();
 		intent.putExtra("id", newsEntity.id);
+		intent.putExtra("newsEntity", newsEntity);
 		
 		intent.setClass(getActivity(), NewsDetailActivity.class);
 		getActivity().startActivity(intent);

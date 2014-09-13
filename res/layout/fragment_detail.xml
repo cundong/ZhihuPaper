@@ -2,7 +2,8 @@
 <uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ptr_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/white" >
 
     <ScrollView
         android:layout_width="match_parent"
@@ -11,9 +12,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" 
             android:background="@color/white"
-            >
+            android:orientation="vertical" >
 
             <FrameLayout
                 android:id="@+id/detail_image_wrap"
@@ -25,7 +25,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dip"
                     android:background="@drawable/news_detail_title_def"
-                    android:scaleType="fitXY" />
+                    android:scaleType="centerCrop" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -46,13 +46,27 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <WebView
-                android:id="@+id/webview"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="vertical" 
-                android:background="@color/white"
-                />
+                android:layout_height="match_parent" >
+
+                <WebView
+                    android:id="@+id/webview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:scrollbars="vertical" />
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:indeterminate="false"
+                    android:indeterminateDrawable="@drawable/item_progress_bar_img"
+                    android:visibility="gone" >
+                </ProgressBar>
+            </FrameLayout>
         </LinearLayout>
     </ScrollView>
 
