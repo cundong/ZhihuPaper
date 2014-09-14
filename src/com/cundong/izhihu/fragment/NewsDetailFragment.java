@@ -64,6 +64,7 @@ public class NewsDetailFragment extends BaseFragment implements ResponseListener
 		Bundle bundle = getArguments();
 		mNewsId = bundle != null ? bundle.getLong("id") : 0;
 		
+		
 		new LoadCacheDetailTask().executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(mNewsId));
 		new GetNewsDetailTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(mNewsId));
 	}
@@ -103,6 +104,11 @@ public class NewsDetailFragment extends BaseFragment implements ResponseListener
 		return rootView;
 	}
 	
+	private void setWebViewShown(boolean shown){
+		mWebView.setVisibility(shown ? View.VISIBLE : View.GONE);
+		mProgressBar.setVisibility(shown ? View.GONE : View.VISIBLE);
+	}
+	
 	@Override
 	protected void doRefresh() {
 		new GetNewsDetailTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(mNewsId));
@@ -128,11 +134,13 @@ public class NewsDetailFragment extends BaseFragment implements ResponseListener
 		} else {
 			
 		}
+		
+		setWebViewShown(true);
 	}
 
 	@Override
 	public void onFail(final Exception e) {
-		
+		setWebViewShown(true);
 	}
 	
 	private void setWebView( NewsDetailEntity detailEntity ){
@@ -191,9 +199,13 @@ public class NewsDetailFragment extends BaseFragment implements ResponseListener
 			
 			if (isAdded()) {
 				if (!TextUtils.isEmpty(result)) {
+					
+					setWebViewShown(true);
 					NewsDetailEntity detailEntity = (NewsDetailEntity)GsonUtils.getEntity(result, NewsDetailEntity.class);
 					setWebView(detailEntity);
-				} 
+				} else {
+					setWebViewShown(false);
+				}
 			}
 		}
 	}
