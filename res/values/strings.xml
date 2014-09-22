@@ -1,9 +1,10 @@
 <resources>
 
-    <string name="app_name">知乎日报·开源</string>
+    <string name="app_name">知乎小报</string>
     <string name="settings_settings_title">偏好设置</string>
     <string name="setting_noimage_nowifi_title">无图模式</string>
     <string name="setting_noimage_nowifi_summary">2G/3G网络下不显示图片</string>
+    <string name="setting_clearcache_title">清除缓存</string>
     <string name="setting_aboutme_title">关于我们</string>
     <string name="setting_aboutme_summary">关于我们</string>
 

@@ -11,8 +11,9 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
-public abstract class BaseDownloadTask extends MyAsyncTask<String, Void, String> {
+public abstract class BaseDownloadTask extends MyAsyncTask<String, String, String> {
 
+	protected Exception e = null;
 	protected ResponseListener mListener = null;
 	
 	public BaseDownloadTask(ResponseListener listener) {

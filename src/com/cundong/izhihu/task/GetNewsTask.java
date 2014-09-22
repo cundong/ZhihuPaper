@@ -25,7 +25,8 @@ public class GetNewsTask extends BaseGetNewsTask {
 			e.printStackTrace();
 			
 			isRefreshSuccess = false;
-			mListener.onFail(e);
+			
+			this.e = e;
 		}
 		
 		isContentSame = checkIsContentSame(oldContent, newContent);

@@ -46,7 +46,7 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 		switch (item.getItemId()) {
 		case R.id.action_first:
 			
-			new OfflineDownloadTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR);
+			new OfflineDownloadTask(this, this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR);
 			
 			return true;
 		case R.id.action_second:
@@ -63,12 +63,12 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 	}
 
 	@Override
-	public void onPre() {
+	public void onPreExecute() {
 		Crouton.makeText(this, "正在离线最新内容", Style.INFO).show();
 	}
 
 	@Override
-	public void onComplete(String content, boolean isRefreshSuccess,
+	public void onPostExecute(String content, boolean isRefreshSuccess,
 			boolean isContentSame) {
 		
 		if (!TextUtils.isEmpty(content) && content.equals("success")) {
@@ -79,17 +79,15 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 	@Override
 	public void onFail(final Exception e) {
 		if (!isFinishing()) {
-			runOnUiThread(new Runnable() {
-				public void run() {
-
-					Crouton.makeText(
-							mInstance,
-							"error:" + e != null && e.fillInStackTrace() != null ? e.fillInStackTrace().toString() : "NULL",
-							Style.ALERT).show();
-				}
-			});
+			Crouton.makeText(this, "离线最新内容失败", Style.ALERT).show();
 		} else {
 			mLogger.e("onFail() fuck added()==false");
 		}
+	}
+
+	@Override
+	public void onProgressUpdate(String value) {
+		// TODO Auto-generated method stub
+		
 	}
 }

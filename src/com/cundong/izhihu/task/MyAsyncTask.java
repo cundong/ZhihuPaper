@@ -15,11 +15,13 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
 
+@SuppressLint("NewApi")
 public abstract class MyAsyncTask<Params, Progress, Result> {
     private static final String LOG_TAG = "AsyncTask";
 
@@ -46,7 +48,7 @@ public abstract class MyAsyncTask<Params, Progress, Result> {
     private static final BlockingQueue<Runnable> sPoolWorkQueue =
             new LinkedBlockingQueue<Runnable>(10);
     private static final BlockingQueue<Runnable> sDownloadPoolWorkQueue =
-            new LinkedBlockingQueue<Runnable>(5);
+            new LinkedBlockingQueue<Runnable>(10);
 
     /**
      * An {@link java.util.concurrent.Executor} that can be used to execute tasks in parallel.
@@ -56,7 +58,7 @@ public abstract class MyAsyncTask<Params, Progress, Result> {
             TimeUnit.SECONDS, sPoolWorkQueue, sThreadFactory, new ThreadPoolExecutor.DiscardOldestPolicy());
 
     public static final Executor DOWNLOAD_THREAD_POOL_EXECUTOR
-            = new ThreadPoolExecutor(4, 20, KEEP_ALIVE,
+            = new ThreadPoolExecutor(8, 20, KEEP_ALIVE,
             TimeUnit.SECONDS, sDownloadPoolWorkQueue, sDownloadThreadFactory, new ThreadPoolExecutor.DiscardOldestPolicy());
 
     /**
@@ -81,10 +83,12 @@ public abstract class MyAsyncTask<Params, Progress, Result> {
 
     private static class SerialExecutor implements Executor {
        
+		@SuppressLint("NewApi")
 		final ArrayDeque<Runnable> mTasks = new ArrayDeque<Runnable>();
         Runnable mActive;
 
-        public synchronized void execute(final Runnable r) {
+        @SuppressLint("NewApi")
+		public synchronized void execute(final Runnable r) {
             mTasks.addFirst(new Runnable() {
                 public void run() {
                     try {

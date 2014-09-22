@@ -4,11 +4,15 @@
         android:key="settings_settings"
         android:title="@string/settings_settings_title" >
         <CheckBoxPreference
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:enabled="true"
             android:key="using_client?"
             android:summary="@string/setting_noimage_nowifi_summary"
             android:title="@string/setting_noimage_nowifi_title" />
+
+        <Preference
+            android:key="clear_cache"
+            android:title="@string/setting_clearcache_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/setting_aboutme_title" >
         <Preference

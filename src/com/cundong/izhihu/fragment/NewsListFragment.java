@@ -94,17 +94,17 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 	}
 	
 	@Override
-	public void onPre() {
+	public void onPreExecute() {
 		
 	}
 
 	@Override
-	public void onComplete(String content, boolean isRefreshSuccess, boolean isContentSame) {
+	public void onPostExecute(String content, boolean isRefreshSuccess, boolean isContentSame) {
 		
 		if (isAdded()) {
 			// Notify PullToRefreshLayout that the refresh has finished
 			mPullToRefreshLayout.setRefreshComplete();
-
+			
 			if (getView() != null) {
 				// Show the list again
 				setListShown(true);
@@ -128,21 +128,9 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 	}
 
 	@Override
-	public void onFail(final Exception e) {
-		if (isAdded()) {
-			getActivity().runOnUiThread(new Runnable() {
-				public void run() {
-					Crouton.makeText(
-							getActivity(),
-							"error:" + e != null
-									&& e.fillInStackTrace() != null ? e
-									.fillInStackTrace().toString() : "NULL",
-							Style.ALERT).show();
-				}
-			});
-		} else {
-			mLogger.e("onFail() fuck added()==false");
-		}
+	public void onFail(Exception e) {
+		
+		dealException(e);
 	}
 
 	@Override
@@ -168,5 +156,11 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		
 		intent.setClass(getActivity(), NewsDetailActivity.class);
 		getActivity().startActivity(intent);
+	}
+
+	@Override
+	public void onProgressUpdate(String value) {
+		// TODO Auto-generated method stub
+		
 	}
 }

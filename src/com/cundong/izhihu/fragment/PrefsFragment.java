@@ -19,6 +19,8 @@ public class PrefsFragment extends PreferenceFragment implements Preference.OnPr
 
 	@Override
 	public boolean onPreferenceClick(Preference preference) {
+		
+		
 		return false;
 	}
 }

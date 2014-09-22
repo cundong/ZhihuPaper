@@ -18,5 +18,5 @@ public class NewsDetailEntity extends BaseEntity implements Serializable {
 	public int type;
 	public String ga_prefix;
 	public long id;
-	public ArrayList<String> css;
+//	public ArrayList<String> css;
 }
