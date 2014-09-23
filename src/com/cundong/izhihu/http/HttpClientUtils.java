@@ -87,7 +87,7 @@ public class HttpClientUtils {
 			HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
 			HttpProtocolParams.setContentCharset(params, CHARSET);
 			HttpProtocolParams.setUseExpectContinue(params, true);
-			HttpProtocolParams.setUserAgent(params, System.getProperties().getProperty("http.agent") + " MyCOSAndroidClient");
+			HttpProtocolParams.setUserAgent(params, System.getProperties().getProperty("http.agent") + " Mozilla/5.0 Firefox/26.0");
 
 			// 超时设置
 			/* 从连接池中取连接的超时时间 */

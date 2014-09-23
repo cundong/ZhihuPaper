@@ -50,7 +50,7 @@ public class OfflineDownloadTask extends BaseGetNewsTask {
 			content = getUrl(Constants.Url.URL_LATEST);
 			
 			NewsListEntity newsListEntity = (NewsListEntity)GsonUtils.getEntity(content, NewsListEntity.class);
-			ArrayList<NewsEntity> stories = newsListEntity.stories;
+			ArrayList<NewsEntity> stories = newsListEntity!=null ? newsListEntity.stories : null;
 			
 			if (stories != null && stories.size() != 0) {
 
