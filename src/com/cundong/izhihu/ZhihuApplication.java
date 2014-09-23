@@ -13,7 +13,7 @@ public class ZhihuApplication extends Application {
 
 	private static ZhihuApplication mApplication;
 	private static DailyNewsDataSource mNewsDataSource;
-	
+
 	@Override
 	public void onCreate() {
 
@@ -21,7 +21,7 @@ public class ZhihuApplication extends Application {
 
 		mApplication = this;
 		mNewsDataSource = new DailyNewsDataSource(getApplicationContext());
-		
+
 		initImageLoader(getApplicationContext());
 	}
 
@@ -32,17 +32,19 @@ public class ZhihuApplication extends Application {
 	public static DailyNewsDataSource getDataSource() {
 		return mNewsDataSource;
 	}
-	
+
 	public static void initImageLoader(Context context) {
-		// This configuration tuning is custom. You can tune every option, you may tune some of them,
+		// This configuration tuning is custom. You can tune every option, you
+		// may tune some of them,
 		// or you can create default configuration by
 		// ImageLoaderConfiguration.createDefault(this);
 		// method.
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-				.threadPriority(Thread.NORM_PRIORITY - 2)
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+				context).threadPriority(Thread.NORM_PRIORITY - 2)
 				.denyCacheImageMultipleSizesInMemory()
 				.diskCacheFileNameGenerator(new Md5FileNameGenerator())
-				.diskCacheSize(50 * 1024 * 1024) // 50 Mb
+				.diskCacheSize(50 * 1024 * 1024)
+				// 50 Mb
 				.tasksProcessingOrder(QueueProcessingType.LIFO)
 				.writeDebugLogs() // Remove for release app
 				.build();

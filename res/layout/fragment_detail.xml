@@ -5,70 +5,20 @@
     android:layout_height="match_parent"
     android:background="@color/white" >
 
-    <ScrollView
+    <WebView
+        android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:scrollbars="vertical" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" 
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:orientation="vertical" >
-
-                <FrameLayout
-                    android:id="@+id/detail_image_wrap"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <ImageView
-                        android:id="@+id/detail_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dip"
-                        android:background="@drawable/news_detail_title_def"
-                        android:scaleType="centerCrop" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:orientation="vertical" >
-
-                        <TextView
-                            android:id="@+id/news_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dip"
-                            android:layout_marginLeft="5dip"
-                            android:gravity="center_vertical|left"
-                            android:lineSpacingExtra="2dip"
-                            android:textColor="@color/white"
-                            android:textSize="20sp" />
-                    </LinearLayout>
-                </FrameLayout>
-
-                <WebView
-                    android:id="@+id/webview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:scrollbars="vertical" />
-            </LinearLayout>
-
-            <ProgressBar
-                android:id="@+id/progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:indeterminate="false"
-                android:indeterminateDrawable="@drawable/item_progress_bar_img" 
-                android:visibility="gone"
-                />
-        </FrameLayout>
-    </ScrollView>
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="false"
+        android:indeterminateDrawable="@drawable/item_progress_bar_img"
+        android:visibility="gone" />
 
 </uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout>

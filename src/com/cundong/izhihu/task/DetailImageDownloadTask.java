@@ -38,44 +38,52 @@ public class DetailImageDownloadTask extends BaseGetNewsTask {
 		File file = null;
 		for (String param : params) {
 			
-			if(TextUtils.isEmpty(param)) {
+			if (TextUtils.isEmpty(param)) {
 				Logger.getLogger().e("NO download, the image url is null");
 				continue;
 			}
-			
+
 			String fileName = MD5Util.encrypt(param);
-
-			String filePath = SDCardUtils.getExternalCacheDir(mContext)
-					+ fileName + ".jpg";
-			
-			file = new File(filePath);
-			if(!file.exists()) {
-				try {
-					file.createNewFile();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			String fileFolder = SDCardUtils.getExternalCacheDir(mContext);
+			File folder = new File(fileFolder);
+			if (!folder.exists()) {
+				folder.mkdirs();
 			}
+
+			String filePath = fileFolder + fileName + ".jpg";
+			file = new File(filePath);
 			
-			InputStream in = null;
-			OutputStream out = null;
+			if( !file.exists() || file.length() == 0 ) {
 
-			// from web
-			try {
-				in = HttpClientUtils.request(mContext, param, null);
-				out = new FileOutputStream(file);
+				try {
+					
+					file.getParentFile().mkdirs();
+					file.createNewFile();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
 
-				StreamUtils.copy(in, out);
-				
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				StreamUtils.close(out);
-				StreamUtils.close(in);
+				InputStream in = null;
+				OutputStream out = null;
+
+				// from web
+				try {
+					in = HttpClientUtils.request(mContext, param, null);
+					out = new FileOutputStream(file);
+
+					StreamUtils.copy(in, out);
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					StreamUtils.close(out);
+					StreamUtils.close(in);
+				}
+			} else {
+				Logger.getLogger().i("no download, image is exist:" + file.getAbsolutePath());
 			}
 			
 			publishProgress(param);

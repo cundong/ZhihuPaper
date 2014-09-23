@@ -21,6 +21,7 @@ import com.cundong.izhihu.entity.NewsListEntity;
 import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
 import com.cundong.izhihu.http.HttpClientUtils;
 import com.cundong.izhihu.util.GsonUtils;
+import com.cundong.izhihu.util.HTMLUtils;
 import com.cundong.izhihu.util.Logger;
 import com.cundong.izhihu.util.MD5Util;
 import com.cundong.izhihu.util.SDCardUtils;
@@ -56,18 +57,12 @@ public class OfflineDownloadTask extends BaseGetNewsTask {
 				for (NewsEntity newsEntity : stories) {
 					String detailContent = getUrl(Constants.Url.URL_DETAIL + newsEntity.id);
 					
-					//TODO 提取 detailContent 中所有的img结点
 					ZhihuApplication.getDataSource().insertOrUpdateNewsList("detail_" + newsEntity.id, detailContent);
 					
-					//
-					replaceImage(detailContent);
-					
-					
-					String urlStrArray[] = new String[mImageList.size() + 1];  
-					mImageList.toArray(urlStrArray);  
+					ArrayList<String> imageList = getImages(detailContent);
 					
 					File file = null;
-					for (String imageUrl : mImageList) {
+					for (String imageUrl : imageList) {
 						
 						if(TextUtils.isEmpty(imageUrl)) {
 							Logger.getLogger().e("NO download, the image url is null");
@@ -84,7 +79,6 @@ public class OfflineDownloadTask extends BaseGetNewsTask {
 							try {
 								file.createNewFile();
 							} catch (IOException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
@@ -124,41 +118,24 @@ public class OfflineDownloadTask extends BaseGetNewsTask {
 		return null;
 	}
 	
-	ArrayList<String> mImageList = new ArrayList<String>();  
-	
-	private String replaceImage(String html) {
-		
-		String Js2JavaInterfaceName = "JsUseJava";
-		
+	private ArrayList<String> getImages(String html) {
+
+		ArrayList<String> imgList = new ArrayList<String>();
+
 		Document doc = Jsoup.parse(html);
 
 		Elements es = doc.getElementsByTag("img");
-
-		for (Element e : es) {
-			String imgUrl = e.attr("src");
-			mImageList.add(imgUrl);
-			String imgName;
-			File file = new File(imgUrl);
-			imgName = file.getName();
-			if (imgName.endsWith(".gif")) {
-				e.remove();
-			} else {
-
-				String localImgPath = SDCardUtils
-						.getExternalCacheDir(mContext)
-						+ MD5Util.encrypt(imgUrl) + ".jpg";
-				
-				String filePath = "file:///mnt/sdcard/" + imgName;
-				//e.attr("src", "file:///android_asset/ic_launcher.png");
-				e.attr("src_link", "file://" + localImgPath);
-				e.attr("ori_link", imgUrl);
-				String str = "window." + Js2JavaInterfaceName + ".setImgSrc('"
-						+ filePath + "')";
-				e.attr("onclick", str);
-			}
-		}
-
 		
-		return doc.html();
+		for (Element e : es) {
+			String src = e.attr("src");
+			
+			String newImgUrl = src.replaceAll("\"", "");
+			newImgUrl = newImgUrl.replace('\\', ' ');
+			newImgUrl = newImgUrl.replaceAll(" ", "");
+			
+			imgList.add( newImgUrl );
+		}
+		
+		return imgList;
 	}
 }

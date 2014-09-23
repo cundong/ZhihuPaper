@@ -7,10 +7,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,76 +19,46 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-public class NewsAdapter extends BaseAdapter {
+public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
 
-	private LayoutInflater mInflater;
+	private ImageLoader mImageLoader = ImageLoader.getInstance();
 
-	private ArrayList<NewsEntity> mNewsList;
+	private ImageLoadingListener mAnimateFirstListener = new AnimateFirstDisplayListener();
 
-	private ImageLoader imageLoader = ImageLoader.getInstance();
-    
-    private DisplayImageOptions options = new DisplayImageOptions.Builder()
-            .showImageOnLoading(R.drawable.ic_launcher)
-            .showImageOnFail(R.drawable.ic_launcher)
-            .showImageForEmptyUri(R.drawable.ic_launcher)
-            .cacheInMemory(true)
-            .cacheOnDisk(true)
-            .considerExifParams(true)
-            .build();
-    
-    private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
-    
-	public NewsAdapter(Context context, ArrayList<NewsEntity> newsList) {
-		this.mInflater = LayoutInflater.from(context);
-		initData(newsList);
-	}
-
-	public void initData(ArrayList<NewsEntity> newsList){
-		mNewsList = newsList;
-	}
+	private DisplayImageOptions mOptions = new DisplayImageOptions.Builder()
+			.showImageOnLoading(R.drawable.ic_launcher)
+			.showImageOnFail(R.drawable.ic_launcher)
+			.showImageForEmptyUri(R.drawable.ic_launcher).cacheInMemory(true)
+			.cacheOnDisk(true).considerExifParams(true).build();
 	
-	public void updateData(ArrayList<NewsEntity> newsList){
-		mNewsList = newsList;
+	public NewsAdapter(Context context, ArrayList<NewsEntity> list) {
+		super(context, list);
+	}
+
+	public void updateData(ArrayList<NewsEntity> newsList) {
+		mDataList = newsList;
 		this.notifyDataSetChanged();
 	}
-	
+
 	@Override
-	public int getCount() {
-		return mNewsList != null ? mNewsList.size() : 0;
+	public int getItemResourceId() {
+		return R.layout.list_item;
 	}
 
 	@Override
-	public Object getItem(int position) {
-		return null;
-	}
+	public View getItemView(int position, View convertView, ViewHolder holder) {
 
-	@Override
-	public long getItemId(int position) {
-		return position;
-	}
+		ImageView newsImageView = (ImageView) holder
+				.getView(R.id.list_item_image);
+		TextView newsTitleView = (TextView) holder
+				.getView(R.id.list_item_title);
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		
-		ViewHolder viewHolder = null;
-		
-		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.list_item, parent, false);
-			
-			viewHolder = new ViewHolder();
-			viewHolder.newsImageView = (ImageView) convertView.findViewById(R.id.list_item_image);
-			viewHolder.newsTitleView = (TextView) convertView.findViewById(R.id.list_item_title);
-			
-			convertView.setTag(viewHolder);
-		} else {
-			viewHolder = (ViewHolder) convertView.getTag();
-		}
+		final NewsEntity newsEntity = mDataList.get(position);
+		newsTitleView.setText(newsEntity.title);
 
-		final NewsEntity newsEntity = mNewsList.get(position);
-		viewHolder.newsTitleView.setText(newsEntity.title);
-		
-		imageLoader.displayImage(newsEntity.images.get(0), viewHolder.newsImageView, options, animateFirstListener);
-		
+		mImageLoader.displayImage(newsEntity.images.get(0), newsImageView,
+				mOptions, mAnimateFirstListener);
+
 		return convertView;
 	}
 
@@ -113,10 +80,5 @@ public class NewsAdapter extends BaseAdapter {
 				}
 			}
 		}
-	}
-	
-	private final static class ViewHolder {
-		ImageView newsImageView;
-		TextView newsTitleView;
 	}
 }

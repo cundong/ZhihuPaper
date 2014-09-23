@@ -23,9 +23,6 @@ import com.cundong.izhihu.task.MyAsyncTask;
 import com.cundong.izhihu.task.ResponseListener;
 import com.cundong.izhihu.util.GsonUtils;
 
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
-
 public class NewsListFragment extends BaseFragment implements ResponseListener, OnItemClickListener {
 
 	private static final String LATEST_NEWS = "latestNews";

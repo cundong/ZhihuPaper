@@ -1,9 +1,5 @@
 package com.cundong.izhihu.fragment;
 
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
-
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
@@ -12,9 +8,6 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.cundong.izhihu.util.Logger;
-
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 
 public abstract class BaseFragment extends Fragment implements OnRefreshListener {
 	

@@ -1,25 +1,19 @@
 package com.cundong.izhihu.task;
 
-import java.util.ArrayDeque;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
+
+import java.util.ArrayDeque;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
+/**
+ * Thank you, qii~ :-)
+ */
 
 @SuppressLint("NewApi")
 public abstract class MyAsyncTask<Params, Progress, Result> {
@@ -28,7 +22,7 @@ public abstract class MyAsyncTask<Params, Progress, Result> {
     private static final int CORE_POOL_SIZE = 5;
     private static final int MAXIMUM_POOL_SIZE = 128;
     private static final int KEEP_ALIVE = 1;
-    
+
     private static final ThreadFactory sThreadFactory = new ThreadFactory() {
         private final AtomicInteger mCount = new AtomicInteger(1);
 
@@ -48,7 +42,7 @@ public abstract class MyAsyncTask<Params, Progress, Result> {
     private static final BlockingQueue<Runnable> sPoolWorkQueue =
             new LinkedBlockingQueue<Runnable>(10);
     private static final BlockingQueue<Runnable> sDownloadPoolWorkQueue =
-            new LinkedBlockingQueue<Runnable>(10);
+            new LinkedBlockingQueue<Runnable>(5);
 
     /**
      * An {@link java.util.concurrent.Executor} that can be used to execute tasks in parallel.
@@ -58,7 +52,7 @@ public abstract class MyAsyncTask<Params, Progress, Result> {
             TimeUnit.SECONDS, sPoolWorkQueue, sThreadFactory, new ThreadPoolExecutor.DiscardOldestPolicy());
 
     public static final Executor DOWNLOAD_THREAD_POOL_EXECUTOR
-            = new ThreadPoolExecutor(8, 20, KEEP_ALIVE,
+            = new ThreadPoolExecutor(4, 20, KEEP_ALIVE,
             TimeUnit.SECONDS, sDownloadPoolWorkQueue, sDownloadThreadFactory, new ThreadPoolExecutor.DiscardOldestPolicy());
 
     /**
@@ -82,13 +76,10 @@ public abstract class MyAsyncTask<Params, Progress, Result> {
     private final AtomicBoolean mTaskInvoked = new AtomicBoolean();
 
     private static class SerialExecutor implements Executor {
-       
-		@SuppressLint("NewApi")
-		final ArrayDeque<Runnable> mTasks = new ArrayDeque<Runnable>();
+        final ArrayDeque<Runnable> mTasks = new ArrayDeque<Runnable>();
         Runnable mActive;
 
-        @SuppressLint("NewApi")
-		public synchronized void execute(final Runnable r) {
+        public synchronized void execute(final Runnable r) {
             mTasks.addFirst(new Runnable() {
                 public void run() {
                     try {
