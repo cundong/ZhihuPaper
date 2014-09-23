@@ -36,6 +36,7 @@
 ## 截图
 
 ![截屏][1]
+![截屏][2]
 
 ## License
 
@@ -54,3 +55,4 @@
     limitations under the License.
 
 [1]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/one.png
+[2]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/two.png
