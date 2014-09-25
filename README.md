@@ -28,7 +28,7 @@
 
 本程序依赖：
 
-> * Croton
+> * Crouton
 > * SmoothProgressBar
 > * ActionBarSherlock
 > * ActionBarPullToRefresh
