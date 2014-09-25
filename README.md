@@ -33,6 +33,9 @@
 > * ActionBarSherlock
 > * ActionBarPullToRefresh
 
+参考：
+> * ZhihuDailyPurify
+
 ## 截图
 
 ![截屏][1]
