@@ -28,13 +28,13 @@
 
 本程序依赖：
 
-> * [Crouton](https://github.com/keyboardsurfer/Crouton)
-> * [SmoothProgressBar](https://github.com/castorflex/SmoothProgressBar)
-> * [ActionBarSherlock](https://github.com/JakeWharton/ActionBarSherlock)
-> * [ActionBarPullToRefresh](https://github.com/chrisbanes/ActionBar-PullToRefresh)
+> * [Crouton][3]
+> * [SmoothProgressBar][4]
+> * [ActionBarSherlock][5]
+> * [ActionBarPullToRefresh][6]
 
 参考：
-> * [ZhihuDailyPurify](https://github.com/izzyleung/ZhihuDailyPurify)
+> * [ZhihuDailyPurify][7]
 
 ## 截图
 
@@ -59,7 +59,8 @@
 
 [1]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/one.png
 [2]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/two.png
-[3]:
-[3]:
-[3]:
-[3]:
+[3]: https://github.com/keyboardsurfer/Crouton
+[4]: https://github.com/castorflex/SmoothProgressBar
+[5]: https://github.com/JakeWharton/ActionBarSherlock
+[6]: https://github.com/chrisbanes/ActionBar-PullToRefresh
+[7]: https://github.com/izzyleung/ZhihuDailyPurify
