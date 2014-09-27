@@ -54,14 +54,14 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.cundong.izhihu.exception.MyCosIOException;
-import com.cundong.izhihu.exception.MyCosOtherException;
+import com.cundong.izhihu.exception.ZhihuIOException;
+import com.cundong.izhihu.exception.ZhihuOtherException;
 import com.cundong.izhihu.util.Logger;
 
 /**
- * 类说明： HttpClient工具类
+ * 类说明：  HttpClient工具类
  * 
- * @date 2014-1-4
+ * @date 	2014-1-4
  * @version 1.0
  */
 public class HttpClientUtils {
@@ -241,13 +241,13 @@ public class HttpClientUtils {
 			
 			mLogger.e("error end.");
 			
-			responseListener.onFail(new MyCosIOException("request url IOException", e));
+			responseListener.onFail(new ZhihuIOException("request url IOException", e));
 		} catch (Exception e) {
 
 			e.printStackTrace();
 			mLogger.e("error:" + e.getMessage());
 			
-			responseListener.onFail(new MyCosOtherException("request url Exception", e));
+			responseListener.onFail(new ZhihuOtherException("request url Exception", e));
 		}
 	}
 
@@ -334,12 +334,12 @@ public class HttpClientUtils {
 			
 			mLogger.e("error end.");
 			
-			responseListener.onFail(new MyCosIOException("request url IOException", e));
+			responseListener.onFail(new ZhihuIOException("request url IOException", e));
 		} catch (Exception e) {
 
 			e.printStackTrace();
 			mLogger.e("error:" + e.getMessage());
-			responseListener.onFail(new MyCosOtherException("request url Exception", e));
+			responseListener.onFail(new ZhihuOtherException("request url Exception", e));
 		}
 	}
 
@@ -422,12 +422,12 @@ public class HttpClientUtils {
 			
 			mLogger.e("error end.");
 			
-			responseListener.onFail(new MyCosIOException("request url IOException", e));
+			responseListener.onFail(new ZhihuIOException("request url IOException", e));
 		} catch (Exception e) {
 
 			e.printStackTrace();
 			mLogger.e("error:" + e.getMessage());
-			responseListener.onFail(new MyCosOtherException("request url Exception", e));
+			responseListener.onFail(new ZhihuOtherException("request url Exception", e));
 		}
 	}
 
@@ -471,12 +471,12 @@ public class HttpClientUtils {
 			
 			mLogger.e("error end.");
 			
-			responseListener.onFail(new MyCosIOException("request url IOException", e));
+			responseListener.onFail(new ZhihuIOException("request url IOException", e));
 		} catch (Exception e) {
 
 			e.printStackTrace();
 			mLogger.e("error:" + e.getMessage());
-			responseListener.onFail(new MyCosOtherException("request url Exception", e));
+			responseListener.onFail(new ZhihuOtherException("request url Exception", e));
 		}
 	}
 

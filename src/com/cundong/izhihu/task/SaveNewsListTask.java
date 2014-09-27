@@ -1,7 +1,5 @@
 package com.cundong.izhihu.task;
 
-import android.text.TextUtils;
-
 import com.cundong.izhihu.ZhihuApplication;
 
 public class SaveNewsListTask extends MyAsyncTask<Void, Void, Void>{

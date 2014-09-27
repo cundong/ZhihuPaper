@@ -17,11 +17,11 @@ import android.text.TextUtils;
 
 import com.cundong.izhihu.Constants;
 import com.cundong.izhihu.ZhihuApplication;
+import com.cundong.izhihu.entity.NewsDetailEntity;
 import com.cundong.izhihu.entity.NewsListEntity;
 import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
 import com.cundong.izhihu.http.HttpClientUtils;
 import com.cundong.izhihu.util.GsonUtils;
-import com.cundong.izhihu.util.HTMLUtils;
 import com.cundong.izhihu.util.Logger;
 import com.cundong.izhihu.util.MD5Util;
 import com.cundong.izhihu.util.SDCardUtils;
@@ -59,20 +59,29 @@ public class OfflineDownloadTask extends BaseGetNewsTask {
 					
 					ZhihuApplication.getDataSource().insertOrUpdateNewsList("detail_" + newsEntity.id, detailContent);
 					
-					ArrayList<String> imageList = getImages(detailContent);
+					NewsDetailEntity detailEntity = (NewsDetailEntity) GsonUtils.getEntity(
+							content, NewsDetailEntity.class);
+					
+					if (detailEntity == null || TextUtils.isEmpty(detailEntity.body)) {
+						continue;
+					}
+					
+					ArrayList<String> imageList = new ArrayList<String>();
+					imageList.add(detailEntity.image);
+					imageList.addAll(getImages(detailEntity.body));
 					
 					File file = null;
 					for (String imageUrl : imageList) {
 						
-						if(TextUtils.isEmpty(imageUrl)) {
-							Logger.getLogger().e("NO download, the image url is null");
+						if (TextUtils.isEmpty(imageUrl)) {
+							Logger.getLogger().e(
+									"no download, the image url is null");
 							continue;
 						}
 						
 						String fileName = MD5Util.encrypt(imageUrl);
 
-						String filePath = SDCardUtils.getExternalCacheDir(mContext)
-								+ fileName + ".jpg";
+						String filePath = SDCardUtils.getExternalCacheDir(mContext) + fileName + ".jpg";
 						
 						file = new File(filePath);
 						if(!file.exists()) {
@@ -92,7 +101,6 @@ public class OfflineDownloadTask extends BaseGetNewsTask {
 							out = new FileOutputStream(file);
 
 							StreamUtils.copy(in, out);
-							
 							
 						} catch (IOException e) {
 							e.printStackTrace();

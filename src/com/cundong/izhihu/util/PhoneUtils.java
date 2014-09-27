@@ -23,9 +23,9 @@ import android.text.format.Formatter;
 import android.util.DisplayMetrics;
 
 /**
- * 类说明：  手机工具类
+ * 类说明： 手机工具类
  * 
- * @date 	2012-2-27
+ * @date 2012-2-27
  * @version 1.0
  */
 public class PhoneUtils {
@@ -37,25 +37,22 @@ public class PhoneUtils {
 	private static final String EMULATOR_PHONE_NUMBER = "15555215554";
 
 	/**
-	* IMEI号、MAC地址，在有些手机上竟然是动态的！！
-	* 修改逻辑：
-	* IMEI号、MAC地址，都改为取两遍，如果两次获取的不同，则不使用，改为使用一个randomUUID（该ID生成之后存在本地）
-	* 获得手机IMEI
-	* 获取串号失败，则使用MAC地址代替，再失败，则返回随机UUID
-	* deviceId = UUID.randomUUID().toString();
-	* @param context
-	* @return
-	*/
+	 * IMEI号、MAC地址，在有些手机上竟然是动态的！！ 修改逻辑：
+	 * IMEI号、MAC地址，都改为取两遍，如果两次获取的不同，则不使用，改为使用一个randomUUID（该ID生成之后存在本地） 获得手机IMEI
+	 * 获取串号失败，则使用MAC地址代替，再失败，则返回随机UUID deviceId = UUID.randomUUID().toString();
+	 * 
+	 * @param context
+	 * @return
+	 */
 	public static String getIMEI(Context context) {
 
-		SharedPreferences sp = context.getSharedPreferences("gamehall_imei",
+		SharedPreferences sp = context.getSharedPreferences("myapp_imei",
 				Context.MODE_PRIVATE);
 
 		String localImei = sp.getString("imei", "");
 		if (sp.contains("imei") && !TextUtils.isEmpty(localImei)) {
 			return localImei;
-		}
-		else {
+		} else {
 
 			Editor editor = sp.edit();
 
@@ -69,8 +66,7 @@ public class PhoneUtils {
 					&& !EMULATOR_IMIE.equals(imei0)
 					&& !EMULATOR_IMIE.equals(imei1) && imei0.equals(imei1)) {
 				imei = imei0;
-			}
-			else {
+			} else {
 				// 取不到、两次获取的不一样，则随机一个出来
 				imei = UUID.randomUUID().toString();
 			}
@@ -110,10 +106,11 @@ public class PhoneUtils {
 	}
 
 	/**
-	 * 获取手机IP地址
-	 * 获取失败，返回"127.0.0.1"
+	 * 获取手机IP地址 获取失败，返回"127.0.0.1"
+	 * 
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	public static String getIPAddress() {
 		try {
 			for (Enumeration<NetworkInterface> en = NetworkInterface
@@ -129,8 +126,7 @@ public class PhoneUtils {
 					}
 				}
 			}
-		}
-		catch (SocketException ex) {
+		} catch (SocketException ex) {
 			ex.printStackTrace();
 		}
 		return "127.0.0.1";
@@ -138,6 +134,7 @@ public class PhoneUtils {
 
 	/**
 	 * 最低支持的SDK版本
+	 * 
 	 * @return
 	 */
 	public static int getSDKVersion() {
@@ -146,6 +143,7 @@ public class PhoneUtils {
 
 	/**
 	 * 当前程序版本获取
+	 * 
 	 * @param context
 	 * @return
 	 */
@@ -154,29 +152,30 @@ public class PhoneUtils {
 		PackageManager pm = context.getPackageManager();
 		try {
 			packInfo = pm.getPackageInfo(context.getPackageName(), 0);
-		}
-		catch (NameNotFoundException e) {
+		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
 		return packInfo;
 	}
 
-	public static String getApplicationName(Context context) {  
-        PackageManager packageManager = null;  
-        ApplicationInfo applicationInfo = null;  
-        try {  
-            packageManager = context.getPackageManager();  
-            applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);  
-        } catch (PackageManager.NameNotFoundException e) {  
-            applicationInfo = null;  
-        }  
-        String applicationName =   
-        (String) packageManager.getApplicationLabel(applicationInfo);  
-        return applicationName;  
-    } 
-	
+	public static String getApplicationName(Context context) {
+		PackageManager packageManager = null;
+		ApplicationInfo applicationInfo = null;
+		try {
+			packageManager = context.getPackageManager();
+			applicationInfo = packageManager.getApplicationInfo(
+					context.getPackageName(), 0);
+		} catch (PackageManager.NameNotFoundException e) {
+			applicationInfo = null;
+		}
+		String applicationName = (String) packageManager
+				.getApplicationLabel(applicationInfo);
+		return applicationName;
+	}
+
 	/**
 	 * 获取手机号码
+	 * 
 	 * @param mContext
 	 * @return
 	 */
@@ -196,6 +195,7 @@ public class PhoneUtils {
 
 	/**
 	 * 获取手机设备描述（包括品牌、型号等）
+	 * 
 	 * @param
 	 * @return
 	 */
@@ -208,23 +208,22 @@ public class PhoneUtils {
 	}
 
 	/**
-	 * 获取状态栏高度
-	 * ldpi=.75, mdpi=1, hdpi=1.5, xhdpi=2
+	 * 获取状态栏高度 ldpi=.75, mdpi=1, hdpi=1.5, xhdpi=2
 	 */
 	public static int getStatusBarHeight(Activity instance) {
 		int statusBarHeight = (int) Math.ceil(25 * instance.getResources()
 				.getDisplayMetrics().density);
 		return statusBarHeight;
 	}
-	
+
 	/**
 	 * 获取屏幕宽度
 	 * 
 	 * @param instance
 	 */
-	public static int getScreenWidth(Activity instance){
+	public static int getScreenWidth(Activity instance) {
 		DisplayMetrics dm = new DisplayMetrics();
 		instance.getWindowManager().getDefaultDisplay().getMetrics(dm);
-        return dm.widthPixels;
+		return dm.widthPixels;
 	}
 }

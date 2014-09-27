@@ -10,9 +10,6 @@
             android:summary="@string/setting_noimage_nowifi_summary"
             android:title="@string/setting_noimage_nowifi_title" />
 
-        <Preference
-            android:key="clear_cache"
-            android:title="@string/setting_clearcache_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/setting_aboutme" >
         <Preference

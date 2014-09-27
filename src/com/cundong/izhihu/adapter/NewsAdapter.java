@@ -56,9 +56,15 @@ public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
 		final NewsEntity newsEntity = mDataList.get(position);
 		newsTitleView.setText(newsEntity.title);
 
-		mImageLoader.displayImage(newsEntity.images.get(0), newsImageView,
-				mOptions, mAnimateFirstListener);
+		if (newsEntity.images != null && newsEntity.images.size() >= 1) {
 
+			newsImageView.setVisibility(View.VISIBLE);
+			mImageLoader.displayImage(newsEntity.images.get(0), newsImageView,
+					mOptions, mAnimateFirstListener);
+		} else {
+			newsImageView.setVisibility(View.GONE);
+		}
+		
 		return convertView;
 	}
 

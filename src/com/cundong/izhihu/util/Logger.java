@@ -61,10 +61,10 @@ public class Logger {
 	 * log.i
 	 */
 	public void i(String msg) {
-//		if (debug) {
+		if (debug) {
 			String message = createMessage(msg);
 			Log.i(tag, message);
-//		}
+		}
 	}
 
 	/**

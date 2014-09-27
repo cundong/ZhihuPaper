@@ -9,8 +9,11 @@ public final class Constants {
 	}
 
 	// 默认模板路径
-	public static final String TEMPLATE_DEF_URL = "file:///android_asset/template.html";
+	public static final String TEMPLATE_DEF_URL = "www/template.html";
 	
 	//
-	public static final String GITGUB = "https://github.com/cundong/ZhihuPaper";			
+	public static final String GITGUB_PROJECT = "https://github.com/cundong/ZhihuPaper";	
+	
+	//
+	public static final String GITHUB_NAME = "https://github.com/cundong";
 }

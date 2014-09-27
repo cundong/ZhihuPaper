@@ -18,7 +18,8 @@ import com.cundong.izhihu.util.StreamUtils;
 public class DetailImageDownloadTask extends BaseGetNewsTask {
 
 	private Context mContext;
-
+	private String mExternalCacheDir = null;
+	
 	public DetailImageDownloadTask(ResponseListener listener) {
 		super(listener);
 	}
@@ -26,13 +27,15 @@ public class DetailImageDownloadTask extends BaseGetNewsTask {
 	public DetailImageDownloadTask(Context context, ResponseListener listener) {
 		super(listener);
 		mContext = context;
+		
+		mExternalCacheDir = SDCardUtils.getExternalCacheDir(mContext);
 	}
 
 	@Override
 	protected String doInBackground(String... params) {
 
 		// 若传入参数为空，则直接返回
-		if (params.length == 0)
+		if ( params.length == 0 || TextUtils.isEmpty(mExternalCacheDir) )
 			return null;
 	
 		File file = null;
@@ -44,13 +47,12 @@ public class DetailImageDownloadTask extends BaseGetNewsTask {
 			}
 
 			String fileName = MD5Util.encrypt(param);
-			String fileFolder = SDCardUtils.getExternalCacheDir(mContext);
-			File folder = new File(fileFolder);
+			File folder = new File(mExternalCacheDir);
 			if (!folder.exists()) {
 				folder.mkdirs();
 			}
 
-			String filePath = fileFolder + fileName + ".jpg";
+			String filePath = mExternalCacheDir + fileName + ".jpg";
 			file = new File(filePath);
 			
 			if( !file.exists() || file.length() == 0 ) {

@@ -1,7 +1,6 @@
 package com.cundong.izhihu.task;
 
 import android.text.TextUtils;
-import android.widget.Toast;
 
 public abstract class BaseGetNewsTask extends BaseDownloadTask {
 
@@ -16,14 +15,7 @@ public abstract class BaseGetNewsTask extends BaseDownloadTask {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-
-		//网络判断  
-//        if (!NetworkUtils.isNetworkAvailable(context)) {  
-//            cancel(true);  
-//            Toast.makeText(context, ToastMessage.NO_NET.value, Toast.LENGTH_SHORT).show();  
-//            showRefreshView();  
-//        } 
-        
+		
 		mListener.onPreExecute();
 	}
 

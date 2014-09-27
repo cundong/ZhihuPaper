@@ -20,7 +20,8 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
 		super.onViewCreated(view, savedInstanceState);
 
 		ActionBarPullToRefresh.from(getActivity()).allChildrenArePullable()
-				.listener(this).setup(this.mPullToRefreshLayout);
+				.listener(this)
+				.setup(this.mPullToRefreshLayout);
 	}
 	
 	@Override

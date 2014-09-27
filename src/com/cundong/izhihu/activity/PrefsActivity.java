@@ -14,5 +14,7 @@ public class PrefsActivity extends SherlockPreferenceActivity {
 		super.onCreate(arg0);
 		
 		addPreferencesFromResource(R.xml.prefs);
+		
+		//TODO
 	}
 }

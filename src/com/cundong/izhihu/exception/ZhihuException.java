@@ -1,13 +1,13 @@
 package com.cundong.izhihu.exception;
 
 /**
- * 类说明： MyCos自定义异常类
+ * 类说明： 自定义异常类
  * 
- * @author Cundong
- * @date 2014-1-11
+ * @author 	Cundong
+ * @date 	2014-1-11
  * @version 1.0
  */
-public class MyCosException extends Exception {
+public class ZhihuException extends Exception {
 
 	/**
 	 * 
@@ -25,11 +25,11 @@ public class MyCosException extends Exception {
 
 	protected String errorCode = UNKONWEN_ERORR;
 
-	public MyCosException(String msg) {
+	public ZhihuException(String msg) {
 		super(msg);
 	}
 
-	public MyCosException(String msg, Exception cause) {
+	public ZhihuException(String msg, Exception cause) {
 		super(msg, cause);
 	}
 

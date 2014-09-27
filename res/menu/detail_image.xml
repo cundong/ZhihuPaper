@@ -14,20 +14,14 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
-  -->
+-->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item android:id="@+id/action_first"
-          android:title="离线下载"
-          android:showAsAction="always"
-          android:icon="@drawable/ic_action_download"
-           />
-    
-    <item android:id="@+id/action_second"
-          android:title="设置"
-          android:showAsAction="never"
-          android:icon="@drawable/ic_action_download"
-           />
+    <item
+        android:id="@+id/action_first"
+        android:icon="@drawable/icon_dark_save"
+        android:showAsAction="always"
+        android:title="保存"/>
 
 </menu>

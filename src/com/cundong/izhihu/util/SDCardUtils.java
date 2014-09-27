@@ -27,14 +27,19 @@ public class SDCardUtils {
 	 * 获取拓展存储的绝对路径
 	 * 
 	 * @param context
+	 * @return
 	 */
 	public static String getExternalCacheDir(Context context) {
 
-		if (!isMounted())
+		StringBuilder sb = new StringBuilder();
+		
+		if (context == null)
 			return null;
 		
-		StringBuilder sb = new StringBuilder();
-
+		if (!isMounted()) {
+			sb.append(context.getCacheDir()).append(File.separator);
+		}
+		
 		File file = context.getExternalCacheDir();
 
 		// In some case, even the sd card is mounted,

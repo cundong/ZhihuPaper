@@ -20,7 +20,7 @@
 
     <item
         android:id="@+id/action_first"
-        android:icon="@drawable/ic_shared"
+        android:icon="@drawable/abs__ic_menu_share_holo_dark"
         android:showAsAction="always"
         android:title="分享"/>
 
