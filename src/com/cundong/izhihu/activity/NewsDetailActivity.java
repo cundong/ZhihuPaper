@@ -13,35 +13,45 @@ import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
 import com.cundong.izhihu.fragment.NewsDetailFragment;
 
 public class NewsDetailActivity extends BaseActivity {
+	private static final String NEWS_ENTIRY = "com.cundong.izhihu.activity.NewsDetailActivity.news_entity";
 
 	private NewsEntity mNewsEntity;
 	
 	@Override
-	protected void onCreate(Bundle arg0) {
+	protected void onCreate(Bundle savedInstanceState) {
 		
 		setTheme(R.style.Theme_Sherlock); //Used for theme switching in samples
         requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         
-		super.onCreate(arg0);
+		super.onCreate(savedInstanceState);
 		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		//Load partially transparent black background
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.ab_bg_black));
-        
-        long id = getIntent().getLongExtra("id", 0);
-        mNewsEntity = (NewsEntity) getIntent().getSerializableExtra("newsEntity");
-        		
-		Bundle bundle = new Bundle();
-		bundle.putLong("id", id);
-		
-		// Add the Sample Fragment if there is one
-		Fragment newFragment = getFragment();
-		newFragment.setArguments(bundle);
-		
-		if (newFragment != null) {
-			getSupportFragmentManager().beginTransaction().replace(android.R.id.content, newFragment).commit();
-		}
+        if(savedInstanceState == null){
+        	long id = getIntent().getLongExtra("id", 0);
+            mNewsEntity = (NewsEntity) getIntent().getSerializableExtra("newsEntity");
+            		
+    		Bundle bundle = new Bundle();
+    		bundle.putLong("id", id);
+    		
+    		// Add the Sample Fragment if there is one
+    		Fragment newFragment = getFragment();
+    		newFragment.setArguments(bundle);
+    		
+    		if (newFragment != null) {
+    			getSupportFragmentManager().beginTransaction().replace(android.R.id.content, newFragment).commit();
+    		}
+        }else{
+        	mNewsEntity = (NewsEntity) savedInstanceState.getSerializable(NEWS_ENTIRY);
+        }
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putSerializable(NEWS_ENTIRY, mNewsEntity);
+		super.onSaveInstanceState(outState);
 	}
 	
 	@Override
