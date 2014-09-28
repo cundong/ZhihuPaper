@@ -26,6 +26,7 @@ import com.cundong.izhihu.util.Logger;
 import com.cundong.izhihu.util.MD5Util;
 import com.cundong.izhihu.util.SDCardUtils;
 import com.cundong.izhihu.util.StreamUtils;
+import com.cundong.izhihu.util.ZhihuUtils;
 
 public class OfflineDownloadTask extends BaseGetNewsTask {
 
@@ -78,10 +79,8 @@ public class OfflineDownloadTask extends BaseGetNewsTask {
 									"no download, the image url is null");
 							continue;
 						}
-						
-						String fileName = MD5Util.encrypt(imageUrl);
 
-						String filePath = SDCardUtils.getExternalCacheDir(mContext) + fileName + ".jpg";
+						String filePath = ZhihuUtils.getCacheImgFilePath(mContext, imageUrl);
 						
 						file = new File(filePath);
 						if(!file.exists()) {

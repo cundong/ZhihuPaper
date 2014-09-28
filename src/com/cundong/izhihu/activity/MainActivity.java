@@ -80,8 +80,6 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 	public void onFail(final Exception e) {
 		if (!isFinishing()) {
 			Crouton.makeText(this, "离线最新内容失败", Style.ALERT).show();
-		} else {
-			mLogger.e("onFail() fuck added()==false");
 		}
 	}
 

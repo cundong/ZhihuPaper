@@ -32,7 +32,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.cundong.izhihu.Constants;
 import com.cundong.izhihu.R;
@@ -45,8 +44,7 @@ import com.cundong.izhihu.task.MyAsyncTask;
 import com.cundong.izhihu.task.ResponseListener;
 import com.cundong.izhihu.util.AssetsUtils;
 import com.cundong.izhihu.util.GsonUtils;
-import com.cundong.izhihu.util.MD5Util;
-import com.cundong.izhihu.util.SDCardUtils;
+import com.cundong.izhihu.util.ZhihuUtils;
 
 public class NewsDetailFragment extends BaseFragment implements
 		ResponseListener {
@@ -126,7 +124,7 @@ public class NewsDetailFragment extends BaseFragment implements
 		    @Override
 		    public boolean onJsAlert(WebView view, String url, String message,
 		            final JsResult result) {
-		    	Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();  
+		    	//Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();  
 	            result.cancel();  
 	            return true; 
 		    }
@@ -235,11 +233,14 @@ public class NewsDetailFragment extends BaseFragment implements
 			String imgUrl = e.attr("src");
 			mDetailImageList.add(imgUrl);
 
-			String localImgPath = SDCardUtils.getExternalCacheDir(getActivity())+ MD5Util.encrypt(imgUrl) + ".jpg";
+			String localImgPath = ZhihuUtils.getCacheImgFilePath(getActivity(),
+					imgUrl);
+			
 			e.attr("src_link", "file://" + localImgPath);
 			e.attr("ori_link", imgUrl);
 			
-			if (!imgUrl.equals(mDetailImageList.get(0)) && !imgUrl.equals(mDetailImageList.get(1))) {
+			if (!imgUrl.equals(mDetailImageList.get(0))
+					&& !imgUrl.equals(mDetailImageList.get(1))) {
 				e.attr("onclick", "openImage('" + localImgPath + "')");
 			}
 		}
@@ -336,8 +337,8 @@ public class NewsDetailFragment extends BaseFragment implements
 					                            if(reader.peek() == JsonToken.STRING) {
 					                                String msg = reader.nextString();
 					                                if(msg != null) {
-					                                    Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
-					                                    Log.i("@Cundong", "msg:"+msg);
+//					                                    Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+//					                                    Log.i("@Cundong", "msg:"+msg);
 					                                }
 					                            }
 					                        }
@@ -381,7 +382,7 @@ public class NewsDetailFragment extends BaseFragment implements
 					                            if(reader.peek() == JsonToken.STRING) {
 					                                String msg = reader.nextString();
 					                                if(msg != null) {
-					                                    Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+//					                                    Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
 					                                }
 					                            }
 					                        }

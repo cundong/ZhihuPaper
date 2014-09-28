@@ -11,9 +11,9 @@ import android.text.TextUtils;
 
 import com.cundong.izhihu.http.HttpClientUtils;
 import com.cundong.izhihu.util.Logger;
-import com.cundong.izhihu.util.MD5Util;
 import com.cundong.izhihu.util.SDCardUtils;
 import com.cundong.izhihu.util.StreamUtils;
+import com.cundong.izhihu.util.ZhihuUtils;
 
 public class DetailImageDownloadTask extends BaseGetNewsTask {
 
@@ -34,7 +34,6 @@ public class DetailImageDownloadTask extends BaseGetNewsTask {
 	@Override
 	protected String doInBackground(String... params) {
 
-		// 若传入参数为空，则直接返回
 		if ( params.length == 0 || TextUtils.isEmpty(mExternalCacheDir) )
 			return null;
 	
@@ -45,14 +44,13 @@ public class DetailImageDownloadTask extends BaseGetNewsTask {
 				Logger.getLogger().e("NO download, the image url is null");
 				continue;
 			}
-
-			String fileName = MD5Util.encrypt(param);
+			
 			File folder = new File(mExternalCacheDir);
 			if (!folder.exists()) {
 				folder.mkdirs();
 			}
 
-			String filePath = mExternalCacheDir + fileName + ".jpg";
+			String filePath = ZhihuUtils.getCacheImgFilePath(mContext, param);
 			file = new File(filePath);
 			
 			if( !file.exists() || file.length() == 0 ) {
@@ -65,7 +63,6 @@ public class DetailImageDownloadTask extends BaseGetNewsTask {
 					e1.printStackTrace();
 				}
 				
-
 				InputStream in = null;
 				OutputStream out = null;
 

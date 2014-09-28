@@ -59,7 +59,7 @@ public class NewsDetailImageFragment extends BaseFragment {
 		
 		Bitmap bitmap = BitmapFactory.decodeFile(mImageUrl);
 		
-		if(bitmap!=null) {
+		if (bitmap != null) {
 			mImageView.setImageBitmap(bitmap);
 		}
 	}

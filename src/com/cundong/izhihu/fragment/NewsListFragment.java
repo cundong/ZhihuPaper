@@ -84,8 +84,6 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 					mAdapter = new NewsAdapter(getActivity(), mNewsList);
 					mListView.setAdapter(mAdapter);
 				} 
-			} else {
-				mLogger.e("LoadCacheNewsTask onPostExecute fuck isAdded()==false");
 			}
 		}
 	}
@@ -119,8 +117,6 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 					}
 	            }
 	        }
-		}else{
-			mLogger.e("onComplete() fuck isAdded()==false");
 		}
 	}
 

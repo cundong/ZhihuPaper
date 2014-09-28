@@ -6,12 +6,16 @@ import android.content.Context;
 import android.os.Environment;
 
 /**
- * 类说明： SD卡工具类
+ * 类说明： 	SD卡工具类
  * 
- * @date 2012-2-7
+ * @date 	2012-2-7
  * @version 1.0
  */
 public class SDCardUtils {
+	
+	private static final String TYPE_CACHE = "cache";
+	
+	private static final String TYPE_FILES = "files";
 	
 	/**
 	 * SD卡是否挂载
@@ -24,23 +28,53 @@ public class SDCardUtils {
 	}
 	
 	/**
-	 * 获取拓展存储的绝对路径
+	 * 获取扩展存储file的绝对路径
+	 * 
+	 * 返回：sdcard/Android/data/{package_name}/files/ 
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public static String getExternalFileDir(Context context) {
+		return getExternalDir(context, TYPE_FILES);
+	}
+	
+	/**
+	 * 获取扩展存储cache的绝对路径
+	 * 
+	 * 返回：sdcard/Android/data/{package_name}/cache/ 
 	 * 
 	 * @param context
 	 * @return
 	 */
 	public static String getExternalCacheDir(Context context) {
 
+		return getExternalDir(context, TYPE_CACHE);
+	}
+	
+	private static String getExternalDir( Context context, String type ) {
+		
 		StringBuilder sb = new StringBuilder();
 		
 		if (context == null)
 			return null;
 		
 		if (!isMounted()) {
-			sb.append(context.getCacheDir()).append(File.separator);
+			
+			if (type.equals(TYPE_CACHE)) {
+				sb.append(context.getCacheDir()).append(File.separator);
+			} else {
+				sb.append(context.getFilesDir()).append(File.separator);
+			}
 		}
 		
-		File file = context.getExternalCacheDir();
+		File file = null;
+		
+		if (type.equals(TYPE_CACHE)) {
+			file = context.getExternalCacheDir();
+		} else {
+			file = context.getExternalFilesDir(null);
+		}
 
 		// In some case, even the sd card is mounted,
 		// getExternalCacheDir will return null
@@ -50,7 +84,7 @@ public class SDCardUtils {
 			sb.append(file.getAbsolutePath()).append(File.separator);
 		} else {
 			sb.append(Environment.getExternalStorageDirectory().getPath()).append("/Android/data/").append(context.getPackageName())
-					.append("/cache/").append(File.separator).toString();
+					.append("/").append(type).append("/").append(File.separator).toString();
 		}
 		
 		return sb.toString();
