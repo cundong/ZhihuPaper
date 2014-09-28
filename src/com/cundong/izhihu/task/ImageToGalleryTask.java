@@ -10,7 +10,7 @@ import android.provider.MediaStore;
 /**
  * 类说明： 	将图片保存至系统图库Task
  * 
- * @date 	2012-2-7
+ * @date 	2014-2-7
  * @version 1.0
  */
 public class ImageToGalleryTask extends BaseGetNewsTask {

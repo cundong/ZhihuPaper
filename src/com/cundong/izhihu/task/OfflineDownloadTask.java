@@ -21,13 +21,17 @@ import com.cundong.izhihu.entity.NewsDetailEntity;
 import com.cundong.izhihu.entity.NewsListEntity;
 import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
 import com.cundong.izhihu.http.HttpClientUtils;
+import com.cundong.izhihu.util.FileUtils;
 import com.cundong.izhihu.util.GsonUtils;
-import com.cundong.izhihu.util.Logger;
-import com.cundong.izhihu.util.MD5Util;
-import com.cundong.izhihu.util.SDCardUtils;
 import com.cundong.izhihu.util.StreamUtils;
 import com.cundong.izhihu.util.ZhihuUtils;
 
+/**
+ * 类说明： 	离线下载最新新闻，Task
+ * 
+ * @date 	2014-9-7
+ * @version 1.0
+ */
 public class OfflineDownloadTask extends BaseGetNewsTask {
 
 	private Context mContext = null;
@@ -51,7 +55,7 @@ public class OfflineDownloadTask extends BaseGetNewsTask {
 			content = getUrl(Constants.Url.URL_LATEST);
 			
 			NewsListEntity newsListEntity = (NewsListEntity)GsonUtils.getEntity(content, NewsListEntity.class);
-			ArrayList<NewsEntity> stories = newsListEntity!=null ? newsListEntity.stories : null;
+			ArrayList<NewsEntity> stories = newsListEntity != null ? newsListEntity.stories : null;
 			
 			if (stories != null && stories.size() != 0) {
 
@@ -60,58 +64,67 @@ public class OfflineDownloadTask extends BaseGetNewsTask {
 					
 					ZhihuApplication.getDataSource().insertOrUpdateNewsList("detail_" + newsEntity.id, detailContent);
 					
-					NewsDetailEntity detailEntity = (NewsDetailEntity) GsonUtils.getEntity(
-							content, NewsDetailEntity.class);
+					NewsDetailEntity detailEntity = (NewsDetailEntity) GsonUtils.getEntity(detailContent, NewsDetailEntity.class);
 					
 					if (detailEntity == null || TextUtils.isEmpty(detailEntity.body)) {
 						continue;
 					}
 					
 					ArrayList<String> imageList = new ArrayList<String>();
-					imageList.add(detailEntity.image);
-					imageList.addAll(getImages(detailEntity.body));
+					
+					if(!TextUtils.isEmpty(detailEntity.image)) {
+						imageList.add(detailEntity.image);
+					}
+					
+					imageList.addAll(getImgs(detailEntity.body));
 					
 					File file = null;
 					for (String imageUrl : imageList) {
 						
-						if (TextUtils.isEmpty(imageUrl)) {
-							Logger.getLogger().e(
-									"no download, the image url is null");
-							continue;
-						}
-
 						String filePath = ZhihuUtils.getCacheImgFilePath(mContext, imageUrl);
-						
 						file = new File(filePath);
-						if(!file.exists()) {
+						
+						boolean needDownload = true;
+						
+						if (!file.exists()) {
 							try {
 								file.createNewFile();
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
-						}
-						
-						InputStream in = null;
-						OutputStream out = null;
-
-						// from web
-						try {
-							in = HttpClientUtils.request(mContext, imageUrl, null);
-							out = new FileOutputStream(file);
-
-							StreamUtils.copy(in, out);
+						} else {
+							long fileSize = FileUtils.getFileSize(filePath);
 							
-						} catch (IOException e) {
-							e.printStackTrace();
-						} catch (Exception e) {
-							e.printStackTrace();
-						} finally {
-							StreamUtils.close(out);
-							StreamUtils.close(in);
+							if (fileSize == 0) {
+								// need re download
+							} else {
+								needDownload = false;
+							}
 						}
 						
+						if (needDownload) {
+							InputStream in = null;
+							OutputStream out = null;
+							
+							// from web
+							try {
+								in = HttpClientUtils.request(mContext, imageUrl, null);
+								out = new FileOutputStream(file);
+
+								StreamUtils.copy(in, out);
+								
+							} catch (IOException e) {
+								e.printStackTrace();
+							} catch (Exception e) {
+								e.printStackTrace();
+							} finally {
+								StreamUtils.close(out);
+								StreamUtils.close(in);
+							}
+						} else {
+							// no need download
+						}
 					}
-					
 				}
 				
 				return "success";
@@ -125,22 +138,29 @@ public class OfflineDownloadTask extends BaseGetNewsTask {
 		return null;
 	}
 	
-	private ArrayList<String> getImages(String html) {
+	/**
+	 * 从body字段中获取所有<img标签 例：http://news-at.zhihu.com/api/3/news/4074764
+	 * 
+	 * @param html
+	 * @return
+	 */
+	private ArrayList<String> getImgs(String html) {
 
 		ArrayList<String> imgList = new ArrayList<String>();
 
 		Document doc = Jsoup.parse(html);
-
 		Elements es = doc.getElementsByTag("img");
 		
 		for (Element e : es) {
 			String src = e.attr("src");
-			
+
 			String newImgUrl = src.replaceAll("\"", "");
 			newImgUrl = newImgUrl.replace('\\', ' ');
 			newImgUrl = newImgUrl.replaceAll(" ", "");
-			
-			imgList.add( newImgUrl );
+
+			if(!TextUtils.isEmpty(newImgUrl)) {
+				imgList.add(newImgUrl);
+			}
 		}
 		
 		return imgList;

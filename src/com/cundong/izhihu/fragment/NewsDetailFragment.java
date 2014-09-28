@@ -46,6 +46,12 @@ import com.cundong.izhihu.util.AssetsUtils;
 import com.cundong.izhihu.util.GsonUtils;
 import com.cundong.izhihu.util.ZhihuUtils;
 
+/**
+ * 类说明： 	新闻详情页Fragment
+ * 
+ * @date 	2014-9-20
+ * @version 1.0
+ */
 public class NewsDetailFragment extends BaseFragment implements
 		ResponseListener {
 
@@ -55,7 +61,6 @@ public class NewsDetailFragment extends BaseFragment implements
 	private WebView mWebView;
 
 	private long mNewsId = 0;
-	private String mDetailContent = null;
 	private ArrayList<String> mDetailImageList = new ArrayList<String>();
 	
 	@Override
@@ -157,11 +162,13 @@ public class NewsDetailFragment extends BaseFragment implements
 	public void onPostExecute(String content, boolean isRefreshSuccess,
 			boolean isContentSame) {
 		if (isAdded()) {
-
+			
 			// Notify PullToRefreshLayout that the refresh has finished
 			mPullToRefreshLayout.setRefreshComplete();
 
-			setWebView(content, true);
+			 if (isRefreshSuccess && !isContentSame && !TextUtils.isEmpty(content)) {
+				 setWebView(content, true);
+			 }
 		}
 
 		setWebViewShown(true);
@@ -174,6 +181,12 @@ public class NewsDetailFragment extends BaseFragment implements
 		dealException(e);
 	}
 
+	/**
+	 * 设置WebView内容
+	 * 
+	 * @param content
+	 * @param isUpdateMode 是否为刷新操作
+	 */
 	private void setWebView(String content, boolean isUpdateMode) {
 
 		if (!isAdded()) {
@@ -181,15 +194,12 @@ public class NewsDetailFragment extends BaseFragment implements
 		}
 		
 		if (isUpdateMode) {
-			if (!TextUtils.isEmpty(content)
-					&& !TextUtils.isEmpty(mDetailContent)
-					&& content.equals(mDetailContent)) {
+			if (TextUtils.isEmpty(content)) {
 				return;
 			}
 		}
 		
-		mDetailContent = content;
-		
+
 		NewsDetailEntity detailEntity = (NewsDetailEntity) GsonUtils.getEntity(
 				content, NewsDetailEntity.class);
 		
@@ -233,14 +243,13 @@ public class NewsDetailFragment extends BaseFragment implements
 			String imgUrl = e.attr("src");
 			mDetailImageList.add(imgUrl);
 
-			String localImgPath = ZhihuUtils.getCacheImgFilePath(getActivity(),
-					imgUrl);
+			String localImgPath = ZhihuUtils.getCacheImgFilePath(getActivity(), imgUrl);
 			
 			e.attr("src_link", "file://" + localImgPath);
 			e.attr("ori_link", imgUrl);
 			
-			if (!imgUrl.equals(mDetailImageList.get(0))
-					&& !imgUrl.equals(mDetailImageList.get(1))) {
+			//前两张图，一张是标题图，一张是头像，不允许点击
+			if (!imgUrl.equals(mDetailImageList.get(0)) && !imgUrl.equals(mDetailImageList.get(1))) {
 				e.attr("onclick", "openImage('" + localImgPath + "')");
 			}
 		}
@@ -260,11 +269,8 @@ public class NewsDetailFragment extends BaseFragment implements
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 
-			mDetailContent = result;
-			
 			if (isAdded()) {
 				if (!TextUtils.isEmpty(result)) {
-
 					setWebViewShown(true);
 					setWebView(result, false);
 				} else {
@@ -284,8 +290,7 @@ public class NewsDetailFragment extends BaseFragment implements
 
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
-			Intent intent = new Intent("android.intent.action.VIEW", Uri
-					.parse(url));
+			Intent intent = new Intent("android.intent.action.VIEW", Uri.parse(url));
 			startActivity(intent);
 			
 			return true;
@@ -318,12 +323,11 @@ public class NewsDetailFragment extends BaseFragment implements
 								return;
 							}
 							
-							String url = "img_replace_all();";
-							
+							String javascript = "img_replace_all();";
 							
 							if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 								// In KitKat+ you should use the evaluateJavascript method
-					            mWebView.evaluateJavascript(url, new ValueCallback<String>() {
+					            mWebView.evaluateJavascript(javascript, new ValueCallback<String>() {
 					                @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 					                @Override
 					                public void onReceiveValue(String s) {
@@ -338,7 +342,6 @@ public class NewsDetailFragment extends BaseFragment implements
 					                                String msg = reader.nextString();
 					                                if(msg != null) {
 //					                                    Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
-//					                                    Log.i("@Cundong", "msg:"+msg);
 					                                }
 					                            }
 					                        }
@@ -354,7 +357,7 @@ public class NewsDetailFragment extends BaseFragment implements
 					                }
 					            });
 							} else {
-								 mWebView.loadUrl( "javascript:" + url);
+								 mWebView.loadUrl( "javascript:" + javascript);
 							}
 						}
 
@@ -365,11 +368,11 @@ public class NewsDetailFragment extends BaseFragment implements
 								return;
 							}
 							
-							String url = "img_replace_by_url('" + value + "')";
+							String javascript = "img_replace_by_url('" + value + "')";
 							
 							if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-							    mWebView.evaluateJavascript(url, new ValueCallback<String>(){
-
+							    mWebView.evaluateJavascript(javascript, new ValueCallback<String>(){
+							    	
 									@Override
 									public void onReceiveValue(String s) {
 					                    JsonReader reader = new JsonReader(new StringReader(s));
@@ -399,7 +402,7 @@ public class NewsDetailFragment extends BaseFragment implements
 							    	
 							    });
 							} else {
-							    mWebView.loadUrl("javascript:" + url);
+							    mWebView.loadUrl("javascript:" + javascript);
 							}
 						}
 
