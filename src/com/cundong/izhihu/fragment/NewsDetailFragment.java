@@ -51,7 +51,7 @@ import com.cundong.izhihu.util.SDCardUtils;
 public class NewsDetailFragment extends BaseFragment implements
 		ResponseListener {
 
-	private static final String ID = "com.cundong.izhihu.fragment.NewsDetailFragment.";
+	private static final String ID = "com.cundong.izhihu.fragment.NewsDetailFragment.ID";
 	
 	private ProgressBar mProgressBar;
 	private WebView mWebView;
@@ -64,7 +64,7 @@ public class NewsDetailFragment extends BaseFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if(savedInstanceState==null) {
+		if (savedInstanceState == null) {
 			Bundle bundle = getArguments();
 			mNewsId = bundle != null ? bundle.getLong("id") : 0;
 		} else {

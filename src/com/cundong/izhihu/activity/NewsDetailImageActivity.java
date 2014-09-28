@@ -1,18 +1,6 @@
 package com.cundong.izhihu.activity;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 
 import com.actionbarsherlock.view.Menu;
@@ -22,25 +10,40 @@ import com.cundong.izhihu.fragment.NewsDetailImageFragment;
 
 public class NewsDetailImageActivity extends BaseActivity {
 
+	private static final String NEWS_DETAIL_IMAGE= "com.cundong.izhihu.activity.NewsDetailImageActivity.news_detail_image";
+	
+	private String mImageUrl = null;
+	
 	@Override
-	protected void onCreate(Bundle arg0) {
-		super.onCreate(arg0);
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		Bundle bundle = new Bundle();
-		bundle.putString("imageUrl", getIntent().getStringExtra("imageUrl"));
+		if (savedInstanceState == null) {
+			mImageUrl = getIntent().getStringExtra("imageUrl");
+			Bundle bundle = new Bundle();
+			bundle.putString("imageUrl", mImageUrl);
+			
+			// Add the Sample Fragment if there is one
+			Fragment newFragment = getFragment();
+			newFragment.setArguments(bundle);
 
-		// Add the Sample Fragment if there is one
-		Fragment newFragment = getFragment();
-		newFragment.setArguments(bundle);
-
-		if (newFragment != null) {
-			getSupportFragmentManager().beginTransaction()
-					.replace(android.R.id.content, newFragment).commit();
+			if (newFragment != null) {
+				getSupportFragmentManager().beginTransaction()
+						.replace(android.R.id.content, newFragment).commit();
+			}
+		} else {
+			mImageUrl = savedInstanceState.getString(NEWS_DETAIL_IMAGE);
 		}
 	}
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putString(NEWS_DETAIL_IMAGE, mImageUrl);
+		super.onSaveInstanceState(outState);
+	}
+	
 	@Override
 	protected Fragment getFragment() {
 		return new NewsDetailImageFragment();

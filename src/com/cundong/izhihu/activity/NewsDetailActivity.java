@@ -31,7 +31,7 @@ public class NewsDetailActivity extends BaseActivity {
 		//Load partially transparent black background
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.ab_bg_black));
         
-        if(savedInstanceState==null) {
+		if (savedInstanceState == null) {
         	long id = getIntent().getLongExtra("id", 0);
             mNewsEntity = (NewsEntity) getIntent().getSerializableExtra("newsEntity");
             		

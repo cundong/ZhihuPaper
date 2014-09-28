@@ -14,6 +14,8 @@ import com.cundong.izhihu.R;
 
 public class NewsDetailImageFragment extends BaseFragment {
 
+	private static final String IMAGE_URL = "com.cundong.izhihu.fragment.NewsDetailImageFragment.imageUrl";
+	
 	private ImageView mImageView;
 	
 	private String mImageUrl = null;
@@ -22,10 +24,20 @@ public class NewsDetailImageFragment extends BaseFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		Bundle bundle = getArguments();
-		mImageUrl = bundle !=null ? bundle.getString("imageUrl") : "";
+		if (savedInstanceState == null) {
+			Bundle bundle = getArguments();
+			mImageUrl = bundle != null ? bundle.getString("imageUrl") : "";
+		} else {
+			mImageUrl = savedInstanceState.getString(IMAGE_URL);
+		}
 	}
 
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString(IMAGE_URL, mImageUrl);
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
