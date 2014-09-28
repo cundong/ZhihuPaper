@@ -28,9 +28,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:divider="@drawable/listview_divider"
+        android:divider="@null"
         android:drawSelectorOnTop="false"
-        android:listSelector="@drawable/list_selector_holo_dark" />
+        android:listSelector="@android:color/transparent" />
 
     <ProgressBar
         android:id="@+id/progress"

@@ -21,7 +21,7 @@ public abstract class BaseDownloadTask extends MyAsyncTask<String, String, Strin
 	}
 	
 	protected String getUrl(String url) throws IOException {
-
+		
 		HttpClient client = new DefaultHttpClient();
 
 		HttpParams params = client.getParams();

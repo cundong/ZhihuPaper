@@ -51,6 +51,8 @@ import com.cundong.izhihu.util.SDCardUtils;
 public class NewsDetailFragment extends BaseFragment implements
 		ResponseListener {
 
+	private static final String ID = "com.cundong.izhihu.fragment.NewsDetailFragment.";
+	
 	private ProgressBar mProgressBar;
 	private WebView mWebView;
 
@@ -62,14 +64,24 @@ public class NewsDetailFragment extends BaseFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		Bundle bundle = getArguments();
-		mNewsId = bundle != null ? bundle.getLong("id") : 0;
-
+		if(savedInstanceState==null) {
+			Bundle bundle = getArguments();
+			mNewsId = bundle != null ? bundle.getLong("id") : 0;
+		} else {
+			mNewsId = savedInstanceState.getLong(ID);
+		}
+		
 		new LoadCacheDetailTask().executeOnExecutor(
 				MyAsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(mNewsId));
 		
 		new GetNewsDetailTask(this).executeOnExecutor(
 				MyAsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(mNewsId));
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putLong(ID, mNewsId);
 	}
 	
 	@Override

@@ -2,10 +2,8 @@ package com.cundong.izhihu.http;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.security.KeyStore;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 import javax.net.ssl.SSLHandshakeException;
 
@@ -261,7 +259,8 @@ public class HttpClientUtils {
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public static InputStream request(Context context, String url, Bundle params) throws IOException, Exception {
+	public static InputStream request(Context context, String url, Bundle params)
+			throws IOException, Exception {
 
 		if (params != null) {
 			if (url.contains("?")) {
@@ -283,7 +282,7 @@ public class HttpClientUtils {
 		InputStream in = null;
 		response = httpClient.execute(request);
 		in = response.getEntity().getContent();
-
+		
 		return in;
 	}
 
@@ -325,14 +324,7 @@ public class HttpClientUtils {
 
 			e.printStackTrace();
 			
-			mLogger.e("error begin.");
-			mLogger.e("error params:");
-			
 			mLogger.e( "error.url(POST):" + url);
-			
-			mLogger.e("error.getMessage:" + e.getMessage());
-			
-			mLogger.e("error end.");
 			
 			responseListener.onFail(new ZhihuIOException("request url IOException", e));
 		} catch (Exception e) {
@@ -461,16 +453,8 @@ public class HttpClientUtils {
 		} catch (IOException e) {
 
 			e.printStackTrace();
-			
-			mLogger.e("error begin.");
-			mLogger.e("error POST BODY:");
 
-			mLogger.e( "error.url(POST):" + url);
-			
-			mLogger.e("error.getMessage:" + e.getMessage());
-			
-			mLogger.e("error end.");
-			
+			mLogger.e("error.url(POST):" + url);
 			responseListener.onFail(new ZhihuIOException("request url IOException", e));
 		} catch (Exception e) {
 
@@ -488,39 +472,5 @@ public class HttpClientUtils {
 	@SuppressWarnings("deprecation")
 	private static int getDefaultPort() {
 		return android.net.Proxy.getDefaultPort();
-	}
-
-	/**
-	 * 获取Http响应头字段
-	 * 
-	 * @param http
-	 * @return
-	 */
-	public static LinkedHashMap<String, String> getHttpResponseHeader(HttpURLConnection http) {
-		LinkedHashMap<String, String> header = new LinkedHashMap<String, String>();
-		for (int i = 0;; i++) {
-			String mine = http.getHeaderField(i);
-			if (mine == null)
-				break;
-			header.put(http.getHeaderFieldKey(i), mine);
-		}
-		return header;
-	}
-
-	/**
-	 * 从Http响应头字段中获取ETag
-	 * 
-	 * @param http
-	 * @return
-	 */
-	public static String getETag(HttpURLConnection http) {
-		LinkedHashMap<String, String> headerMap = getHttpResponseHeader(http);
-		for (LinkedHashMap.Entry<String, String> entry : headerMap.entrySet()) {
-			String key = entry.getKey() != null ? entry.getKey() : "";
-			if (key.equals("ETag")) {
-				return entry.getValue();
-			}
-		}
-		return "";
 	}
 }

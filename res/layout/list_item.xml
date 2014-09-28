@@ -1,38 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8.0dip"
-    android:layout_marginLeft="8.0dip"
-    android:layout_marginRight="8.0dip"
-    android:layout_marginTop="4.0dip"
-    android:background="@drawable/card_light"
-    android:minHeight="72.0dip"
-    android:paddingBottom="14.0dip"
-    android:paddingLeft="12.0dip"
-    android:paddingRight="12.0dip"
-    android:paddingTop="12.0dip" >
+    android:layout_height="wrap_content" >
 
-    <ImageView
-        android:id="@+id/list_item_image"
-        android:layout_width="90.0dip"
-        android:layout_height="72.0dip"
-        android:layout_alignParentLeft="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher" />
-
-    <TextView
-        android:id="@+id/list_item_title"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/list_item_image"
+        android:layout_marginBottom="8.0dip"
         android:layout_marginLeft="8.0dip"
-        android:ellipsize="end"
-        android:maxLines="3"
-        android:minLines="2"
-        android:textColor="@color/list_item_title_light"
-        android:textIsSelectable="false"
-        android:textSize="@dimen/text_size_medium" />
+        android:layout_marginRight="8.0dip"
+        android:layout_marginTop="4.0dip"
+        android:background="@drawable/card_light"
+        android:minHeight="72.0dip"
+        android:paddingBottom="14.0dip"
+        android:paddingLeft="12.0dip"
+        android:paddingRight="12.0dip"
+        android:paddingTop="12.0dip" >
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/list_item_image"
+            android:layout_width="90.0dip"
+            android:layout_height="72.0dip"
+            android:contentDescription="@string/app_name"
+            android:layout_alignParentLeft="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/list_item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="8.0dip"
+            android:layout_toRightOf="@id/list_item_image"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:minLines="2"
+            android:textColor="@color/list_item_title_light"
+            android:textIsSelectable="false"
+            android:textSize="@dimen/text_size_medium" />
+    </RelativeLayout>
+
+</FrameLayout>
