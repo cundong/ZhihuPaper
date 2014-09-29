@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.JsonReader;
 import android.util.JsonToken;
@@ -44,6 +45,7 @@ import com.cundong.izhihu.task.MyAsyncTask;
 import com.cundong.izhihu.task.ResponseListener;
 import com.cundong.izhihu.util.AssetsUtils;
 import com.cundong.izhihu.util.GsonUtils;
+import com.cundong.izhihu.util.NetWorkHelper;
 import com.cundong.izhihu.util.ZhihuUtils;
 
 /**
@@ -199,7 +201,6 @@ public class NewsDetailFragment extends BaseFragment implements
 			}
 		}
 		
-
 		NewsDetailEntity detailEntity = (NewsDetailEntity) GsonUtils.getEntity(
 				content, NewsDetailEntity.class);
 		
@@ -210,18 +211,26 @@ public class NewsDetailFragment extends BaseFragment implements
 		String html = AssetsUtils.loadText(getActivity(), Constants.TEMPLATE_DEF_URL);
 		html = html.replace("{content}", detailEntity.body);
 		
+		String headerDef = "file:///android_asset/www/news_detail_header_def.jpg";
+		
+		if (NetWorkHelper.isMobile(getActivity()) && PreferenceManager.getDefaultSharedPreferences(
+				getActivity()).getBoolean("noimage_nowifi?", false) ) {
+			
+		} else {
+			headerDef = detailEntity.image;
+		}
+		
 		StringBuilder sb = new StringBuilder();
 		sb.append("<div class=\"img-wrap\">")
 				.append("<h1 class=\"headline-title\">")
 				.append(detailEntity.title).append("</h1>")
 				.append("<span class=\"img-source\">")
 				.append(detailEntity.image_source).append("</span>")
-				.append("<img src=\"").append(detailEntity.image)
+				.append("<img src=\"").append(headerDef)
 				.append("\" alt=\"\">")
 				.append("<div class=\"img-mask\"></div>");
 		
 		html = html.replace("<div class=\"img-place-holder\">", sb.toString());
-
 		String resultHTML = replaceImgTagFromHTML(html);
 		
 		mWebView.loadDataWithBaseURL(null, resultHTML, "text/html", "UTF-8", null);
@@ -248,8 +257,11 @@ public class NewsDetailFragment extends BaseFragment implements
 			e.attr("src_link", "file://" + localImgPath);
 			e.attr("ori_link", imgUrl);
 			
-			//前两张图，一张是标题图，一张是头像，不允许点击
-			if (!imgUrl.equals(mDetailImageList.get(0)) && !imgUrl.equals(mDetailImageList.get(1))) {
+			if(!imgUrl.equals(mDetailImageList.get(0))) {
+				e.attr("src", "");
+			}
+
+			if (!imgUrl.equals(mDetailImageList.get(0)) && !e.attr("class").equals("avatar") ) {
 				e.attr("onclick", "openImage('" + localImgPath + "')");
 			}
 		}
@@ -306,111 +318,117 @@ public class NewsDetailFragment extends BaseFragment implements
 			String urlStrArray[] = new String[mDetailImageList.size()];
 			mDetailImageList.toArray(urlStrArray);
 			
-			new DetailImageDownloadTask(getActivity(),
-					new ResponseListener() {
+			if (NetWorkHelper.isMobile(getActivity()) && PreferenceManager.getDefaultSharedPreferences(
+					getActivity()).getBoolean("noimage_nowifi?", false) ) {
+				// 无图模式
+				
+			} else {
+				new DetailImageDownloadTask(getActivity(),
+						new ResponseListener() {
 
-						@Override
-						public void onPreExecute() {
-							
-						}
-
-						@Override
-						public void onPostExecute(String content,
-								boolean isRefreshSuccess,
-								boolean isContentSame) {
-							
-							if (!isAdded()) {
-								return;
+							@Override
+							public void onPreExecute() {
+								
 							}
-							
-							String javascript = "img_replace_all();";
-							
-							if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-								// In KitKat+ you should use the evaluateJavascript method
-					            mWebView.evaluateJavascript(javascript, new ValueCallback<String>() {
-					                @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-					                @Override
-					                public void onReceiveValue(String s) {
-					                    JsonReader reader = new JsonReader(new StringReader(s));
 
-					                    // Must set lenient to parse single values
-					                    reader.setLenient(true);
+							@Override
+							public void onPostExecute(String content,
+									boolean isRefreshSuccess,
+									boolean isContentSame) {
+								
+								if (!isAdded()) {
+									return;
+								}
+								
+								String javascript = "img_replace_all();";
+								
+								if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+									// In KitKat+ you should use the evaluateJavascript method
+						            mWebView.evaluateJavascript(javascript, new ValueCallback<String>() {
+						                @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+						                @Override
+						                public void onReceiveValue(String s) {
+						                    JsonReader reader = new JsonReader(new StringReader(s));
 
-					                    try {
-					                        if(reader.peek() != JsonToken.NULL) {
-					                            if(reader.peek() == JsonToken.STRING) {
-					                                String msg = reader.nextString();
-					                                if(msg != null) {
-//					                                    Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
-					                                }
-					                            }
-					                        }
-					                    } catch (IOException e) {
-					                        Log.e("TAG", "MainActivity: IOException", e);
-					                    } finally {
-					                        try {
-					                            reader.close();
-					                        } catch (IOException e) {
-					                            // NOOP
-					                        }
-					                    }
-					                }
-					            });
-							} else {
-								 mWebView.loadUrl( "javascript:" + javascript);
+						                    // Must set lenient to parse single values
+						                    reader.setLenient(true);
+
+						                    try {
+						                        if(reader.peek() != JsonToken.NULL) {
+						                            if(reader.peek() == JsonToken.STRING) {
+						                                String msg = reader.nextString();
+						                                if(msg != null) {
+//						                                    Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+						                                }
+						                            }
+						                        }
+						                    } catch (IOException e) {
+						                        Log.e("TAG", "MainActivity: IOException", e);
+						                    } finally {
+						                        try {
+						                            reader.close();
+						                        } catch (IOException e) {
+						                            // NOOP
+						                        }
+						                    }
+						                }
+						            });
+								} else {
+									 mWebView.loadUrl( "javascript:" + javascript);
+								}
 							}
-						}
 
-						@Override
-						public void onProgressUpdate(String value) {
-							
-							if (!isAdded()) {
-								return;
+							@Override
+							public void onProgressUpdate(String value) {
+								
+								if (!isAdded()) {
+									return;
+								}
+								
+								String javascript = "img_replace_by_url('" + value + "')";
+								
+								if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+								    mWebView.evaluateJavascript(javascript, new ValueCallback<String>(){
+								    	
+										@Override
+										public void onReceiveValue(String s) {
+						                    JsonReader reader = new JsonReader(new StringReader(s));
+
+						                    // Must set lenient to parse single values
+						                    reader.setLenient(true);
+
+						                    try {
+						                        if(reader.peek() != JsonToken.NULL) {
+						                            if(reader.peek() == JsonToken.STRING) {
+						                                String msg = reader.nextString();
+						                                if(msg != null) {
+//						                                    Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+						                                }
+						                            }
+						                        }
+						                    } catch (IOException e) {
+						                        Log.e("TAG", "MainActivity: IOException", e);
+						                    } finally {
+						                        try {
+						                            reader.close();
+						                        } catch (IOException e) {
+						                            // NOOP
+						                        }
+						                    }
+										}
+								    	
+								    });
+								} else {
+								    mWebView.loadUrl("javascript:" + javascript);
+								}
 							}
-							
-							String javascript = "img_replace_by_url('" + value + "')";
-							
-							if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-							    mWebView.evaluateJavascript(javascript, new ValueCallback<String>(){
-							    	
-									@Override
-									public void onReceiveValue(String s) {
-					                    JsonReader reader = new JsonReader(new StringReader(s));
 
-					                    // Must set lenient to parse single values
-					                    reader.setLenient(true);
-
-					                    try {
-					                        if(reader.peek() != JsonToken.NULL) {
-					                            if(reader.peek() == JsonToken.STRING) {
-					                                String msg = reader.nextString();
-					                                if(msg != null) {
-//					                                    Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
-					                                }
-					                            }
-					                        }
-					                    } catch (IOException e) {
-					                        Log.e("TAG", "MainActivity: IOException", e);
-					                    } finally {
-					                        try {
-					                            reader.close();
-					                        } catch (IOException e) {
-					                            // NOOP
-					                        }
-					                    }
-									}
-							    	
-							    });
-							} else {
-							    mWebView.loadUrl("javascript:" + javascript);
+							@Override
+							public void onFail(Exception e) {
+								e.printStackTrace();
 							}
-						}
-
-						@Override
-						public void onFail(Exception e) {
-							e.printStackTrace();
-						}
-					}).executeOnExecutor(MyAsyncTask.DOWNLOAD_THREAD_POOL_EXECUTOR, urlStrArray);
+						}).executeOnExecutor(MyAsyncTask.DOWNLOAD_THREAD_POOL_EXECUTOR, urlStrArray);
+			}
 		}
 	};
 	

@@ -16,4 +16,6 @@ public final class Constants {
 
 	//
 	public static final String GITHUB_NAME = "https://github.com/cundong";
+	
+	public static final int REQUESTCODE_SETTING = 8009;
 }

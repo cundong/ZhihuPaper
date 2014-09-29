@@ -32,7 +32,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 	private NewsAdapter mAdapter = null;
 	
 	private ArrayList<NewsEntity> mNewsList = null;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,11 +79,17 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 			
 			if (isAdded()) {
 				if (result != null && !result.isEmpty()) {
-					
+
 					mNewsList = result;
-					mAdapter = new NewsAdapter(getActivity(), mNewsList);
-					mListView.setAdapter(mAdapter);
-				} 
+					
+					if (mAdapter == null) {
+						mAdapter = new NewsAdapter(getActivity(), mNewsList);
+						mListView.setAdapter(mAdapter);
+					} else {
+						mAdapter.updateData(mNewsList);
+						mAdapter.notifyDataSetChanged();
+					}
+				}
 			}
 		}
 	}
@@ -153,7 +159,10 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 
 	@Override
 	public void onProgressUpdate(String value) {
-		// TODO Auto-generated method stub
 		
+	}
+	
+	public void updateList() {
+		new LoadCacheNewsTask().executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, LATEST_NEWS);
 	}
 }

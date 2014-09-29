@@ -7,12 +7,14 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cundong.izhihu.R;
 import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
+import com.cundong.izhihu.util.NetWorkHelper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
@@ -39,7 +41,7 @@ public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
 		mDataList = newsList;
 		this.notifyDataSetChanged();
 	}
-
+	
 	@Override
 	public int getItemResourceId() {
 		return R.layout.list_item;
@@ -56,18 +58,23 @@ public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
 		final NewsEntity newsEntity = mDataList.get(position);
 		newsTitleView.setText(newsEntity.title);
 
-		if (newsEntity.images != null && newsEntity.images.size() >= 1) {
-
-			newsImageView.setVisibility(View.VISIBLE);
-			mImageLoader.displayImage(newsEntity.images.get(0), newsImageView,
-					mOptions, mAnimateFirstListener);
-		} else {
+		if (NetWorkHelper.isMobile(mContext) && PreferenceManager.getDefaultSharedPreferences(
+				mContext).getBoolean("noimage_nowifi?", false) ) {
 			newsImageView.setVisibility(View.GONE);
+		} else {
+			if (newsEntity.images != null && newsEntity.images.size() >= 1) {
+
+				newsImageView.setVisibility(View.VISIBLE);
+				mImageLoader.displayImage(newsEntity.images.get(0), newsImageView,
+						mOptions, mAnimateFirstListener);
+			} else {
+				newsImageView.setVisibility(View.GONE);
+			}
 		}
 		
 		return convertView;
 	}
-
+	
 	private static class AnimateFirstDisplayListener extends
 			SimpleImageLoadingListener {
 

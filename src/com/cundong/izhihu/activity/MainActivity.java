@@ -8,6 +8,7 @@ import android.text.TextUtils;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.cundong.izhihu.Constants;
 import com.cundong.izhihu.R;
 import com.cundong.izhihu.fragment.NewsListFragment;
 import com.cundong.izhihu.task.MyAsyncTask;
@@ -51,10 +52,13 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 			return true;
 		case R.id.action_second:
 			
-			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB ) {
-			    startActivity(new Intent(this, PrefsActivity.class));
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+				startActivityForResult(new Intent(this, PrefsActivity.class),
+						Constants.REQUESTCODE_SETTING);
 			} else {
-			    startActivity(new Intent(this, OtherPrefsActivity.class));
+				startActivityForResult(new Intent(this,
+						OtherPrefsActivity.class),
+						Constants.REQUESTCODE_SETTING);
 			}
 			
 			return true;
@@ -85,7 +89,17 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 
 	@Override
 	public void onProgressUpdate(String value) {
-		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (requestCode == Constants.REQUESTCODE_SETTING) {
+			NewsListFragment fragment = (NewsListFragment) getSupportFragmentManager()
+					.findFragmentById(android.R.id.content);
+			fragment.updateList();
+		}
 	}
 }
