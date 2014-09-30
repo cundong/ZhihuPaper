@@ -21,12 +21,21 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+/**
+ * 类说明： 	新闻列表 Adapter
+ * 
+ * @date 	2014-9-7
+ * @version 1.0
+ */
 public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
 
 	private ImageLoader mImageLoader = ImageLoader.getInstance();
 
 	private ImageLoadingListener mAnimateFirstListener = new AnimateFirstDisplayListener();
 
+	//用于存储日期
+	private String mDate = "";
+	
 	private DisplayImageOptions mOptions = new DisplayImageOptions.Builder()
 			.showImageOnLoading(R.drawable.ic_launcher)
 			.showImageOnFail(R.drawable.ic_launcher)
@@ -37,6 +46,11 @@ public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
 		super(context, list);
 	}
 
+	public NewsAdapter(Context context, ArrayList<NewsEntity> list, String date) {
+		super(context, list);
+		this.mDate = date;
+	}
+	
 	public void updateData(ArrayList<NewsEntity> newsList) {
 		mDataList = newsList;
 		this.notifyDataSetChanged();
@@ -50,10 +64,8 @@ public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
 	@Override
 	public View getItemView(int position, View convertView, ViewHolder holder) {
 
-		ImageView newsImageView = (ImageView) holder
-				.getView(R.id.list_item_image);
-		TextView newsTitleView = (TextView) holder
-				.getView(R.id.list_item_title);
+		ImageView newsImageView = (ImageView) holder.getView(R.id.list_item_image);
+		TextView newsTitleView = (TextView) holder.getView(R.id.list_item_title);
 
 		final NewsEntity newsEntity = mDataList.get(position);
 		newsTitleView.setText(newsEntity.title);

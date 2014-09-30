@@ -15,18 +15,10 @@ import android.provider.MediaStore;
  */
 public class ImageToGalleryTask extends BaseGetNewsTask {
 
-	private Context mContext;
-	
-	public ImageToGalleryTask(ResponseListener listener) {
-		super(listener);
+	public ImageToGalleryTask(Context context, ResponseListener listener) {
+		super(context, listener);
 	}
 
-	public ImageToGalleryTask(Context context, ResponseListener listener) {
-		super(listener);
-		
-		mContext = context;
-	}
-	
 	@Override
 	protected String doInBackground(String... params) {
 		

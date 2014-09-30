@@ -9,4 +9,6 @@
     <string name="setting_aboutme_title">关于我们</string>
     <string name="setting_aboutme_summary">关于我们</string>
 	<string name="setting_version_title">版本信息</string>
+	
+	<string name="action_bar_share_with">Share with…</string>
 </resources>

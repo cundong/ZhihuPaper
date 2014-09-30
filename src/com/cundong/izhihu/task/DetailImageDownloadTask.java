@@ -24,15 +24,8 @@ import com.cundong.izhihu.util.ZhihuUtils;
  */
 public class DetailImageDownloadTask extends BaseGetNewsTask {
 
-	private Context mContext;
-	
-	public DetailImageDownloadTask(ResponseListener listener) {
-		super(listener);
-	}
-
 	public DetailImageDownloadTask(Context context, ResponseListener listener) {
-		super(listener);
-		mContext = context;
+		super(context, listener);
 	}
 
 	@Override
@@ -78,7 +71,7 @@ public class DetailImageDownloadTask extends BaseGetNewsTask {
 				
 				// from web
 				try {
-					in = HttpClientUtils.request(mContext, param, null);
+					in = HttpClientUtils.getStream(mContext, param, null);
 					out = new FileOutputStream(file);
 
 					StreamUtils.copy(in, out);

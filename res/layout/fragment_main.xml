@@ -30,7 +30,10 @@
         android:layout_weight="1"
         android:divider="@null"
         android:drawSelectorOnTop="false"
-        android:listSelector="@android:color/transparent" />
+        android:listSelector="@android:color/transparent"
+        android:fastScrollEnabled="true"
+        android:focusable="true" 
+         />
 
     <ProgressBar
         android:id="@+id/progress"

@@ -79,7 +79,7 @@ public class NewsDetailFragment extends BaseFragment implements
 		new LoadCacheDetailTask().executeOnExecutor(
 				MyAsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(mNewsId));
 		
-		new GetNewsDetailTask(this).executeOnExecutor(
+		new GetNewsDetailTask(getActivity(), this).executeOnExecutor(
 				MyAsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(mNewsId));
 	}
 	
@@ -152,7 +152,7 @@ public class NewsDetailFragment extends BaseFragment implements
 
 	@Override
 	protected void doRefresh() {
-		new GetNewsDetailTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(mNewsId));
+		new GetNewsDetailTask(getActivity(), this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(mNewsId));
 	}
 
 	@Override

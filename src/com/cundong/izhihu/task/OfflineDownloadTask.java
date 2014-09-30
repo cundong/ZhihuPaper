@@ -33,19 +33,11 @@ import com.cundong.izhihu.util.ZhihuUtils;
  * @version 1.0
  */
 public class OfflineDownloadTask extends BaseGetNewsTask {
-
-	private Context mContext = null;
-	
-	public OfflineDownloadTask(ResponseListener listener) {
-		super(listener);
-	}
 	
 	public OfflineDownloadTask(Context context, ResponseListener listener) {
-		super(listener);
-		
-		mContext = context;
+		super(context, listener);
 	}
-	
+
 	@Override
 	protected String doInBackground(String... params) {
 
@@ -108,7 +100,7 @@ public class OfflineDownloadTask extends BaseGetNewsTask {
 							
 							// from web
 							try {
-								in = HttpClientUtils.request(mContext, imageUrl, null);
+								in = HttpClientUtils.getStream(mContext, imageUrl, null);
 								out = new FileOutputStream(file);
 
 								StreamUtils.copy(in, out);
@@ -131,10 +123,14 @@ public class OfflineDownloadTask extends BaseGetNewsTask {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			
+
+			isRefreshSuccess = false;
+		} catch (Exception e) {
+			e.printStackTrace();
+
 			isRefreshSuccess = false;
 		}
-
+		
 		return null;
 	}
 	

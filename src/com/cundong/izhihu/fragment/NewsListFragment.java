@@ -1,23 +1,35 @@
 package com.cundong.izhihu.fragment;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.cundong.izhihu.Constants;
 import com.cundong.izhihu.R;
 import com.cundong.izhihu.ZhihuApplication;
 import com.cundong.izhihu.activity.NewsDetailActivity;
 import com.cundong.izhihu.adapter.NewsAdapter;
 import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
+import com.cundong.izhihu.task.BaseGetNewsTask;
 import com.cundong.izhihu.task.GetNewsTask;
 import com.cundong.izhihu.task.MyAsyncTask;
 import com.cundong.izhihu.task.ResponseListener;
@@ -25,27 +37,31 @@ import com.cundong.izhihu.util.GsonUtils;
 
 public class NewsListFragment extends BaseFragment implements ResponseListener, OnItemClickListener {
 
-	private static final String LATEST_NEWS = "latestNews";
+	private SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
 	
 	private ListView mListView;
 	private ProgressBar mProgressBar;
 	private NewsAdapter mAdapter = null;
 	
 	private ArrayList<NewsEntity> mNewsList = null;
+	private String mNewsLatest = null;
+	
+	private Calendar mCalendar = Calendar.getInstance();
 
+	//上次listView滚动到最下方时，itemId
+	private int mListViewPreLast;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		new LoadCacheNewsTask().executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, LATEST_NEWS);
+		mCalendar.add(Calendar.DAY_OF_YEAR, 1);
 		
-		new GetNewsTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, LATEST_NEWS);
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+		mNewsLatest = mSimpleDateFormat.format(mCalendar.getTime());
 		
+		new LoadCacheNewsTask().executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, mNewsLatest);
+		
+		new GetNewsTask(getActivity(), this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, mNewsLatest);
 	}
 	
 	@Override
@@ -58,7 +74,45 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		mListView = (ListView) view.findViewById(R.id.list);
 		mListView.setOnItemClickListener(this);
 		mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
+		
 		return view;
+	}
+	
+	@Override
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		
+		super.onActivityCreated(savedInstanceState);
+		
+		mListView.setOnScrollListener( new OnScrollListener(){
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				
+				final int lastItem = firstVisibleItem + visibleItemCount;
+				
+				if (lastItem == totalItemCount) {
+					if (mListViewPreLast != lastItem) { // to avoid multiple calls for
+												// last item
+						
+						mCalendar.add(Calendar.DAY_OF_YEAR, -1);
+						
+						String formatedDate = mSimpleDateFormat.format(mCalendar.getTime());
+						
+						Log.d("@Cundong", "Last!!" + formatedDate );
+						
+						new GetMoreNewsTask(getActivity(), null).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, formatedDate);
+						
+						mListViewPreLast = lastItem;
+					}
+				}
+			}
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				
+			}
+		});
 	}
 
 	private void setListShown(boolean isListViewShown){
@@ -94,6 +148,65 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		}
 	}
 	
+	//下载旧闻
+	private class GetMoreNewsTask extends BaseGetNewsTask {
+
+		public GetMoreNewsTask(Context context, ResponseListener listener) {
+			super(context, listener);
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			
+			if (params.length == 0)
+				return null;
+			
+			String theKey = params[0];
+			String oldContent = ZhihuApplication.getDataSource().getContent(theKey);
+			
+			if(!TextUtils.isEmpty(oldContent)) {
+				return oldContent;
+			} else {
+				String newContent = null;
+
+				try {
+					newContent = getUrl(Constants.Url.URLDEFORE + theKey);
+					ZhihuApplication.getDataSource().insertOrUpdateNewsList(theKey, newContent);
+				} catch (IOException e) {
+					e.printStackTrace();
+					
+					this.isRefreshSuccess = false;
+					this.e = e;
+				} catch (Exception e) {
+					e.printStackTrace();
+
+					this.isRefreshSuccess = false;
+					this.e = e;
+				}
+				
+				return newContent;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(String content) {
+			super.onPostExecute(content);
+			
+			if (isAdded()) {
+				if (mNewsList == null) {
+					
+				} else {
+					ArrayList<NewsEntity> list = GsonUtils.getNewsList(content);
+					
+					if( list!=null ) {
+						mNewsList.addAll(list);
+						mAdapter.updateData(mNewsList);
+					}
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void onPreExecute() {
 		
@@ -103,6 +216,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 	public void onPostExecute(String content, boolean isRefreshSuccess, boolean isContentSame) {
 		
 		if (isAdded()) {
+			
 			// Notify PullToRefreshLayout that the refresh has finished
 			mPullToRefreshLayout.setRefreshComplete();
 			
@@ -111,17 +225,15 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 				setListShown(true);
 			}
 			
-	        if (isRefreshSuccess) {
-	            if (!isContentSame) {
-	            	mNewsList = GsonUtils.getNewsList(content);
-	            	
-					if (mAdapter != null) {
-						mAdapter.updateData(mNewsList);
-					} else {
-						mAdapter = new NewsAdapter(getActivity(), mNewsList);
-						mListView.setAdapter(mAdapter);
-					}
-	            }
+	        if (isRefreshSuccess && !isContentSame) {
+	        	mNewsList = GsonUtils.getNewsList(content);
+            	
+				if (mAdapter != null) {
+					mAdapter.updateData(mNewsList);
+				} else {
+					mAdapter = new NewsAdapter(getActivity(), mNewsList);
+					mListView.setAdapter(mAdapter);
+				}
 	        }
 		}
 	}
@@ -138,7 +250,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		// Hide the list
 		setListShown( mNewsList==null ||mNewsList.isEmpty() ? false : true );
 		
-		new GetNewsTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, LATEST_NEWS);
+		new GetNewsTask(getActivity(), this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, mNewsLatest);
 	}
 	
 	@Override
@@ -163,6 +275,6 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 	}
 	
 	public void updateList() {
-		new LoadCacheNewsTask().executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, LATEST_NEWS);
+		new LoadCacheNewsTask().executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, mNewsLatest);
 	}
 }

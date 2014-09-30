@@ -2,41 +2,24 @@ package com.cundong.izhihu.task;
 
 import java.io.IOException;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
+import android.content.Context;
 
-public abstract class BaseDownloadTask extends MyAsyncTask<String, String, String> {
+import com.cundong.izhihu.http.HttpClientUtils;
 
-	protected Exception e = null;
+public abstract class BaseDownloadTask extends
+		MyAsyncTask<String, String, String> {
+
+	protected Context mContext = null;
+
 	protected ResponseListener mListener = null;
-	
-	public BaseDownloadTask(ResponseListener listener) {
+	protected Exception e = null;
+
+	public BaseDownloadTask(Context context, ResponseListener listener) {
+		mContext = context;
 		mListener = listener;
 	}
-	
-	protected String getUrl(String url) throws IOException {
-		
-		HttpClient client = new DefaultHttpClient();
 
-		HttpParams params = client.getParams();
-		HttpConnectionParams.setConnectionTimeout(params, 5 * 1000);
-		HttpConnectionParams.setSoTimeout(params, 5 * 1000);
-
-		try {
-			HttpResponse httpResponse = client.execute(new HttpGet(url));
-			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				return EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
-			}
-		} finally {
-			client.getConnectionManager().shutdown();
-		}
-
-		return "";
+	protected String getUrl(String url) throws IOException, Exception {
+		return HttpClientUtils.get(mContext, url, null);
 	}
 }
