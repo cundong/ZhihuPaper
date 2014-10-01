@@ -152,7 +152,9 @@ public class NewsDetailFragment extends BaseFragment implements
 
 	@Override
 	protected void doRefresh() {
-		new GetNewsDetailTask(getActivity(), this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(mNewsId));
+		if (!isAdded()) {
+			new GetNewsDetailTask(getActivity(), this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(mNewsId));
+		}
 	}
 
 	@Override
@@ -317,6 +319,10 @@ public class NewsDetailFragment extends BaseFragment implements
 			
 			String urlStrArray[] = new String[mDetailImageList.size()];
 			mDetailImageList.toArray(urlStrArray);
+			
+			if( !isAdded() ) {
+				return;
+			}
 			
 			if (NetWorkHelper.isMobile(getActivity()) && PreferenceManager.getDefaultSharedPreferences(
 					getActivity()).getBoolean("noimage_nowifi?", false) ) {
