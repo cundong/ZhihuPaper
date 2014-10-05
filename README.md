@@ -46,6 +46,10 @@
 ![截屏][1]
 ![截屏][2]
 
+## 关于我
+
+* Blog: [http://my.oschina.net/liucundong/blog][4]
+* Mail: cundong.liu#gmail.com
 
 ## License
 
