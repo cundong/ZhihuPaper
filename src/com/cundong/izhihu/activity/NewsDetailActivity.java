@@ -3,6 +3,9 @@ package com.cundong.izhihu.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
+import android.view.MotionEvent;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -16,22 +19,35 @@ public class NewsDetailActivity extends BaseActivity {
 
 	private static final String NEWS_ENTIRY = "com.cundong.izhihu.activity.NewsDetailActivity.news_entity";
 
+	//手指在屏幕滑动，X轴最小变化值
+	private static final int FLING_MIN_DISTANCE_X = 200;
+	
+	//手指在屏幕滑动，Y轴最小变化值
+	private static final int FLING_MIN_DISTANCE = 10;
+	
+	//手指在屏幕滑动，最小速度
+	private static final int FLING_MIN_VELOCITY = 1;
+	
+	private GestureDetector mGestureDetector;
+	
 	private NewsEntity mNewsEntity;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
-		setTheme(R.style.Theme_Sherlock); // Used for theme switching in samples
+		// Used for theme switching in samples
+		setTheme(R.style.Theme_Sherlock); 
 		requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 
 		super.onCreate(savedInstanceState);
-
+		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+		
 		// Load partially transparent black background
-		getSupportActionBar().setBackgroundDrawable(
-				getResources().getDrawable(R.drawable.ab_bg_black));
-
+		getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.ab_bg_black));
+		
+		mGestureDetector = new GestureDetector(this, mOnGestureListener);
+		
 		if (savedInstanceState == null) {
 			long id = getIntent().getLongExtra("id", 0);
 			mNewsEntity = (NewsEntity) getIntent().getSerializableExtra(
@@ -45,12 +61,10 @@ public class NewsDetailActivity extends BaseActivity {
 			newFragment.setArguments(bundle);
 
 			if (newFragment != null) {
-				getSupportFragmentManager().beginTransaction()
-						.replace(android.R.id.content, newFragment).commit();
+				getSupportFragmentManager().beginTransaction().replace(android.R.id.content, newFragment).commit();
 			}
 		} else {
-			mNewsEntity = (NewsEntity) savedInstanceState
-					.getSerializable(NEWS_ENTIRY);
+			mNewsEntity = (NewsEntity) savedInstanceState.getSerializable(NEWS_ENTIRY);
 		}
 	}
 
@@ -91,4 +105,58 @@ public class NewsDetailActivity extends BaseActivity {
 		share.putExtra(Intent.EXTRA_TEXT, shareText.toString());
 		return share;
 	}
+	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		
+		try {
+			mGestureDetector.onTouchEvent(ev);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return super.dispatchTouchEvent(ev);
+	}
+	
+	private OnGestureListener mOnGestureListener = new OnGestureListener() {
+
+		@Override
+		public boolean onDown(MotionEvent e) {
+			return false;
+		}
+
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+				float velocityY) {
+			boolean isXWell = Math.abs(e2.getX() - e1.getX()) < FLING_MIN_DISTANCE_X ? true : false;
+
+			if (isXWell && e1.getY() - e2.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) {
+				getSupportActionBar().hide();
+			} else if (isXWell && e2.getY() - e1.getY() > FLING_MIN_DISTANCE && Math.abs(velocityY) > FLING_MIN_VELOCITY) {
+				getSupportActionBar().show();
+			}
+
+			return false;
+		}
+
+		@Override
+		public void onLongPress(MotionEvent e) {
+			
+		}
+
+		@Override
+		public boolean onScroll(MotionEvent e1, MotionEvent e2,
+				float distanceX, float distanceY) {
+			return false;
+		}
+
+		@Override
+		public void onShowPress(MotionEvent e) {
+		}
+
+		@Override
+		public boolean onSingleTapUp(MotionEvent e) {
+			return false;
+		}
+	};
 }
