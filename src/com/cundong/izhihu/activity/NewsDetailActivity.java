@@ -1,6 +1,11 @@
 package com.cundong.izhihu.activity;
 
+import java.util.List;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.GestureDetector;
@@ -12,11 +17,14 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.actionbarsherlock.widget.ShareActionProvider;
 import com.cundong.izhihu.R;
+import com.cundong.izhihu.entity.NewsDetailEntity;
 import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
 import com.cundong.izhihu.fragment.NewsDetailFragment;
+import com.cundong.izhihu.fragment.NewsDetailFragment.OnContentLoadListener;
 
-public class NewsDetailActivity extends BaseActivity {
+public class NewsDetailActivity extends BaseActivity implements OnContentLoadListener {
 
+	private static final String NEWS_ID = "com.cundong.izhihu.activity.NewsDetailActivity.news_id";
 	private static final String NEWS_ENTIRY = "com.cundong.izhihu.activity.NewsDetailActivity.news_entity";
 
 	//手指在屏幕滑动，X轴最小变化值
@@ -28,10 +36,14 @@ public class NewsDetailActivity extends BaseActivity {
 	//手指在屏幕滑动，最小速度
 	private static final int FLING_MIN_VELOCITY = 1;
 	
+	private Menu mOptionsMenu = null;
+	
 	private GestureDetector mGestureDetector;
 	
-	private NewsEntity mNewsEntity;
-
+	private long mNewsId = 0;
+	private NewsEntity mNewsEntity = null;
+	private NewsDetailEntity mNewsDetailEntity = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -49,12 +61,29 @@ public class NewsDetailActivity extends BaseActivity {
 		mGestureDetector = new GestureDetector(this, mOnGestureListener);
 		
 		if (savedInstanceState == null) {
-			long id = getIntent().getLongExtra("id", 0);
-			mNewsEntity = (NewsEntity) getIntent().getSerializableExtra(
-					"newsEntity");
-
+			
+			/**
+			 * deal such scheme: <a href="http://daily.zhihu.com/story/4115152">go</>
+			 * 
+			 * AndroidMainfext.xml config:
+			 * <data android:scheme="http" android:host="daily.zhihu.com" android:pathPattern="/story/.*" />
+			 */
+			Uri data = getIntent().getData();
+			String scheme = data!=null ? data.getScheme() : ""; // "http"
+			String host = data!=null ?  data.getHost() : ""; // "daily.zhihu.com"
+			List<String> params = data!=null ? data.getPathSegments() : null;
+			
+			if (scheme.equals("http") && host.equals("daily.zhihu.com")
+					&& params != null && params.size() == 2) {
+				String storyId = params.get(1); 
+				mNewsId = Long.parseLong(storyId);
+			} else {
+				mNewsId = getIntent().getLongExtra("id", 0);
+				mNewsEntity = (NewsEntity) getIntent().getSerializableExtra("newsEntity");
+			}
+			
 			Bundle bundle = new Bundle();
-			bundle.putLong("id", id);
+			bundle.putLong("id", mNewsId);
 
 			// Add the Sample Fragment if there is one
 			Fragment newFragment = getFragment();
@@ -65,22 +94,35 @@ public class NewsDetailActivity extends BaseActivity {
 			}
 		} else {
 			mNewsEntity = (NewsEntity) savedInstanceState.getSerializable(NEWS_ENTIRY);
+			mNewsId = savedInstanceState.getLong(NEWS_ID);
 		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		updateCreateMenu();
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		outState.putSerializable(NEWS_ENTIRY, mNewsEntity);
 		super.onSaveInstanceState(outState);
+		
+		outState.putLong(NEWS_ID, mNewsId);
+		outState.putSerializable(NEWS_ENTIRY, mNewsEntity);
 	}
 
 	@Override
 	protected Fragment getFragment() {
 		return new NewsDetailFragment();
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		
+		mOptionsMenu = menu;
+		
 		// Inflate your menu.
 		getSupportMenuInflater().inflate(R.menu.share_action_provider, menu);
 
@@ -96,25 +138,44 @@ public class NewsDetailActivity extends BaseActivity {
 		return true;
 	}
 	
-	private Intent prepareIntent() {
-		Intent share = new Intent(android.content.Intent.ACTION_SEND);
-		share.setType("text/plain");
-		share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-		StringBuilder shareText = new StringBuilder();
-		shareText.append(mNewsEntity.title + " " + mNewsEntity.share_url);
-		share.putExtra(Intent.EXTRA_TEXT, shareText.toString());
-		return share;
-	}
+	@SuppressLint("NewApi")
+	private void updateCreateMenu() {
+		if (Build.VERSION.SDK_INT >= 11) {
+			invalidateOptionsMenu();
+		} else if (mOptionsMenu != null) {
+			mOptionsMenu.clear();
+			onCreateOptionsMenu(mOptionsMenu);
+		}
+	}	
 	
+	private Intent prepareIntent() {
+		
+		Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+		shareIntent.setType("text/plain");
+		shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+		
+		if (mNewsDetailEntity != null) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(mNewsDetailEntity.title).append(" ").append(mNewsDetailEntity.share_url);
+			shareIntent.putExtra(Intent.EXTRA_TEXT, sb.toString());
+		} else if (mNewsEntity != null) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(mNewsEntity.title).append(" ").append(mNewsEntity.share_url);
+			shareIntent.putExtra(Intent.EXTRA_TEXT, sb.toString());
+		}
+		
+		return shareIntent;
+	}
+
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
-		
+
 		try {
 			mGestureDetector.onTouchEvent(ev);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return super.dispatchTouchEvent(ev);
 	}
 	
@@ -159,4 +220,12 @@ public class NewsDetailActivity extends BaseActivity {
 			return false;
 		}
 	};
+
+	@Override
+	public void onComplete(NewsDetailEntity newsDetailEntity) {
+		
+		mNewsDetailEntity = newsDetailEntity;
+		
+		updateCreateMenu();
+	}
 }

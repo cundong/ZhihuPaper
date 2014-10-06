@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cundong.izhihu"
-    android:versionCode="6"
-    android:versionName="1.6" >
+    android:versionCode="7"
+    android:versionName="1.7" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -30,9 +30,20 @@
         </activity>
         <activity
             android:name=".activity.NewsDetailActivity"
-            android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name" />
+            android:alwaysRetainTaskState="true"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="daily.zhihu.com" android:pathPattern="/story/.*" />
+                <data android:scheme="zhihudaily" android:host="story" android:pathPattern="/.*" />
+                <data android:scheme="zhihudaily" android:host="section" android:pathPattern="/.*" />
+                <data android:scheme="zhihudaily" android:host="theme" android:pathPattern="/.*" />
+                <data android:scheme="zhihudaily" android:host="editor" android:pathPattern="/.*" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activity.NewsDetailImageActivity"
             android:alwaysRetainTaskState="true"

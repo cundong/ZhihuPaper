@@ -258,7 +258,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		
 		NewsEntity newsEntity = mNewsList!=null ? mNewsList.get(position) : null;
 		
-		if(newsEntity==null)
+		if (newsEntity == null)
 			return;
 		
 		Intent intent = new Intent();

@@ -57,13 +57,27 @@ import com.cundong.izhihu.util.ZhihuUtils;
 public class NewsDetailFragment extends BaseFragment implements
 		ResponseListener {
 
-	private static final String ID = "com.cundong.izhihu.fragment.NewsDetailFragment.ID";
+	private static final String ID = "com.cundong.izhihu.fragment.NewsDetailFragment.id";
 	
 	private ProgressBar mProgressBar;
 	private WebView mWebView;
 
 	private long mNewsId = 0;
+	private NewsDetailEntity mNewsDetailEntity = null;
 	private ArrayList<String> mDetailImageList = new ArrayList<String>();
+	
+	private OnContentLoadListener mListener = null;
+		
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			mListener = (OnContentLoadListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString()
+					+ " must implement OnContentLoadListener");
+		}
+	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -203,15 +217,18 @@ public class NewsDetailFragment extends BaseFragment implements
 			}
 		}
 		
-		NewsDetailEntity detailEntity = (NewsDetailEntity) GsonUtils.getEntity(
+		mNewsDetailEntity = (NewsDetailEntity) GsonUtils.getEntity(
 				content, NewsDetailEntity.class);
 		
-		if (detailEntity == null || TextUtils.isEmpty(detailEntity.body)) {
+		if (mNewsDetailEntity == null || TextUtils.isEmpty(mNewsDetailEntity.body)) {
 			return;
 		}
 		
+		//tell the activity, mNewsDetailEntity is okey
+		mListener.onComplete(mNewsDetailEntity);
+		
 		String html = AssetsUtils.loadText(getActivity(), Constants.TEMPLATE_DEF_URL);
-		html = html.replace("{content}", detailEntity.body);
+		html = html.replace("{content}", mNewsDetailEntity.body);
 		
 		String headerDef = "file:///android_asset/www/news_detail_header_def.jpg";
 		
@@ -219,15 +236,15 @@ public class NewsDetailFragment extends BaseFragment implements
 				getActivity()).getBoolean("noimage_nowifi?", false) ) {
 			
 		} else {
-			headerDef = detailEntity.image;
+			headerDef = mNewsDetailEntity.image;
 		}
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("<div class=\"img-wrap\">")
 				.append("<h1 class=\"headline-title\">")
-				.append(detailEntity.title).append("</h1>")
+				.append(mNewsDetailEntity.title).append("</h1>")
 				.append("<span class=\"img-source\">")
-				.append(detailEntity.image_source).append("</span>")
+				.append(mNewsDetailEntity.image_source).append("</span>")
 				.append("<img src=\"").append(headerDef)
 				.append("\" alt=\"\">")
 				.append("<div class=\"img-mask\"></div>");
@@ -457,5 +474,13 @@ public class NewsDetailFragment extends BaseFragment implements
 				mInstance.startActivity(intent);
 			}
 		}
+	}
+	
+	/**
+	 * WebView正文加载成功之后的回调接口
+	 * 
+	 */
+	public interface OnContentLoadListener {
+		public void onComplete(NewsDetailEntity newsDetailEntity);
 	}
 }
