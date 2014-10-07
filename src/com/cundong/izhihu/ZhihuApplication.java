@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.cundong.izhihu.db.DailyNewsDataSource;
+import com.cundong.izhihu.db.NewsReadDataSource;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -13,7 +14,8 @@ public class ZhihuApplication extends Application {
 
 	private static ZhihuApplication mApplication;
 	private static DailyNewsDataSource mNewsDataSource;
-
+	private static NewsReadDataSource mNewsReadDataSource;
+	
 	@Override
 	public void onCreate() {
 
@@ -21,7 +23,8 @@ public class ZhihuApplication extends Application {
 
 		mApplication = this;
 		mNewsDataSource = new DailyNewsDataSource(getApplicationContext());
-
+		mNewsReadDataSource = new NewsReadDataSource(getApplicationContext());
+		
 		initImageLoader(getApplicationContext());
 	}
 
@@ -32,7 +35,11 @@ public class ZhihuApplication extends Application {
 	public static DailyNewsDataSource getDataSource() {
 		return mNewsDataSource;
 	}
-
+	
+	public static NewsReadDataSource getNewsReadDataSource() {
+		return mNewsReadDataSource;
+	}
+	
 	public static void initImageLoader(Context context) {
 		// This configuration tuning is custom. You can tune every option, you
 		// may tune some of them,

@@ -1,9 +1,7 @@
 package com.cundong.izhihu.activity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -11,16 +9,10 @@ import com.cundong.izhihu.R;
 import com.cundong.izhihu.fragment.NewsDetailImageFragment;
 import com.cundong.izhihu.task.ImageToGalleryTask;
 import com.cundong.izhihu.task.MyAsyncTask;
-import com.cundong.izhihu.task.ResponseListener;
 
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
-
-public class NewsDetailImageActivity extends BaseActivity implements ResponseListener {
+public class NewsDetailImageActivity extends BaseActivity {
 
 	private static final String NEWS_DETAIL_IMAGE= "com.cundong.izhihu.activity.NewsDetailImageActivity.news_detail_image";
-	
-	private Context mContext;
 	
 	private String mImageUrl = null;
 	
@@ -29,8 +21,6 @@ public class NewsDetailImageActivity extends BaseActivity implements ResponseLis
 		super.onCreate(savedInstanceState);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-		mContext = this.getApplicationContext();
 		
 		if (savedInstanceState == null) {
 			mImageUrl = getIntent().getStringExtra("imageUrl");
@@ -72,36 +62,10 @@ public class NewsDetailImageActivity extends BaseActivity implements ResponseLis
 		switch (item.getItemId()) {
 		case R.id.action_first:
 			
-			new ImageToGalleryTask(mContext, this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, mImageUrl);
+			new ImageToGalleryTask(this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, mImageUrl);
 
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	public void onPreExecute() {
-		Crouton.makeText(this, "开始保存图片", Style.INFO).show();
-	}
-
-	@Override
-	public void onPostExecute(String content, boolean isRefreshSuccess,
-			boolean isContentSame) {
-		
-		if (!TextUtils.isEmpty(content) && content.equals("success")) {
-			Crouton.makeText(this, "已保存图片至图册", Style.INFO).show();
-		} 
-	}
-
-	@Override
-	public void onProgressUpdate(String value) {
-		
-	}
-
-	@Override
-	public void onFail(Exception e) {
-		if (!isFinishing()) {
-			Crouton.makeText(this, "保存图片失败", Style.ALERT).show();
-		} 
 	}
 }

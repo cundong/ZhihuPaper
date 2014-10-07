@@ -1,17 +1,33 @@
 package com.cundong.izhihu.task;
 
+import java.io.IOException;
+
+import com.cundong.izhihu.http.HttpClientUtils;
+
 import android.content.Context;
 import android.text.TextUtils;
 
-public abstract class BaseGetNewsTask extends BaseDownloadTask {
+/**
+ * 类说明： 	从服务器下载内容，base Task
+ * 
+ * @date 	2014-9-7
+ * @version 1.0
+ */
+public abstract class BaseGetContentTask extends MyAsyncTask<String, String, String> {
+	
+	protected Context mContext = null;
 
-	public BaseGetNewsTask(Context context, ResponseListener listener) {
-		super(context, listener);
-	}
-
+	protected ResponseListener mListener = null;
+	protected Exception e = null;
+	
 	protected boolean isRefreshSuccess = true;
 
 	protected boolean isContentSame = false;
+	
+	public BaseGetContentTask(Context context, ResponseListener listener) {
+		mContext = context;
+		mListener = listener;
+	}
 	
 	@Override
 	protected void onPreExecute() {
@@ -53,5 +69,9 @@ public abstract class BaseGetNewsTask extends BaseDownloadTask {
 		}
 
 		return oldContent.equals(newContent);
+	}
+	
+	protected String getUrl(String url) throws IOException, Exception {
+		return HttpClientUtils.get(mContext, url, null);
 	}
 }

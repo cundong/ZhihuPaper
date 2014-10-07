@@ -22,7 +22,7 @@ import com.cundong.izhihu.util.ZhihuUtils;
  * @date 	2014-9-15
  * @version 1.0
  */
-public class DetailImageDownloadTask extends BaseGetNewsTask {
+public class DetailImageDownloadTask extends BaseGetContentTask {
 
 	public DetailImageDownloadTask(Context context, ResponseListener listener) {
 		super(context, listener);

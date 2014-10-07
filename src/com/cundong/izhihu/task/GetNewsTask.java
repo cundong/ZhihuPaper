@@ -1,26 +1,31 @@
 package com.cundong.izhihu.task;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import android.content.Context;
 
 import com.cundong.izhihu.Constants;
 import com.cundong.izhihu.ZhihuApplication;
+import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
+import com.cundong.izhihu.http.HttpClientUtils;
+import com.cundong.izhihu.util.GsonUtils;
+import com.cundong.izhihu.util.ZhihuUtils;
 
 /**
- * 类说明： 	新闻列表数据下载Task
+ * 类说明： 	从服务器下载新闻列表，Task
  * 
  * @date 	2014-9-15
  * @version 1.0
  */
-public class GetNewsTask extends BaseGetNewsTask {
+public class GetNewsTask extends BaseGetNewsListTask {
 
 	public GetNewsTask(Context context, ResponseListener listener) {
 		super(context, listener);
 	}
 
 	@Override
-	protected String doInBackground(String... params) {
+	protected ArrayList<NewsEntity> doInBackground(String... params) {
 
 		if (params.length == 0)
 			return null;
@@ -47,6 +52,13 @@ public class GetNewsTask extends BaseGetNewsTask {
 		
 		isContentSame = checkIsContentSame(oldContent, newContent);
 
-		return newContent;
+		ArrayList<NewsEntity> newsList = GsonUtils.getNewsList(newContent);
+		ZhihuUtils.setReadStatus4NewsList(newsList);
+    	
+		return newsList;
+	}
+	
+	protected String getUrl(String url) throws IOException, Exception {
+		return HttpClientUtils.get(mContext, url, null);
 	}
 }

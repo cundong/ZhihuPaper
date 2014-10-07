@@ -13,7 +13,7 @@ import com.cundong.izhihu.ZhihuApplication;
  * @date 	2014-9-7
  * @version 1.0
  */
-public class GetNewsDetailTask extends BaseGetNewsTask {
+public class GetNewsDetailTask extends BaseGetContentTask {
 
 	public GetNewsDetailTask(Context context, ResponseListener listener) {
 		super(context, listener);

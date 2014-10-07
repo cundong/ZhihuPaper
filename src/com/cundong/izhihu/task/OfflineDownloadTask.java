@@ -32,7 +32,7 @@ import com.cundong.izhihu.util.ZhihuUtils;
  * @date 	2014-9-7
  * @version 1.0
  */
-public class OfflineDownloadTask extends BaseGetNewsTask {
+public class OfflineDownloadTask extends BaseGetContentTask {
 	
 	public OfflineDownloadTask(Context context, ResponseListener listener) {
 		super(context, listener);

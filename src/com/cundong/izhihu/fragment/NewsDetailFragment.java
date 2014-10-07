@@ -56,7 +56,7 @@ import com.cundong.izhihu.util.ZhihuUtils;
  */
 public class NewsDetailFragment extends BaseFragment implements
 		ResponseListener {
-
+	
 	private static final String ID = "com.cundong.izhihu.fragment.NewsDetailFragment.id";
 	
 	private ProgressBar mProgressBar;
@@ -166,7 +166,7 @@ public class NewsDetailFragment extends BaseFragment implements
 
 	@Override
 	protected void doRefresh() {
-		if (!isAdded()) {
+		if (isAdded()) {
 			new GetNewsDetailTask(getActivity(), this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(mNewsId));
 		}
 	}

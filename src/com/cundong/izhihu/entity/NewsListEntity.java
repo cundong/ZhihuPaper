@@ -30,7 +30,8 @@ public class NewsListEntity extends BaseEntity implements Serializable {
 		public String theme_name;
 		public int theme_id;
 		
-		boolean isRead = false;
+		//已读、未读标识
+		public boolean is_read = false;
 		
 	}
 }

@@ -68,14 +68,19 @@ public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
 		TextView newsTitleView = (TextView) holder.getView(R.id.list_item_title);
 
 		final NewsEntity newsEntity = mDataList.get(position);
-		newsTitleView.setText(newsEntity.title);
-
+		newsTitleView.setText( newsEntity.title );
+		
+		int titleColor = mContext.getResources().getColor(R.color.list_item_title_light);
+		int titleColorRead = mContext.getResources().getColor(R.color.list_item_title_read_light);
+		
+		newsTitleView.setTextColor( newsEntity.is_read ? titleColorRead : titleColor );
+		
 		if (NetWorkHelper.isMobile(mContext) && PreferenceManager.getDefaultSharedPreferences(
 				mContext).getBoolean("noimage_nowifi?", false) ) {
 			newsImageView.setVisibility(View.GONE);
 		} else {
 			if (newsEntity.images != null && newsEntity.images.size() >= 1) {
-
+				
 				newsImageView.setVisibility(View.VISIBLE);
 				mImageLoader.displayImage(newsEntity.images.get(0), newsImageView,
 						mOptions, mAnimateFirstListener);

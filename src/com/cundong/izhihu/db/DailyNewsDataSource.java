@@ -11,6 +11,12 @@ import android.text.TextUtils;
 import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
 import com.cundong.izhihu.util.GsonUtils;
 
+/**
+ * 类说明： 	新闻列表数据表，数据库帮助类
+ * 
+ * @date 	2014-9-20
+ * @version 1.0
+ */
 public final class DailyNewsDataSource {
 
 	private SQLiteDatabase database;
@@ -95,7 +101,7 @@ public final class DailyNewsDataSource {
 		cursor.close();
 		return newsList;
 	}
-
+	
 	private ArrayList<NewsEntity> cursorToNewsList(Cursor cursor) {
 		if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
 			String content = cursor.getString(cursor
