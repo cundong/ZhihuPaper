@@ -20,7 +20,7 @@ public final class NewsReadDataSource {
 	private DBHelper dbHelper;
 	private String[] allColumns = { DBHelper.READ_COLUMN_ID,
 			DBHelper.READ_COLUMN_NEWSID };
-
+	
 	public NewsReadDataSource(Context context) {
 		dbHelper = new DBHelper(context);
 		database = dbHelper.getWritableDatabase();
