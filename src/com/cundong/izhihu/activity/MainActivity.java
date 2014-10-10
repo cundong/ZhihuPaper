@@ -53,12 +53,9 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 		case R.id.action_second:
 			
 			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-				startActivityForResult(new Intent(this, PrefsActivity.class),
-						Constants.REQUESTCODE_SETTING);
+				startActivityForResult(new Intent(this, PrefsActivity.class), Constants.REQUESTCODE_SETTING);
 			} else {
-				startActivityForResult(new Intent(this,
-						OtherPrefsActivity.class),
-						Constants.REQUESTCODE_SETTING);
+				startActivityForResult(new Intent(this, OtherPrefsActivity.class), Constants.REQUESTCODE_SETTING);
 			}
 			
 			return true;

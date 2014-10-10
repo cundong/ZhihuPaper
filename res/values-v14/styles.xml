@@ -8,5 +8,13 @@
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- API 14 theme customizations can go here. -->
     </style>
+    
+    <style name="Theme.Styled" parent="Theme.Sherlock.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
+    </style>
 
+    <style name="Widget.Styled.ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/abs__ab_bottom_solid_dark_holo</item>
+        <item name="android:backgroundSplit">@color/common_action_bar_splitter</item>
+    </style>
 </resources>

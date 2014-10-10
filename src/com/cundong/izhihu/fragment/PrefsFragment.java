@@ -19,6 +19,12 @@ import com.cundong.izhihu.Constants;
 import com.cundong.izhihu.R;
 import com.cundong.izhihu.util.PhoneUtils;
 
+/**
+ * 类说明： 	用于Android4.0+的设置页Fragment
+ * 
+ * @date 	2014-9-20
+ * @version 1.0
+ */
 @SuppressLint("NewApi")
 public class PrefsFragment extends PreferenceFragment implements
 		Preference.OnPreferenceClickListener,
