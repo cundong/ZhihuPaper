@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4.0dip"
-        android:background="@drawable/card_light"
+        android:background="?listItemBackground"
         android:minHeight="72.0dip"
         android:padding="12.0dip" >
 
@@ -18,7 +18,7 @@
             android:layout_alignParentLeft="true"
             android:contentDescription="@string/app_name"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher" />
+            android:src="?listItemBackground" />
 
         <TextView
             android:id="@+id/list_item_title"
@@ -30,7 +30,7 @@
             android:ellipsize="end"
             android:maxLines="3"
             android:minLines="2"
-            android:textColor="@color/list_item_title_light"
+            android:textColor="?listItemTextNorColor"
             android:textIsSelectable="false"
             android:textSize="@dimen/text_size_medium" />
     </RelativeLayout>

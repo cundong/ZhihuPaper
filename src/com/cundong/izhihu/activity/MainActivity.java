@@ -1,8 +1,11 @@
 package com.cundong.izhihu.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
@@ -22,6 +25,7 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 
 	@Override
 	protected void onCreate(Bundle arg0) {
+		
 		super.onCreate(arg0);
 		
 		Fragment newFragment = getFragment();
@@ -89,14 +93,20 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 		
 	}
 	
+	@SuppressLint("NewApi")
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		if (requestCode == Constants.REQUESTCODE_SETTING) {
-			NewsListFragment fragment = (NewsListFragment) getSupportFragmentManager()
-					.findFragmentById(android.R.id.content);
+			NewsListFragment fragment = (NewsListFragment) getSupportFragmentManager().findFragmentById(android.R.id.content);
 			fragment.updateList();
+			
+			//Activity关闭后，如果改变了主题，则需要recreate this Activity
+			SharedPreferences mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
+			if (isDarkTheme != mPerferences.getBoolean("dark_theme?", false)) {
+				recreateActivity();
+			}
 		}
 	}
 }

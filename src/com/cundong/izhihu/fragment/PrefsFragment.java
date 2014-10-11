@@ -1,6 +1,7 @@
 package com.cundong.izhihu.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,11 +30,25 @@ import com.cundong.izhihu.util.PhoneUtils;
 public class PrefsFragment extends PreferenceFragment implements
 		Preference.OnPreferenceClickListener,
 		Preference.OnPreferenceChangeListener {
-
+	
 	private static final String PREFERENCES_ABOUT = "about";
 	private static final String PREFERENCE_VERSION = "version";
 	private static final String PREFERENCE_NOIMAGE_NOWIFI = "noimage_nowifi?";
-
+	private static final String PREFERENCE_DARK_THEME = "dark_theme?";
+	
+	private OnPreChangeListener mListener = null;
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			mListener = (OnPreChangeListener) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString()
+					+ " must implement OnPreChangeListener");
+		}
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,8 +57,8 @@ public class PrefsFragment extends PreferenceFragment implements
 
 		findPreference(PREFERENCES_ABOUT).setOnPreferenceClickListener(this);
 		findPreference(PREFERENCE_VERSION).setOnPreferenceClickListener(this);
-		findPreference(PREFERENCE_NOIMAGE_NOWIFI)
-				.setOnPreferenceChangeListener(this);
+		findPreference(PREFERENCE_NOIMAGE_NOWIFI).setOnPreferenceChangeListener(this);
+		findPreference(PREFERENCE_DARK_THEME).setOnPreferenceChangeListener(this);
 		
 		boolean noImgnoWifi = PreferenceManager.getDefaultSharedPreferences(
 				getActivity()).getBoolean(PREFERENCE_NOIMAGE_NOWIFI, false);
@@ -60,7 +75,7 @@ public class PrefsFragment extends PreferenceFragment implements
 			startActivity(intent);
 		} else if (preference.getKey().equals(PREFERENCE_VERSION)) {
 			showDialog();
-		}
+		} 
 
 		return false;
 	}
@@ -80,6 +95,22 @@ public class PrefsFragment extends PreferenceFragment implements
 				mEditor.commit();
 			}
 
+			return true;
+		} else if (preference.getKey().equals(PREFERENCE_DARK_THEME)) {
+			
+			if (newValue instanceof Boolean) {
+				Boolean boolVal = (Boolean) newValue;
+
+				SharedPreferences mPerferences = PreferenceManager
+						.getDefaultSharedPreferences(getActivity());
+				
+				SharedPreferences.Editor mEditor = mPerferences.edit();
+				mEditor.putBoolean(PREFERENCE_DARK_THEME, boolVal);
+				mEditor.commit();
+				
+				mListener.onChanged(boolVal);
+			}
+			
 			return true;
 		}
 
@@ -112,5 +143,9 @@ public class PrefsFragment extends PreferenceFragment implements
 		textView.setMovementMethod(LinkMovementMethod.getInstance());
 
 		dialog.show();
+	}
+	
+	public static interface OnPreChangeListener {
+		public void onChanged( boolean result );
 	}
 }

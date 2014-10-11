@@ -29,21 +29,24 @@
     <color name="comment_compose_text">#ffcecece</color>
     <color name="comment_header">#ff333333</color>
     <color name="comment_header_dark">#ffb8b8b8</color>
-    <color name="comment_item_author">#ff333333</color>
-    <color name="comment_item_author_dark">#ff666666</color>
-    <color name="comment_item_content">#ff666666</color>
-    <color name="comment_item_time">#ffb8b8b8</color>
+    <color name="comment_item_author_dark">#ffb6b6b6</color>
+    <color name="comment_item_author_light">#ff000000</color>
+    <color name="comment_item_content_dark">#ff7f7f7f</color>
+    <color name="comment_item_content_light">#ff333333</color>
+    <color name="comment_item_prompt_message_dark">#ff565656</color>
+    <color name="comment_item_prompt_message_light">#ff767676</color>
+    <color name="comment_item_reply_comment_content_dark">#ff565656</color>
+    <color name="comment_item_reply_comment_content_light">#ff767676</color>
+    <color name="comment_item_reply_comment_extra_bg">#ffd8e4f4</color>
+    <color name="comment_item_reply_expand_button_bg_dark">#ff2b2b2b</color>
+    <color name="comment_item_reply_expand_button_bg_light">#ffd8e4f4</color>
+    <color name="comment_item_reply_prompt_message_bg_dark">#ff313131</color>
+    <color name="comment_item_reply_prompt_message_bg_light">#fff6f6f6</color>
+    <color name="comment_item_reply_prompt_message_dark">#ff565656</color>
+    <color name="comment_item_reply_prompt_message_light">#ff767676</color>
+    <color name="comment_item_time">#ffb6b6b6</color>
     <color name="comment_no_comment_prompt_text">#ffe4e4e4</color>
     <color name="comment_no_comment_prompt_text_dark">#ff505050</color>
-    <color name="common_action_bar_splitter">#ffd2d2d2</color>
-    <item type="color" name="common_signin_btn_dark_text_default">@*android:color/white</item>
-    <color name="common_signin_btn_dark_text_disabled">#ffaaaaaa</color>
-    <item type="color" name="common_signin_btn_dark_text_focused">@*android:color/white</item>
-    <item type="color" name="common_signin_btn_dark_text_pressed">@*android:color/white</item>
-    <color name="common_signin_btn_default_background">#ffdd4b39</color>
-    <color name="common_signin_btn_light_text_default">#ff737373</color>
-    <color name="common_signin_btn_light_text_disabled">#ffaaaaaa</color>
-    <color name="common_signin_btn_light_text_focused">#ff737373</color>
     <item type="color" name="common_signin_btn_light_text_pressed">@*android:color/white</item>
     <color name="dark_slate_gray">#ff2f4f4f</color>
     <color name="default_circle_indicator_fill_color">#ffffffff</color>
@@ -132,6 +135,10 @@
     <item type="color" name="vpi__bright_foreground_inverse_holo_dark">@color/vpi__bright_foreground_holo_light</item>
     <item type="color" name="vpi__bright_foreground_inverse_holo_light">@color/vpi__bright_foreground_holo_dark</item>
     <color name="white">#ffffffff</color>
+    <color name="list_item_extra_divider_dark">#ff393939</color>
+    <color name="list_item_extra_dark">#ff116f9e</color>
+    <color name="news_tool_bar_theme_name_color_dark">#ff45b2ff</color>
+    <color name="news_tool_bar_theme_name_color_light">#ff0b6dd1</color>
     
     <drawable name="ab_bg_black">#aa000000</drawable>
     <color name="main_bg">#F0F0F0</color>

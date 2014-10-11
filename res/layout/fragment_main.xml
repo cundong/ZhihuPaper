@@ -18,11 +18,10 @@
     android:id="@+id/ptr_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?listViewBackground"
     android:paddingLeft="8dp"
-    android:paddingRight="8dp" 
-    android:background="@color/main_bg"
-    >
-
+    android:paddingRight="8dp">
+    
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
@@ -30,10 +29,9 @@
         android:layout_weight="1"
         android:divider="@null"
         android:drawSelectorOnTop="false"
-        android:listSelector="@android:color/transparent"
         android:fastScrollEnabled="true"
-        android:focusable="true" 
-         />
+        android:focusable="true"
+        android:listSelector="@android:color/transparent" />
 
     <ProgressBar
         android:id="@+id/progress"

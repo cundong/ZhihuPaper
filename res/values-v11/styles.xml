@@ -8,12 +8,61 @@
         <!-- API 11 theme customizations can go here. -->
     </style>
 
-    <style name="Theme.Styled" parent="Theme.Sherlock.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
+   <style name="Theme.Daily.AppTheme.Light" parent="Theme.Sherlock.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/Zhihu.Widget.ActionBar.Light</item>
+        <item name="homeListHeaderItemBackground">@color/home_list_header_bg_light</item>
+        <item name="listItemBackground">@drawable/card_light</item>
+        <item name="listItemDefaultImage">@drawable/dark_image_small_default</item>
+        <item name="listItemExtraBackground">@drawable/list_item_extra_light</item>
+        <item name="listItemExtraDividerColor">@color/list_item_extra_divider_dark</item>
+        <item name="listItemExtraTextColor">@color/list_item_extra_dark</item>
+        <item name="listItemHeaderBackground">@color/list_item_bg_light_normal</item>
+        <item name="listItemIntroTextColor">@color/list_item_intro_light</item>
+        <item name="listItemTextNorColor">@color/black</item>
+        <item name="listItemTextReadColor">@color/list_item_intro_light</item>
+        <item name="listViewBackground">@color/list_view_bg_light</item>
+        <item name="navigationDivider">@color/navigation_divider_light</item>
+        <item name="newsToolbar">@drawable/news_toolbar_light</item>
+        <item name="newsToolbarThemeNameColor">@color/news_tool_bar_theme_name_color_light</item>
+        <item name="webViewBackground">?actionBarBackground</item>
     </style>
 
-    <style name="Widget.Styled.ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
+    <style name="Theme.Daily.AppTheme.Dark" parent="Theme.Sherlock">
+        <item name="android:actionBarStyle">@style/Zhihu.Widget.ActionBar.Dark</item>
+        <item name="homeListHeaderItemBackground">@color/home_list_header_bg_dark</item>
+        <item name="listItemBackground">@drawable/card_dark</item>
+        <item name="listItemDefaultImage">@drawable/dark_image_small_default</item>
+        <item name="listItemExtraBackground">@drawable/list_item_extra_dark</item>
+        <item name="listItemExtraDividerColor">@color/list_item_extra_divider_dark</item>
+        <item name="listItemExtraTextColor">@color/list_item_extra_dark</item>
+        <item name="listItemHeaderBackground">@color/list_item_bg_dark_normal</item>
+        <item name="listItemIntroTextColor">@color/list_item_intro_dark</item>
+        <item name="listItemTextNorColor">@color/list_item_title_dark</item>
+        <item name="listItemTextReadColor">@color/list_item_intro_dark</item>
+        <item name="listViewBackground">@color/list_view_bg_dark</item>
+        <item name="navigationDivider">@color/navigation_divider_dark</item>
+        <item name="newsToolbar">@drawable/news_toolbar_dark</item>
+        <item name="newsToolbarThemeNameColor">@color/news_tool_bar_theme_name_color_dark</item>
+        <item name="webViewBackground">?actionBarBackground</item>
+    </style>
+
+    <style name="Zhihu.Widget.ActionBar.Dark" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@drawable/abs__ab_bottom_solid_dark_holo</item>
+        <item name="android:titleTextStyle">@style/Zhihu.Widget.ActionBar.Dark.Title</item>
     </style>
 
+    <style name="Zhihu.Widget.ActionBar.Light" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/abs__ab_bottom_solid_dark_holo</item>
+        <item name="android:titleTextStyle">@style/Zhihu.Widget.ActionBar.Light.Title</item>
+    </style>
+
+    <style name="Zhihu.Widget.ActionBar.Dark.Title">
+        <item name="android:textColor">@color/ab_title_dark</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Zhihu.Widget.ActionBar.Light.Title">
+        <item name="android:textColor">@color/ab_title_dark</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>

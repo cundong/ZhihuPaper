@@ -50,7 +50,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 	private Calendar mCalendar = Calendar.getInstance();
 
 	//上次listView滚动到最下方时，itemId
-	private int mListViewPreLast;
+	private int mListViewPreLast = 0;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

@@ -9,7 +9,15 @@
             android:key="noimage_nowifi?"
             android:summary="@string/setting_noimage_nowifi_summary"
             android:title="@string/setting_noimage_nowifi_title" />
+        
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="dark_theme?"
+            android:summary="@string/setting_dark_theme_summary"
+            android:title="@string/setting_dark_theme_title" />
     </PreferenceCategory>
+    
     <PreferenceCategory android:title="@string/setting_aboutme" >
         <Preference
             android:key="version"

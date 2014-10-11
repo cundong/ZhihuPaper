@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import com.cundong.izhihu.fragment.PrefsFragment;
+import com.cundong.izhihu.fragment.PrefsFragment.OnPreChangeListener;
 
 /**
  * 类说明： 	用于Android4.0+的设置页Activity
@@ -12,15 +13,20 @@ import com.cundong.izhihu.fragment.PrefsFragment;
  * @version 1.0
  */
 @SuppressLint("NewApi")
-public class OtherPrefsActivity extends BaseActivity {
+public class OtherPrefsActivity extends BaseActivity implements OnPreChangeListener{
 
 	@Override
-	protected void onCreate(Bundle arg0) {
-		super.onCreate(arg0);
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		getFragmentManager().beginTransaction()
-				.replace(android.R.id.content, new PrefsFragment()).commit();
+		getFragmentManager().beginTransaction().replace(android.R.id.content, new PrefsFragment()).commit();
+	}
+	
+	@Override
+	public void onChanged(boolean result) {
+		
+		recreateActivity();
 	}
 }

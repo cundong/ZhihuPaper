@@ -6,6 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -33,22 +36,55 @@ public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
 
 	private ImageLoadingListener mAnimateFirstListener = new AnimateFirstDisplayListener();
 
+	private int titleColorNorId, titleReadColorId, listItemDefaultImageId;
+	
 	//用于存储日期
 	private String mDate = "";
 	
-	private DisplayImageOptions mOptions = new DisplayImageOptions.Builder()
-			.showImageOnLoading(R.drawable.ic_launcher)
-			.showImageOnFail(R.drawable.ic_launcher)
-			.showImageForEmptyUri(R.drawable.ic_launcher).cacheInMemory(true)
-			.cacheOnDisk(true).considerExifParams(true).build();
+	private DisplayImageOptions mOptions = null;
 	
 	public NewsAdapter(Context context, ArrayList<NewsEntity> list) {
 		super(context, list);
+		
+		initStyle();
 	}
 
 	public NewsAdapter(Context context, ArrayList<NewsEntity> list, String date) {
 		super(context, list);
 		this.mDate = date;
+		
+		initStyle();
+	}
+	
+	private void initStyle() {
+		Resources.Theme theme = mContext.getTheme();
+		TypedArray typedArray = null;
+		
+		SharedPreferences mPerferences = PreferenceManager
+				.getDefaultSharedPreferences(mContext);
+		
+		if (mPerferences.getBoolean("dark_theme?", false)) {
+			typedArray = theme.obtainStyledAttributes(R.style.Theme_Daily_AppTheme_Dark, 
+					new int[] { R.attr.listItemTextNorColor, R.attr.listItemTextReadColor, R.attr.listItemDefaultImage });
+		} else {
+			typedArray = theme.obtainStyledAttributes(R.style.Theme_Daily_AppTheme_Light, 
+					new int[] { R.attr.listItemTextNorColor, R.attr.listItemTextReadColor, R.attr.listItemDefaultImage }); 
+		}
+		
+		titleColorNorId = typedArray.getResourceId(0, 0);
+		titleReadColorId = typedArray.getResourceId(1, 0);
+		listItemDefaultImageId = typedArray.getResourceId(2, 0);
+		
+		typedArray.recycle();
+		
+		mOptions = new DisplayImageOptions.Builder()
+			.showImageOnLoading( mContext.getResources().getDrawable(listItemDefaultImageId) )
+			.showImageOnFail( mContext.getResources().getDrawable(listItemDefaultImageId) )
+			.showImageForEmptyUri( mContext.getResources().getDrawable(listItemDefaultImageId) )
+			.cacheInMemory(true)
+			.cacheOnDisk(true)
+			.considerExifParams(true)
+			.build();
 	}
 	
 	public void updateData(ArrayList<NewsEntity> newsList) {
@@ -70,10 +106,7 @@ public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
 		final NewsEntity newsEntity = mDataList.get(position);
 		newsTitleView.setText( newsEntity.title );
 		
-		int titleColor = mContext.getResources().getColor(R.color.list_item_title_light);
-		int titleColorRead = mContext.getResources().getColor(R.color.list_item_title_read_light);
-		
-		newsTitleView.setTextColor( newsEntity.is_read ? titleColorRead : titleColor );
+		newsTitleView.setTextColor( newsEntity.is_read ? mContext.getResources().getColor(titleReadColorId) : mContext.getResources().getColor(titleColorNorId) );
 		
 		if (NetWorkHelper.isMobile(mContext) && PreferenceManager.getDefaultSharedPreferences(
 				mContext).getBoolean("noimage_nowifi?", false) ) {

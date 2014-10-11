@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cundong.izhihu"
-    android:versionCode="9"
-    android:versionName="1.9" >
+    android:versionCode="10"
+    android:versionName="2.0.1" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -16,7 +16,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Styled" >
+        android:theme="@style/Theme.Daily.AppTheme.Light" >
         <activity
             android:name=".activity.MainActivity"
             android:alwaysRetainTaskState="true"

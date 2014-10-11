@@ -46,11 +46,8 @@ public class NewsDetailActivity extends BaseActivity implements OnContentLoadLis
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
-		// Used for theme switching in samples
-		setTheme(R.style.Theme_Sherlock); 
+		
 		requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-
 		super.onCreate(savedInstanceState);
 		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);

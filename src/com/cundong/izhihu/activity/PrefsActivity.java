@@ -1,10 +1,13 @@
 package com.cundong.izhihu.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -35,10 +38,21 @@ public class PrefsActivity extends SherlockPreferenceActivity implements
 	private static final String PREFERENCES_ABOUT = "about";
 	private static final String PREFERENCE_VERSION = "version";
 	private static final String PREFERENCE_NOIMAGE_NOWIFI = "noimage_nowifi?";
-
+	private static final String PREFERENCE_DARK_THEME = "dark_theme?";
+	
 	@Override
-	protected void onCreate(Bundle arg0) {
-		super.onCreate(arg0);
+	protected void onCreate(Bundle savedInstanceState) {
+		
+		SharedPreferences mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean isDarkTheme = mPerferences.getBoolean("dark_theme?", false); 
+		
+		if (isDarkTheme) {
+			setTheme(R.style.Theme_Daily_AppTheme_Dark);
+		} else {
+			setTheme(R.style.Theme_Daily_AppTheme_Light);
+		}
+		
+		super.onCreate(savedInstanceState);
 
 		addPreferencesFromResource(R.xml.prefs);
 
@@ -46,11 +60,18 @@ public class PrefsActivity extends SherlockPreferenceActivity implements
 		findPreference(PREFERENCE_VERSION).setOnPreferenceClickListener(this);
 		findPreference(PREFERENCE_NOIMAGE_NOWIFI)
 				.setOnPreferenceChangeListener(this);
-
+		findPreference(PREFERENCE_DARK_THEME)
+				.setOnPreferenceChangeListener(this);
+		
 		boolean noImgnoWifi = PreferenceManager.getDefaultSharedPreferences(
 				this).getBoolean(PREFERENCE_NOIMAGE_NOWIFI, false);
 
 		findPreference(PREFERENCE_NOIMAGE_NOWIFI).setDefaultValue(noImgnoWifi);
+		
+		boolean darkTheme = PreferenceManager.getDefaultSharedPreferences(
+				this).getBoolean(PREFERENCE_DARK_THEME, false);
+		
+		findPreference(PREFERENCE_DARK_THEME).setDefaultValue(darkTheme);
 	}
 
 	@Override
@@ -83,6 +104,22 @@ public class PrefsActivity extends SherlockPreferenceActivity implements
 			}
 
 			return true;
+		} else if (preference.getKey().equals(PREFERENCE_DARK_THEME)) {
+			
+			if (newValue instanceof Boolean) {
+				Boolean boolVal = (Boolean) newValue;
+
+				SharedPreferences mPerferences = PreferenceManager
+						.getDefaultSharedPreferences(this);
+				
+				SharedPreferences.Editor mEditor = mPerferences.edit();
+				mEditor.putBoolean(PREFERENCE_DARK_THEME, boolVal);
+				mEditor.commit();
+				
+				recreateActivity();
+			}
+			
+			return true;
 		}
 
 		return false;
@@ -114,5 +151,23 @@ public class PrefsActivity extends SherlockPreferenceActivity implements
 		textView.setMovementMethod(LinkMovementMethod.getInstance());
 
 		dialog.show();
+	}
+	
+	@SuppressLint("NewApi")
+	public void recreateActivity() {
+
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+					finish();
+					startActivity(getIntent());
+				} else {
+					recreate();
+				}
+			}
+		}, 1);
 	}
 }
