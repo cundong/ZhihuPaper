@@ -14,6 +14,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -229,6 +230,10 @@ public class NewsDetailFragment extends BaseFragment implements
 		
 		String html = AssetsUtils.loadText(getActivity(), Constants.TEMPLATE_DEF_URL);
 		html = html.replace("{content}", mNewsDetailEntity.body);
+		
+		//是否夜间模式
+		SharedPreferences mPerferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		html = html.replace("{nightTheme}", mPerferences.getBoolean("dark_theme?", false) ? "true" : "false");
 		
 		String headerDef = "file:///android_asset/www/news_detail_header_def.jpg";
 		
