@@ -52,7 +52,7 @@
 
 ## 关于我
 
-* Blog: [http://my.oschina.net/liucundong/blog][4]
+* Blog: [http://my.oschina.net/liucundong/blog][9]
 * Mail: cundong.liu#gmail.com
 
 ## License
@@ -79,3 +79,4 @@
 [6]: https://github.com/chrisbanes/ActionBar-PullToRefresh
 [7]: https://github.com/izzyleung/ZhihuDailyPurify
 [8]: https://github.com/chrisbanes/PhotoView
+[9]: http://my.oschina.net/liucundong/blog
