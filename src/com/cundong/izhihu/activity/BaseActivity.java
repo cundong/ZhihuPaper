@@ -14,6 +14,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.cundong.izhihu.R;
 import com.cundong.izhihu.util.Logger;
+import com.umeng.analytics.MobclickAgent;
 
 public abstract class BaseActivity extends SherlockFragmentActivity {
 
@@ -38,6 +39,18 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
 		super.onCreate(savedInstanceState);
 		
 		mInstance = this;
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	protected Fragment getFragment() {
