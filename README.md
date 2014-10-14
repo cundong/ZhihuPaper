@@ -45,6 +45,14 @@
 
 ![截屏][2]
 
+* 收藏夹
+
+![截屏][10]
+
+* 偏好设置
+
+![截屏][11]
+
 ## 关于我
 
 * Blog: [http://my.oschina.net/liucundong/blog][9]
@@ -75,3 +83,5 @@
 [7]: https://github.com/izzyleung/ZhihuDailyPurify
 [8]: https://github.com/chrisbanes/PhotoView
 [9]: http://my.oschina.net/liucundong/blog
+[10]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/three.png
+[11]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/four.png
