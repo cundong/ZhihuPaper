@@ -8,7 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
-import com.cundong.izhihu.entity.FavoriteEntity;
+import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
 
 /**
  * 类说明： 	新闻收藏夹，数据库帮助类
@@ -25,7 +25,8 @@ public final class NewsFavoriteDataSource {
 			DBHelper.FAVORITE_COLUMN_ID,
 			DBHelper.FAVORITE_COLUMN_NEWS_ID,
 			DBHelper.FAVORITE_COLUMN_NEWS_TITLE,
-			DBHelper.FAVORITE_COLUMN_NEWS_LOGO
+			DBHelper.FAVORITE_COLUMN_NEWS_LOGO,
+			DBHelper.FAVORITE_COLUMN_NEWS_SHARE_URL 
 			};
 	
 	public NewsFavoriteDataSource(Context context) {
@@ -33,11 +34,13 @@ public final class NewsFavoriteDataSource {
 		database = dbHelper.getWritableDatabase();
 	}
 
-	private void insert(String newsId, String newsTitle, String newsLogo) {
+	private void insert(String newsId, String newsTitle, String newsLogo, String newsShareUrl) {
 		ContentValues values = new ContentValues();
 		values.put(DBHelper.FAVORITE_COLUMN_NEWS_ID, newsId);
 		values.put(DBHelper.FAVORITE_COLUMN_NEWS_TITLE, newsTitle);
 		values.put(DBHelper.FAVORITE_COLUMN_NEWS_LOGO, newsLogo);
+		values.put(DBHelper.FAVORITE_COLUMN_NEWS_SHARE_URL, newsShareUrl);
+		
 		database.insert(DBHelper.FAVORITE_TABLE_NAME, null, values);
 	}
 
@@ -47,14 +50,15 @@ public final class NewsFavoriteDataSource {
 	 * @param newsId
 	 * @param newsTitle
 	 * @param newsLogo
+	 * @param newsShareUrl
 	 * @return
 	 */
-	public boolean add2Favorite(String newsId, String newsTitle, String newsLogo) {
+	public boolean add2Favorite(String newsId, String newsTitle, String newsLogo, String newsShareUrl) {
 		if (TextUtils.isEmpty(newsId))
 			return false;
 
 		if (!isInFavorite(newsId)) {
-			insert(newsId, newsTitle, newsLogo);
+			insert(newsId, newsTitle, newsLogo, newsShareUrl);
 			return true;
 		} else {
 			return false;
@@ -67,7 +71,7 @@ public final class NewsFavoriteDataSource {
 	 * @param newsId
 	 * @return
 	 */
-	private boolean isInFavorite(String newsId) {
+	public boolean isInFavorite(String newsId) {
 
 		boolean result = false;
 
@@ -88,37 +92,61 @@ public final class NewsFavoriteDataSource {
 	 * 
 	 * @return
 	 */
-	public ArrayList<FavoriteEntity> getFavoriteList() {
+	public ArrayList<NewsEntity> getFavoriteList() {
 		
-		ArrayList<FavoriteEntity> newsList = new ArrayList<FavoriteEntity>();
+		ArrayList<NewsEntity> newsList = new ArrayList<NewsEntity>();
+		
+		String orderBy = DBHelper.FAVORITE_COLUMN_ID + " DESC";
 		
 		Cursor cursor = database.query(DBHelper.FAVORITE_TABLE_NAME, allColumns,
-				null, null, null, null, null);
+				null, null, null, null, orderBy);
 		
 		if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
 			
 			while (!cursor.isAfterLast()) {
 				
-				FavoriteEntity favoriteEntity = new FavoriteEntity();
+				NewsEntity newsEntity = new NewsEntity();
 				
 				String newsId = cursor.getString(cursor.getColumnIndex(DBHelper.FAVORITE_COLUMN_NEWS_ID));
 				String newsTitle = cursor.getString(cursor.getColumnIndex(DBHelper.FAVORITE_COLUMN_NEWS_TITLE));
 				String newsLogo = cursor.getString(cursor.getColumnIndex(DBHelper.FAVORITE_COLUMN_NEWS_LOGO));
+				String newsShareUrl = cursor.getString(cursor.getColumnIndex(DBHelper.FAVORITE_COLUMN_NEWS_SHARE_URL));
 				
-				favoriteEntity.newsId = newsId;
-				favoriteEntity.newsTitle = newsTitle;
-				favoriteEntity.newsLogo = newsLogo;
+				newsEntity.id = Long.parseLong(newsId);
+				newsEntity.title = newsTitle;
 				
-				newsList.add(favoriteEntity);
+				if (!TextUtils.isEmpty(newsShareUrl)) {
+					ArrayList<String> images = new ArrayList<String>();
+					images.add(newsLogo);
+					newsEntity.images = images;
+				}
+				
+				newsEntity.share_url = newsShareUrl;
+				
+				newsList.add(newsEntity);
 				
 				cursor.moveToNext();
 			}
 		} 
-		
+
 		if (cursor != null) {
 			cursor.close();
 		}
 		
 		return newsList;
+	}
+	
+	public void deleteFromFavorite(String newsId) {
+		
+		String whereClause = DBHelper.FAVORITE_COLUMN_NEWS_ID + "=?";
+		
+		String [] whereArgs = { String.valueOf(newsId) };
+		
+		database.delete(DBHelper.FAVORITE_TABLE_NAME, whereClause, whereArgs);
+	}
+	
+	public void deleteFromFavorite() {
+		
+		database.delete(DBHelper.FAVORITE_TABLE_NAME, null, null);
 	}
 }

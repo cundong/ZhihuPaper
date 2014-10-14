@@ -14,5 +14,18 @@
     <string name="setting_aboutme_summary">关于我们</string>
 	<string name="setting_version_title">版本信息</string>
 	
+	<string name="actionbar_title_fav">收藏夹</string>
+	<string name="actionbar_title_setting">偏好设置</string>
+	
+	<string name="actionbar_item_fav_cancel">取消收藏</string>
+	<string name="actionbar_item_fav_add">收藏</string>
+	
+	<string name="fav_add_success">已收藏</string>
+	<string name="fav_cancel_success">已取消收藏</string>
+	
+	<string name="offline_download_doing">正在离线最新内容</string>
+	<string name="offline_download_done">离线最新内容完成</string>
+	<string name="offline_download_fail">离线最新内容失败</string>
+	
 	<string name="action_bar_share_with">Share with…</string>
 </resources>

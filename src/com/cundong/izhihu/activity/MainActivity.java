@@ -21,12 +21,18 @@ import com.cundong.izhihu.task.ResponseListener;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
+/**
+ * 类说明： 	主页面Activity
+ * 
+ * @date 	2014-9-20
+ * @version 1.0
+ */
 public class MainActivity extends BaseActivity implements ResponseListener {
 
 	@Override
-	protected void onCreate(Bundle arg0) {
+	protected void onCreate(Bundle savedInstanceState) {
 		
-		super.onCreate(arg0);
+		super.onCreate(savedInstanceState);
 		
 		Fragment newFragment = getFragment();
 		
@@ -49,12 +55,13 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.action_first:
-			
+		case R.id.action_download:
 			new OfflineDownloadTask(this, this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR);
-			
 			return true;
-		case R.id.action_second:
+		case R.id.action_favorite:
+			startActivity(new Intent(this, FavoriteActivity.class));
+			return true;
+		case R.id.action_setting:
 			
 			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 				startActivityForResult(new Intent(this, PrefsActivity.class), Constants.REQUESTCODE_SETTING);
@@ -64,12 +71,13 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 			
 			return true;
 		}
+		
 		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
 	public void onPreExecute() {
-		Crouton.makeText(this, "正在离线最新内容", Style.INFO).show();
+		Crouton.makeText(this, R.string.offline_download_doing, Style.INFO).show();
 	}
 
 	@Override
@@ -77,14 +85,14 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 			boolean isContentSame) {
 		
 		if (!TextUtils.isEmpty(content) && content.equals("success")) {
-			Crouton.makeText(this, "离线最新内容完成", Style.INFO).show();
+			Crouton.makeText(this, R.string.offline_download_done, Style.INFO).show();
 		} 
 	}
 
 	@Override
 	public void onFail(final Exception e) {
 		if (!isFinishing()) {
-			Crouton.makeText(this, "离线最新内容失败", Style.ALERT).show();
+			Crouton.makeText(this, R.string.offline_download_fail, Style.ALERT).show();
 		}
 	}
 
@@ -108,5 +116,11 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 				recreateActivity();
 			}
 		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		Crouton.clearCroutonsForActivity(this);
+		super.onDestroy();
 	}
 }

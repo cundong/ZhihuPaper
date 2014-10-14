@@ -142,4 +142,5 @@
     
     <drawable name="ab_bg_black">#aa000000</drawable>
     <color name="main_bg">#F0F0F0</color>
+    <color name="listview_multi_sel_bg">#6FC4E4</color>
 </resources>

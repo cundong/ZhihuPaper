@@ -16,18 +16,17 @@
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    <!--  -->
+    <item
+        android:id="@+id/menu_item_fav_action_bar"
+        android:icon="@drawable/ab_fav_normal"
+        android:showAsAction="always"
+        android:title="收藏"/>
+    
     <item
         android:id="@+id/menu_item_share_action_provider_action_bar"
         android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider"
         android:showAsAction="always"
         android:title="@string/action_bar_share_with"/>
-
-    <!-- XXX: For now, ShareActionProviders must be displayed on the action bar -->
-    <!--
-        item android:id="@+id/menu_item_share_action_provider_overflow"
-        android:showAsAction="never"
-        android:title="@string/action_bar_share_with"
-        android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider" /
-    -->
 
 </menu>

@@ -19,6 +19,7 @@ public class NewsListEntity extends BaseEntity implements Serializable {
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
+		
 		public String title;
 		public String share_url;
 		public String ga_prefix;
@@ -32,6 +33,5 @@ public class NewsListEntity extends BaseEntity implements Serializable {
 		
 		//已读、未读标识
 		public boolean is_read = false;
-		
 	}
 }

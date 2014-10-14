@@ -13,7 +13,7 @@
         <item name="android:actionBarStyle">@style/Zhihu.Widget.ActionBar.Light</item>
         <item name="homeListHeaderItemBackground">@color/home_list_header_bg_light</item>
         <item name="listItemBackground">@drawable/card_light</item>
-        <item name="listItemDefaultImage">@drawable/dark_image_small_default</item>
+        <item name="listItemDefaultImage">@drawable/image_small_default</item>
         <item name="listItemExtraBackground">@drawable/list_item_extra_light</item>
         <item name="listItemExtraDividerColor">@color/list_item_extra_divider_dark</item>
         <item name="listItemExtraTextColor">@color/list_item_extra_dark</item>
@@ -25,7 +25,7 @@
         <item name="navigationDivider">@color/navigation_divider_light</item>
         <item name="newsToolbar">@drawable/news_toolbar_light</item>
         <item name="newsToolbarThemeNameColor">@color/news_tool_bar_theme_name_color_light</item>
-        <item name="webViewBackground">?actionBarBackground</item>
+        <item name="webViewBackground">@color/ab_background_light</item>
     </style>
 
     <style name="Theme.Daily.AppTheme.Dark" parent="Theme.Sherlock">
@@ -44,7 +44,7 @@
         <item name="navigationDivider">@color/navigation_divider_dark</item>
         <item name="newsToolbar">@drawable/news_toolbar_dark</item>
         <item name="newsToolbarThemeNameColor">@color/news_tool_bar_theme_name_color_dark</item>
-        <item name="webViewBackground">?actionBarBackground</item>
+        <item name="webViewBackground">@drawable/abc_ab_solid_dark_holo</item>
     </style>
 
     <style name="Zhihu.Widget.ActionBar.Dark" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">

@@ -19,14 +19,19 @@
 <menu
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:menu="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_first"
+        android:id="@+id/action_download"
         android:icon="@drawable/ic_action_download"
         android:showAsAction="always"
         android:title="离线下载"/>
     <item
-        android:id="@+id/action_second"
+        android:id="@+id/action_favorite"
         android:icon="@drawable/abs__ic_menu_moreoverflow_normal_holo_dark"
         android:showAsAction="never"
-        android:title="设置"/>
+        android:title="收藏夹"/>
+    <item
+        android:id="@+id/action_setting"
+        android:icon="@drawable/abs__ic_menu_moreoverflow_normal_holo_dark"
+        android:showAsAction="never"
+        android:title="偏好设置"/>
 
 </menu>

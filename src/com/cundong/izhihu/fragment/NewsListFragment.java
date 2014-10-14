@@ -74,6 +74,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		mPullToRefreshLayout = (PullToRefreshLayout) view.findViewById(R.id.ptr_layout);
 		mListView = (ListView) view.findViewById(R.id.list);
 		mListView.setOnItemClickListener(this);
+		
 		mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
 		
 		return view;
@@ -99,8 +100,6 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 						mCalendar.add(Calendar.DAY_OF_YEAR, -1);
 						
 						String formatedDate = mSimpleDateFormat.format(mCalendar.getTime());
-						
-						Log.d("@Cundong", "Last!!" + formatedDate );
 						
 						new GetMoreNewsTask(getActivity(), null).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, formatedDate);
 						
@@ -145,7 +144,6 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 						mListView.setAdapter(mAdapter);
 					} else {
 						mAdapter.updateData(mNewsList);
-						mAdapter.notifyDataSetChanged();
 					}
 				}
 			}

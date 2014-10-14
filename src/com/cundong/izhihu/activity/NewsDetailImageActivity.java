@@ -10,6 +10,14 @@ import com.cundong.izhihu.fragment.NewsDetailImageFragment;
 import com.cundong.izhihu.task.ImageToGalleryTask;
 import com.cundong.izhihu.task.MyAsyncTask;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+
+/**
+ * 类说明： 	新闻详情页中图片，点击后展示Activity
+ * 
+ * @date 	2014-9-20
+ * @version 1.0
+ */
 public class NewsDetailImageActivity extends BaseActivity {
 
 	private static final String NEWS_DETAIL_IMAGE= "com.cundong.izhihu.activity.NewsDetailImageActivity.news_detail_image";
@@ -68,5 +76,11 @@ public class NewsDetailImageActivity extends BaseActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onDestroy() {
+		Crouton.clearCroutonsForActivity(this);
+		super.onDestroy();
 	}
 }

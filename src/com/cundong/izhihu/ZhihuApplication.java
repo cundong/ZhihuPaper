@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.cundong.izhihu.db.DailyNewsDataSource;
+import com.cundong.izhihu.db.NewsFavoriteDataSource;
 import com.cundong.izhihu.db.NewsReadDataSource;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -15,6 +16,7 @@ public class ZhihuApplication extends Application {
 	private static ZhihuApplication mApplication;
 	private static DailyNewsDataSource mNewsDataSource;
 	private static NewsReadDataSource mNewsReadDataSource;
+	private static NewsFavoriteDataSource mNewsFavoriteDataSource;
 	
 	@Override
 	public void onCreate() {
@@ -24,6 +26,7 @@ public class ZhihuApplication extends Application {
 		mApplication = this;
 		mNewsDataSource = new DailyNewsDataSource(getApplicationContext());
 		mNewsReadDataSource = new NewsReadDataSource(getApplicationContext());
+		mNewsFavoriteDataSource = new NewsFavoriteDataSource(getApplicationContext());
 		
 		initImageLoader(getApplicationContext());
 	}
@@ -38,6 +41,10 @@ public class ZhihuApplication extends Application {
 	
 	public static NewsReadDataSource getNewsReadDataSource() {
 		return mNewsReadDataSource;
+	}
+	
+	public static NewsFavoriteDataSource getNewsFavoriteDataSource() {
+		return mNewsFavoriteDataSource;
 	}
 	
 	public static void initImageLoader(Context context) {

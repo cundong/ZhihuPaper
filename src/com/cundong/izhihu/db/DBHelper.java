@@ -8,7 +8,7 @@ public final class DBHelper extends SQLiteOpenHelper {
 	
 	//db
 	public static final String DB_NAME = "zhihu_daily.db";
-	public static final int DB_VERSION = 4;
+	public static final int DB_VERSION = 5;
 	
 	//1.news_list
 	public static final String TABLE_NAME = "news_list";
@@ -36,12 +36,14 @@ public final class DBHelper extends SQLiteOpenHelper {
 	public static final String FAVORITE_COLUMN_NEWS_ID = "news_id";
 	public static final String FAVORITE_COLUMN_NEWS_TITLE = "news_title";
 	public static final String FAVORITE_COLUMN_NEWS_LOGO = "news_logo";
+	public static final String FAVORITE_COLUMN_NEWS_SHARE_URL = "news_share_url";
 	
 	private static final String FAVORITE_TABLE_CREATE = "CREATE TABLE " + FAVORITE_TABLE_NAME
 			+ "(" + FAVORITE_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 			+ FAVORITE_COLUMN_NEWS_ID + " CHAR(256) UNIQUE, "
 			+ FAVORITE_COLUMN_NEWS_TITLE + " CHAR(1024), "
-			+ FAVORITE_COLUMN_NEWS_LOGO + " CHAR(1024));";
+			+ FAVORITE_COLUMN_NEWS_LOGO + " CHAR(1024), "
+			+ FAVORITE_COLUMN_NEWS_SHARE_URL + " CHAR(1024));";
 	
 	public DBHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);

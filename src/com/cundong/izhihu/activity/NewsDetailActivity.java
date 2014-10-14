@@ -11,17 +11,26 @@ import android.support.v4.app.Fragment;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.actionbarsherlock.widget.ShareActionProvider;
 import com.cundong.izhihu.R;
+import com.cundong.izhihu.ZhihuApplication;
 import com.cundong.izhihu.entity.NewsDetailEntity;
 import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
 import com.cundong.izhihu.fragment.NewsDetailFragment;
 import com.cundong.izhihu.fragment.NewsDetailFragment.OnContentLoadListener;
+import com.cundong.izhihu.task.MyAsyncTask;
 
+/**
+ * 类说明： 	新闻详情页，Activity
+ * 
+ * @date 	2014-9-20
+ * @version 1.0
+ */
 public class NewsDetailActivity extends BaseActivity implements OnContentLoadListener {
 
 	private static final String NEWS_ID = "com.cundong.izhihu.activity.NewsDetailActivity.news_id";
@@ -36,13 +45,16 @@ public class NewsDetailActivity extends BaseActivity implements OnContentLoadLis
 	//手指在屏幕滑动，最小速度
 	private static final int FLING_MIN_VELOCITY = 1;
 	
-	private Menu mOptionsMenu = null;
+	private Menu mOptionsMenu;
+	private MenuItem mFavActionItem;
 	
 	private GestureDetector mGestureDetector;
 	
 	private long mNewsId = 0;
 	private NewsEntity mNewsEntity = null;
 	private NewsDetailEntity mNewsDetailEntity = null;
+	
+	private boolean isInFavorite = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +105,8 @@ public class NewsDetailActivity extends BaseActivity implements OnContentLoadLis
 			mNewsEntity = (NewsEntity) savedInstanceState.getSerializable(NEWS_ENTIRY);
 			mNewsId = savedInstanceState.getLong(NEWS_ID);
 		}
+		
+		new FavoriteStatusGetTask().executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR);
 	}
 	
 	@Override
@@ -116,21 +130,63 @@ public class NewsDetailActivity extends BaseActivity implements OnContentLoadLis
 	}
 	
 	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_item_fav_action_bar:
+			
+			if (isInFavorite) {
+				ZhihuApplication.getNewsFavoriteDataSource().deleteFromFavorite(String.valueOf(mNewsDetailEntity.id));
+
+				Toast.makeText(this, R.string.fav_cancel_success, Toast.LENGTH_SHORT).show();
+				
+				mFavActionItem.setIcon(R.drawable.ab_fav_normal);
+				mFavActionItem.setTitle(R.string.actionbar_item_fav_add);
+				
+				isInFavorite = false;
+				
+			} else {
+				ZhihuApplication.getNewsFavoriteDataSource().add2Favorite(
+						String.valueOf(mNewsDetailEntity.id),
+						mNewsDetailEntity.title, mNewsDetailEntity.image,
+						mNewsDetailEntity.share_url);
+				
+				Toast.makeText(this, R.string.fav_add_success, Toast.LENGTH_SHORT).show();
+				
+				mFavActionItem.setIcon(R.drawable.ab_fav_active);
+				mFavActionItem.setTitle(R.string.actionbar_item_fav_cancel);
+				
+				isInFavorite = true;
+			}
+			
+			break;
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		
+
 		mOptionsMenu = menu;
-		
+
 		// Inflate your menu.
 		getSupportMenuInflater().inflate(R.menu.share_action_provider, menu);
 
 		// Set file with share history to the provider and set the share intent.
-		MenuItem actionItem = menu
-				.findItem(R.id.menu_item_share_action_provider_action_bar);
-		ShareActionProvider actionProvider = (ShareActionProvider) actionItem
-				.getActionProvider();
+		MenuItem shareActionItem = menu.findItem(R.id.menu_item_share_action_provider_action_bar);
+		ShareActionProvider actionProvider = (ShareActionProvider) shareActionItem.getActionProvider();
 		actionProvider.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
-		
 		actionProvider.setShareIntent(prepareIntent());
+
+		mFavActionItem = menu.findItem(R.id.menu_item_fav_action_bar);
+
+		if (isInFavorite) {
+			mFavActionItem.setIcon(R.drawable.ab_fav_active);
+			mFavActionItem.setTitle(R.string.actionbar_item_fav_cancel);
+		} else {
+			mFavActionItem.setIcon(R.drawable.ab_fav_normal);
+			mFavActionItem.setTitle(R.string.actionbar_item_fav_add);
+		}
 
 		return true;
 	}
@@ -143,7 +199,7 @@ public class NewsDetailActivity extends BaseActivity implements OnContentLoadLis
 			mOptionsMenu.clear();
 			onCreateOptionsMenu(mOptionsMenu);
 		}
-	}	
+	}
 	
 	private Intent prepareIntent() {
 		
@@ -224,5 +280,23 @@ public class NewsDetailActivity extends BaseActivity implements OnContentLoadLis
 		mNewsDetailEntity = newsDetailEntity;
 		
 		updateCreateMenu();
+	}
+	
+	//获取当前新闻是否已被收藏过
+	private class FavoriteStatusGetTask extends MyAsyncTask<Void, Void, Boolean> {
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+
+			return ZhihuApplication.getNewsFavoriteDataSource().isInFavorite(String.valueOf(mNewsId));
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			
+			isInFavorite = result;
+			updateCreateMenu();
+		}
 	}
 }

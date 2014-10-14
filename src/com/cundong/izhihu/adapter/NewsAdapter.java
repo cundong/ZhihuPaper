@@ -10,7 +10,9 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,20 +40,17 @@ public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
 
 	private int titleColorNorId, titleReadColorId, listItemDefaultImageId;
 	
-	//用于存储日期
-	private String mDate = "";
+	//是否当前为收藏夹Adapter
+	private boolean mFavoriteFalg = false;
 	
 	private DisplayImageOptions mOptions = null;
+	
+	private SparseBooleanArray mSelectedItemsIds = null;
 	
 	public NewsAdapter(Context context, ArrayList<NewsEntity> list) {
 		super(context, list);
 		
-		initStyle();
-	}
-
-	public NewsAdapter(Context context, ArrayList<NewsEntity> list, String date) {
-		super(context, list);
-		this.mDate = date;
+		this.mSelectedItemsIds = new SparseBooleanArray();
 		
 		initStyle();
 	}
@@ -87,9 +86,39 @@ public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
 			.build();
 	}
 	
+	public void setFavoriteFlag( boolean favoriteFalg ) {
+		this.mFavoriteFalg = favoriteFalg;
+	}
+	
 	public void updateData(ArrayList<NewsEntity> newsList) {
-		mDataList = newsList;
+		this.mDataList = newsList;
 		this.notifyDataSetChanged();
+	}
+	
+	public void toggleSelection(int position) {
+		selectView(position, !mSelectedItemsIds.get(position));
+	}
+
+	public void selectView(int position, boolean noSelect) {
+		if (noSelect)
+			mSelectedItemsIds.put(position, true);
+		else
+			mSelectedItemsIds.delete(position);
+
+		notifyDataSetChanged();
+	}
+	
+	public void clearSelection() {
+		mSelectedItemsIds = new SparseBooleanArray();
+		notifyDataSetChanged();
+	}
+	
+	public int getSelectedCount() {
+		return mSelectedItemsIds.size();
+	}
+
+	public SparseBooleanArray getSelectedIds() {
+		return mSelectedItemsIds;
 	}
 	
 	@Override
@@ -104,9 +133,13 @@ public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
 		TextView newsTitleView = (TextView) holder.getView(R.id.list_item_title);
 
 		final NewsEntity newsEntity = mDataList.get(position);
-		newsTitleView.setText( newsEntity.title );
+		newsTitleView.setText(newsEntity.title);
 		
-		newsTitleView.setTextColor( newsEntity.is_read ? mContext.getResources().getColor(titleReadColorId) : mContext.getResources().getColor(titleColorNorId) );
+		if(mFavoriteFalg) {
+			
+		} else {
+			newsTitleView.setTextColor( newsEntity.is_read ? mContext.getResources().getColor(titleReadColorId) : mContext.getResources().getColor(titleColorNorId) );
+		}
 		
 		if (NetWorkHelper.isMobile(mContext) && PreferenceManager.getDefaultSharedPreferences(
 				mContext).getBoolean("noimage_nowifi?", false) ) {
@@ -115,12 +148,13 @@ public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
 			if (newsEntity.images != null && newsEntity.images.size() >= 1) {
 				
 				newsImageView.setVisibility(View.VISIBLE);
-				mImageLoader.displayImage(newsEntity.images.get(0), newsImageView,
-						mOptions, mAnimateFirstListener);
+				mImageLoader.displayImage(newsEntity.images.get(0), newsImageView, mOptions, mAnimateFirstListener);
 			} else {
 				newsImageView.setVisibility(View.GONE);
 			}
 		}
+		
+		convertView.setBackgroundColor(mSelectedItemsIds.get(position) ? mContext.getResources().getColor(R.color.listview_multi_sel_bg) : Color.TRANSPARENT);
 		
 		return convertView;
 	}
