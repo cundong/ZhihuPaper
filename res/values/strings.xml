@@ -20,7 +20,9 @@
 	<string name="actionbar_item_fav_cancel">取消收藏</string>
 	<string name="actionbar_item_fav_add">收藏</string>
 	
-	<string name="fav_add_success">已收藏</string>
+	<string name="fav_add_success">添加收藏成功</string>
+	<string name="fav_add_fail">添加收藏失败</string>
+	
 	<string name="fav_cancel_success">已取消收藏</string>
 	
 	<string name="offline_download_doing">正在离线最新内容</string>

@@ -21,7 +21,7 @@ public abstract class SimpleBaseAdapter<T> extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return mDataList.size();
+		return mDataList!=null ? mDataList.size() : 0;
 	}
 
 	@Override

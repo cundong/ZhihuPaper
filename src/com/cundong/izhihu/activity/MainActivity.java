@@ -85,8 +85,12 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 			boolean isContentSame) {
 		
 		if (!TextUtils.isEmpty(content) && content.equals("success")) {
-			Crouton.makeText(this, R.string.offline_download_done, Style.INFO).show();
-		} 
+			Crouton.makeText(this, R.string.offline_download_done, Style.INFO)
+					.show();
+		} else {
+			Crouton.makeText(this, R.string.offline_download_fail, Style.ALERT)
+					.show();
+		}
 	}
 
 	@Override

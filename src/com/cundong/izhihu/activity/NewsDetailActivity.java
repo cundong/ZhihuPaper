@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
@@ -135,7 +136,7 @@ public class NewsDetailActivity extends BaseActivity implements OnContentLoadLis
 		case R.id.menu_item_fav_action_bar:
 			
 			if (isInFavorite) {
-				ZhihuApplication.getNewsFavoriteDataSource().deleteFromFavorite(String.valueOf(mNewsDetailEntity.id));
+				ZhihuApplication.getNewsFavoriteDataSource().deleteFromFavorite(String.valueOf(mNewsId));
 
 				Toast.makeText(this, R.string.fav_cancel_success, Toast.LENGTH_SHORT).show();
 				
@@ -145,17 +146,33 @@ public class NewsDetailActivity extends BaseActivity implements OnContentLoadLis
 				isInFavorite = false;
 				
 			} else {
-				ZhihuApplication.getNewsFavoriteDataSource().add2Favorite(
-						String.valueOf(mNewsDetailEntity.id),
-						mNewsDetailEntity.title, mNewsDetailEntity.image,
-						mNewsDetailEntity.share_url);
 				
-				Toast.makeText(this, R.string.fav_add_success, Toast.LENGTH_SHORT).show();
+				String title = null, image = null, share_url = null;
 				
-				mFavActionItem.setIcon(R.drawable.ab_fav_active);
-				mFavActionItem.setTitle(R.string.actionbar_item_fav_cancel);
+				if (mNewsDetailEntity != null) {
+					title = mNewsDetailEntity.title;
+					image = mNewsDetailEntity.image;
+					share_url = mNewsDetailEntity.share_url;
+				} else if (mNewsEntity != null) {
+					title = mNewsEntity.title;
+					image = mNewsEntity.images.get(0);
+					share_url = mNewsEntity.share_url;
+				}
 				
-				isInFavorite = true;
+				if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(image)
+						&& !TextUtils.isEmpty(share_url)) {
+					ZhihuApplication.getNewsFavoriteDataSource().add2Favorite(
+							String.valueOf(mNewsId), title, image, share_url);
+					
+					Toast.makeText(this, R.string.fav_add_success, Toast.LENGTH_SHORT).show();
+					
+					mFavActionItem.setIcon(R.drawable.ab_fav_active);
+					mFavActionItem.setTitle(R.string.actionbar_item_fav_cancel);
+					
+					isInFavorite = true;
+				} else {
+					Toast.makeText(this, R.string.fav_add_fail, Toast.LENGTH_SHORT).show();
+				}
 			}
 			
 			break;

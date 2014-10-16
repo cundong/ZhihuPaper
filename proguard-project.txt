@@ -15,6 +15,70 @@
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
 # class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+
+-keepclassmembers class com.cundong.izhihu.fragment.NewsDetailFragment$JavaScriptObject {
+   public *;
+}
+
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
+
+-dontwarn uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.**
+-keep class uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.** { *;}
+
+-dontwarn de.keyboardsurfer.mobile.app.android.widget.crouton.**
+-keep class de.keyboardsurfer.mobile.app.android.widget.crouton.** { *;}
+
+-dontwarn uk.co.senab.photoview.**
+-keep class uk.co.senab.photoview.** { *;}
+
+-dontwarn com.support.**
+-keep class com.support.** { *;}
+
+-dontwarn fr.castorflex.android.smoothprogressbar.**
+-keep class fr.castorflex.android.smoothprogressbar.** { *;}
+
+-dontwarn com.actionbarsherlock.**
+-keep class com.actionbarsherlock.** { *;}
+
+-dontwarn uk.co.senab.actionbarpulltorefresh.library.**
+-keep class uk.co.senab.actionbarpulltorefresh.library.** { *;}
+
+-dontwarn com.cundong.izhihu.entity.**
+-keep class com.cundong.izhihu.entity.** { *;}
+
+##---------------Begin: proguard configuration for Gson  ----------
+# Gson uses generic type information stored in a class file when working with fields. Proguard
+# removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
+
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
+
+# Gson specific classes
+-keep class sun.misc.Unsafe { *; }
+#-keep class com.google.gson.stream.** { *; }
+
+# Application classes that will be serialized/deserialized over Gson
+-keep class com.cundong.izhihu.entity.** { *;}
+
+##---------------End: proguard configuration for Gson  ----------
+
+-keep class android.support.v4.** {*;} 
+
+-libraryjars libs/gson-2.2.4.jar
+-keep class com.google.gson.** {*;} 
+
+-libraryjars libs/jsoup-1.8.1.jar
+-keep class org.jsoup.** {*;} 
+
+-libraryjars libs/umeng-analytics-v5.2.4.jar
+-keep class com.umeng.analytics.** {*;} 
+
+-libraryjars libs/universal-image-loader-1.9.2.jar
+-keep class com.nostra13.universalimageloader.** {*;} 

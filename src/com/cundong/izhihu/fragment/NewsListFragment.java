@@ -228,7 +228,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 				setListShown(true);
 			}
 			
-	        if (isRefreshSuccess && !isContentSame) {
+	        if ( isRefreshSuccess && !isContentSame ) {
 	        	mNewsList = resultList;
 	        	
 				if (mAdapter != null) {
