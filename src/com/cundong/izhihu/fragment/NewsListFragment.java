@@ -33,6 +33,7 @@ import com.cundong.izhihu.task.BaseGetNewsListTask.ResponseListener;
 import com.cundong.izhihu.task.GetNewsTask;
 import com.cundong.izhihu.task.MyAsyncTask;
 import com.cundong.izhihu.util.GsonUtils;
+import com.cundong.izhihu.util.ListUtils;
 import com.cundong.izhihu.util.ZhihuUtils;
 
 public class NewsListFragment extends BaseFragment implements ResponseListener, OnItemClickListener {
@@ -164,9 +165,10 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 			
 			String theKey = params[0];
 			String oldContent = ZhihuApplication.getDataSource().getContent(theKey);
+			ArrayList<NewsEntity> newsList = null;
 			
 			if(!TextUtils.isEmpty(oldContent)) {
-				ArrayList<NewsEntity> newsList = GsonUtils.getNewsList(oldContent);
+				newsList = GsonUtils.getNewsList(oldContent);
 				ZhihuUtils.setReadStatus4NewsList(newsList);
 				return newsList;
 			} else {
@@ -174,7 +176,9 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 
 				try {
 					newContent = getUrl(Constants.Url.URLDEFORE + theKey);
-					ZhihuApplication.getDataSource().insertOrUpdateNewsList(theKey, newContent);
+					newsList = GsonUtils.getNewsList(newContent);
+					
+					isRefreshSuccess = !ListUtils.isEmpty(newsList);
 				} catch (IOException e) {
 					e.printStackTrace();
 					
@@ -187,7 +191,12 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 					this.e = e;
 				}
 				
-				ArrayList<NewsEntity> newsList = GsonUtils.getNewsList(newContent);
+				isContentSame = checkIsContentSame(oldContent, newContent);
+				
+				if (isRefreshSuccess && !isContentSame) {
+					ZhihuApplication.getDataSource().insertOrUpdateNewsList(theKey, newContent);
+				}
+				
 				ZhihuUtils.setReadStatus4NewsList(newsList);
 				return newsList;
 			}
@@ -228,21 +237,26 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 				setListShown(true);
 			}
 			
-	        if ( isRefreshSuccess && !isContentSame ) {
-	        	mNewsList = resultList;
-	        	
+			if (isRefreshSuccess && !isContentSame) {
+				mNewsList = resultList;
+
 				if (mAdapter != null) {
 					mAdapter.updateData(mNewsList);
 				} else {
 					mAdapter = new NewsAdapter(getActivity(), mNewsList);
 					mListView.setAdapter(mAdapter);
 				}
-	        }
+			}
 		}
 	}
 
 	@Override
 	public void onFail(Exception e) {
+		
+		if (getView() != null) {
+			// Show the list again
+			setListShown(true);
+		}
 		
 		dealException(e);
 	}

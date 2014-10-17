@@ -29,8 +29,8 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
 		doRefresh();
 	}
 	
-	protected void doRefresh(){
-		
+	protected void doRefresh() {
+
 	}
 	
 	protected void dealException(Exception e) {

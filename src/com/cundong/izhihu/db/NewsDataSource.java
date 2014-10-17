@@ -17,14 +17,14 @@ import com.cundong.izhihu.util.GsonUtils;
  * @date 	2014-9-20
  * @version 1.0
  */
-public final class DailyNewsDataSource {
+public final class NewsDataSource {
 
 	private SQLiteDatabase database;
 	private DBHelper dbHelper;
 	private String[] allColumns = { DBHelper.COLUMN_ID, DBHelper.COLUMN_KEY,
 			DBHelper.COLUMN_CONTENT };
 
-	public DailyNewsDataSource(Context context) {   
+	public NewsDataSource(Context context) {   
 		dbHelper = new DBHelper(context);
 		database = dbHelper.getWritableDatabase();
 	}

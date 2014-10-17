@@ -8,6 +8,7 @@ import android.text.TextUtils;
 
 import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
 import com.cundong.izhihu.http.HttpClientUtils;
+import com.cundong.izhihu.util.NetWorkHelper;
 
 /**
  * 类说明： 	从服务器下载新闻列表，base Task
@@ -45,17 +46,17 @@ public abstract class BaseGetNewsListTask extends MyAsyncTask<String, String, Ar
 	protected void onPostExecute(ArrayList<NewsEntity> resultList) {
 		super.onPostExecute(resultList);
 
-		//如果当前任务已经取消了，则直接返回  
-        if(isCancelled()){  
-            return;  
-        }  
-        
+		// 如果当前任务已经取消了，则直接返回
+		if (isCancelled()) {
+			return;
+		}
+
 		// 写数据库
 		if (isRefreshSuccess && !isContentSame) {
 			// new SaveNewsListTask(mDate,
 			// content).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR);
 		}
-		
+
 		if (mListener != null) {
 			if (isRefreshSuccess) {
 				mListener.onPostExecute(resultList, isRefreshSuccess, isContentSame);
@@ -67,7 +68,7 @@ public abstract class BaseGetNewsListTask extends MyAsyncTask<String, String, Ar
 
 	protected boolean checkIsContentSame(String oldContent, String newContent) {
 		
-		if (TextUtils.isEmpty(oldContent)||TextUtils.isEmpty(newContent)) {
+		if (TextUtils.isEmpty(oldContent) || TextUtils.isEmpty(newContent)) {
 			return false;
 		}
 

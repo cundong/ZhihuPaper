@@ -46,21 +46,21 @@ public class OfflineDownloadTask extends BaseGetContentTask {
 		try {
 			content = getUrl(Constants.Url.URL_LATEST);
 			
-			NewsListEntity newsListEntity = (NewsListEntity)GsonUtils.getEntity(content, NewsListEntity.class);
+			NewsListEntity newsListEntity = (NewsListEntity) GsonUtils.getEntity(content, NewsListEntity.class);
 			ArrayList<NewsEntity> stories = newsListEntity != null ? newsListEntity.stories : null;
 			
 			if (stories != null && stories.size() != 0) {
 
 				for (NewsEntity newsEntity : stories) {
+					
 					String detailContent = getUrl(Constants.Url.URL_DETAIL + newsEntity.id);
-					
-					ZhihuApplication.getDataSource().insertOrUpdateNewsList("detail_" + newsEntity.id, detailContent);
-					
 					NewsDetailEntity detailEntity = (NewsDetailEntity) GsonUtils.getEntity(detailContent, NewsDetailEntity.class);
 					
 					if (detailEntity == null || TextUtils.isEmpty(detailEntity.body)) {
 						continue;
 					}
+					
+					ZhihuApplication.getDataSource().insertOrUpdateNewsList("detail_" + newsEntity.id, detailContent);
 					
 					ArrayList<String> imageList = new ArrayList<String>();
 					

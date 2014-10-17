@@ -10,6 +10,7 @@ import com.cundong.izhihu.ZhihuApplication;
 import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
 import com.cundong.izhihu.http.HttpClientUtils;
 import com.cundong.izhihu.util.GsonUtils;
+import com.cundong.izhihu.util.ListUtils;
 import com.cundong.izhihu.util.ZhihuUtils;
 
 /**
@@ -34,10 +35,14 @@ public class GetNewsTask extends BaseGetNewsListTask {
 		String oldContent = ZhihuApplication.getDataSource().getContent(theKey);
 
 		String newContent = null;
-
+		ArrayList<NewsEntity> newsList = null;
+		
 		try {
 			newContent = getUrl(Constants.Url.URL_LATEST);
-			ZhihuApplication.getDataSource().insertOrUpdateNewsList(theKey, newContent);
+			newsList = GsonUtils.getNewsList(newContent);
+			
+			isRefreshSuccess = !ListUtils.isEmpty(newsList);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			
@@ -51,8 +56,11 @@ public class GetNewsTask extends BaseGetNewsListTask {
 		}
 		
 		isContentSame = checkIsContentSame(oldContent, newContent);
-
-		ArrayList<NewsEntity> newsList = GsonUtils.getNewsList(newContent);
+		
+		if (isRefreshSuccess && !isContentSame) {
+			ZhihuApplication.getDataSource().insertOrUpdateNewsList(theKey, newContent);
+		}
+		
 		ZhihuUtils.setReadStatus4NewsList(newsList);
     	
 		return newsList;

@@ -3,7 +3,7 @@ package com.cundong.izhihu;
 import android.app.Application;
 import android.content.Context;
 
-import com.cundong.izhihu.db.DailyNewsDataSource;
+import com.cundong.izhihu.db.NewsDataSource;
 import com.cundong.izhihu.db.NewsFavoriteDataSource;
 import com.cundong.izhihu.db.NewsReadDataSource;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -14,7 +14,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 public class ZhihuApplication extends Application {
 
 	private static ZhihuApplication mApplication;
-	private static DailyNewsDataSource mNewsDataSource;
+	private static NewsDataSource mNewsDataSource;
 	private static NewsReadDataSource mNewsReadDataSource;
 	private static NewsFavoriteDataSource mNewsFavoriteDataSource;
 	
@@ -24,7 +24,7 @@ public class ZhihuApplication extends Application {
 		super.onCreate();
 
 		mApplication = this;
-		mNewsDataSource = new DailyNewsDataSource(getApplicationContext());
+		mNewsDataSource = new NewsDataSource(getApplicationContext());
 		mNewsReadDataSource = new NewsReadDataSource(getApplicationContext());
 		mNewsFavoriteDataSource = new NewsFavoriteDataSource(getApplicationContext());
 		
@@ -35,7 +35,7 @@ public class ZhihuApplication extends Application {
 		return mApplication;
 	}
 
-	public static DailyNewsDataSource getDataSource() {
+	public static NewsDataSource getDataSource() {
 		return mNewsDataSource;
 	}
 	

@@ -6,6 +6,8 @@ import android.content.Context;
 
 import com.cundong.izhihu.Constants;
 import com.cundong.izhihu.ZhihuApplication;
+import com.cundong.izhihu.entity.NewsDetailEntity;
+import com.cundong.izhihu.util.GsonUtils;
 
 /**
  * 类说明： 	下载新闻详情页内容，Task
@@ -26,8 +28,11 @@ public class GetNewsDetailTask extends BaseGetContentTask {
 
 		try {
 			content = getUrl(Constants.Url.URL_DETAIL + params[0]);
-			ZhihuApplication.getDataSource().insertOrUpdateNewsList(
-					"detail_" + params[0], content);
+			
+			NewsDetailEntity newsDetailEntity = (NewsDetailEntity) GsonUtils.getEntity(
+					content, NewsDetailEntity.class);
+			
+			isRefreshSuccess = newsDetailEntity != null;
 		} catch (IOException e) {
 			e.printStackTrace();
 
@@ -41,7 +46,12 @@ public class GetNewsDetailTask extends BaseGetContentTask {
 		}
 
 		isContentSame = checkIsContentSame(params[0], content);
-
+		
+		if (isRefreshSuccess && !isContentSame) {
+			ZhihuApplication.getDataSource().insertOrUpdateNewsList(
+					"detail_" + params[0], content);
+		}
+		
 		return content;
 	}
 }
