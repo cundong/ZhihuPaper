@@ -24,14 +24,17 @@
 
 本程序依赖：
 
-* [Crouton][3]
-* [SmoothProgressBar][4]
-* [ActionBarSherlock][5]
-* [ActionBarPullToRefresh][6]
-* [PhotoView][8]
+* [Crouton][1]
+* [SmoothProgressBar][2]
+* [ActionBarSherlock][3]
+* [ActionBarPullToRefresh][4]
+* [PhotoView][5]
 
 参考：
-* [ZhihuDailyPurify][7]
+* [ZhihuDailyPurify][6]
+
+Ant批量打包：
+* [Ant 批量多渠道打包][7]
 
 部分资源文件来源于知乎日报的官方客户端，其他图片资源获取自网络。另外，程序中所使用的所有Api，都是通过破解知乎日报官方客户端得来，最终解释权归知乎所有。
 
@@ -39,11 +42,11 @@
 
 * 主页
 
-![截屏][1]
+![截屏][8]
 
 * 详情页
 
-![截屏][2]
+![截屏][9]
 
 * 收藏夹
 
@@ -55,7 +58,7 @@
 
 ## 关于我
 
-* Blog: [http://my.oschina.net/liucundong/blog][9]
+* Blog: [http://my.oschina.net/liucundong/blog][12]
 * Mail: cundong.liu#gmail.com
 
 ## License
@@ -74,14 +77,16 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 
-[1]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/one.png
-[2]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/two.png
-[3]: https://github.com/keyboardsurfer/Crouton
-[4]: https://github.com/castorflex/SmoothProgressBar
-[5]: https://github.com/JakeWharton/ActionBarSherlock
-[6]: https://github.com/chrisbanes/ActionBar-PullToRefresh
-[7]: https://github.com/izzyleung/ZhihuDailyPurify
-[8]: https://github.com/chrisbanes/PhotoView
-[9]: http://my.oschina.net/liucundong/blog
-[10]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/three.png
-[11]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/four.png
+
+  [1]: https://github.com/keyboardsurfer/Crouton
+  [2]: https://github.com/castorflex/SmoothProgressBar
+  [3]: https://github.com/JakeWharton/ActionBarSherlock
+  [4]: https://github.com/chrisbanes/ActionBar-PullToRefresh
+  [5]: https://github.com/chrisbanes/PhotoView
+  [6]: https://github.com/izzyleung/ZhihuDailyPurify
+  [7]: https://github.com/cundong/blog/blob/master/Android%20Ant%20%E6%89%B9%E9%87%8F%E5%A4%9A%E6%B8%A0%E9%81%93%E6%89%93%E5%8C%85%E5%AE%9E%E4%BE%8B.md
+  [8]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/one.png
+  [9]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/two.png
+  [10]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/three.png
+  [11]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/four.png
+  [12]: http://my.oschina.net/liucundong/blog
