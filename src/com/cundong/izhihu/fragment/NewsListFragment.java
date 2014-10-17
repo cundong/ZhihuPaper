@@ -138,7 +138,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 				if (result != null && !result.isEmpty()) {
 
 					mNewsList = result;
-					
+
 					if (mAdapter == null) {
 						mAdapter = new NewsAdapter(getActivity(), mNewsList);
 						mListView.setAdapter(mAdapter);

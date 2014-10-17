@@ -111,9 +111,7 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		if (requestCode == Constants.REQUESTCODE_SETTING) {
-			NewsListFragment fragment = (NewsListFragment) getSupportFragmentManager().findFragmentById(android.R.id.content);
-			fragment.updateList();
-			
+
 			//Activity关闭后，如果改变了主题，则需要recreate this Activity
 			SharedPreferences mPerferences = PreferenceManager.getDefaultSharedPreferences(this);
 			if (isDarkTheme != mPerferences.getBoolean("dark_theme?", false)) {
