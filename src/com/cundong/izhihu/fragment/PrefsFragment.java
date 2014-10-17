@@ -3,9 +3,7 @@ package com.cundong.izhihu.fragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -70,12 +68,10 @@ public class PrefsFragment extends PreferenceFragment implements
 	public boolean onPreferenceClick(Preference preference) {
 
 		if (preference.getKey().equals(PREFERENCES_ABOUT)) {
-			Intent intent = new Intent("android.intent.action.VIEW",
-					Uri.parse(Constants.GITGUB_PROJECT));
-			startActivity(intent);
+			showDialog(false);
 		} else if (preference.getKey().equals(PREFERENCE_VERSION)) {
-			showDialog();
-		} 
+			showDialog(true);
+		}
 
 		return false;
 	}
@@ -117,7 +113,7 @@ public class PrefsFragment extends PreferenceFragment implements
 		return false;
 	}
 	
-	private void showDialog() {
+	private void showDialog( boolean isVersion ) {
 		final Dialog dialog = new Dialog(getActivity());
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setCancelable(true);
@@ -129,17 +125,42 @@ public class PrefsFragment extends PreferenceFragment implements
 				dialog.dismiss();
 			}
 		});
+		
+		if (isVersion) {
+			String data = getResources().getString(R.string.setting_aboutme_version);
+			
+			data = String.format(data,
+					PhoneUtils.getApplicationName(getActivity()),
+					PhoneUtils.getPackageInfo(getActivity()).versionName);
+			
+			textView.setText(data);
+		} else {
+			
+			String title = new StringBuilder().append(PhoneUtils.getApplicationName(getActivity()) ).append("<br/>").toString();
+			String subTitle = new StringBuilder().append(getResources().getString(R.string.app_sub_name)).append("<br/>").toString();
+			String author = new StringBuilder().append("@").append(getResources().getString(R.string.app_author)).toString();
+			
+			String githubUrl = new StringBuilder().append("<a href='")
+					.append(Constants.GITGUB_PROJECT)
+					.append("'>")
+					.append(Constants.GITGUB_PROJECT)
+					.append("</a>")
+					.append("<br/>")
+					.toString();
 
-		StringBuilder sb = new StringBuilder();
-		sb.append(PhoneUtils.getApplicationName(getActivity())).append("<br/>")
-				.append("Version:")
-				.append(PhoneUtils.getPackageInfo(getActivity()).versionName)
-				.append("<br/>").append("by <a href='")
-				.append(Constants.GITHUB_NAME).append("'>@Cundong</a>");
+			String data = getResources().getString(R.string.setting_aboutme_text);
+			
+			data = String.format(data, 
+					title,
+					subTitle, 
+					githubUrl, 
+					author);
 
-		CharSequence charSequence = Html.fromHtml(sb.toString());
+			CharSequence charSequence = Html.fromHtml(data);
 
-		textView.setText(charSequence);
+			textView.setText(charSequence);
+		}
+
 		textView.setMovementMethod(LinkMovementMethod.getInstance());
 
 		dialog.show();
