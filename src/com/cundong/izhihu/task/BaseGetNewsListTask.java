@@ -8,7 +8,6 @@ import android.text.TextUtils;
 
 import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
 import com.cundong.izhihu.http.HttpClientUtils;
-import com.cundong.izhihu.util.NetWorkHelper;
 
 /**
  * 类说明： 	从服务器下载新闻列表，base Task
