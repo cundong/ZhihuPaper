@@ -125,8 +125,32 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 
 		@Override
 		protected ArrayList<NewsEntity> doInBackground(String... params) {
+			
+			/*
+			 * 当前策略：
+			 * 
+			 * 首先读取今天的缓存 如果读取不到今天的数据，则读取昨天的
+			 * 如果昨天的依然读取不到，则读取前天的，如果前天的依然读取不到，就认为是没有缓存了。。
+			 */
 			ArrayList<NewsEntity> newsList = ZhihuApplication.getDataSource().getNewsList(params[0]);
+			
+			if (ListUtils.isEmpty(newsList)) {
+				Calendar calendar = Calendar.getInstance();
+				
+				String yesterday = mSimpleDateFormat.format(calendar.getTime());
+				newsList = ZhihuApplication.getDataSource().getNewsList(yesterday);
+			} 
+			
+			if (ListUtils.isEmpty(newsList)) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.add(Calendar.DAY_OF_YEAR, -1);
+				
+				String dayBeforeYesterday = mSimpleDateFormat.format(calendar.getTime());
+				newsList = ZhihuApplication.getDataSource().getNewsList(dayBeforeYesterday);
+			}
+			
 			ZhihuUtils.setReadStatus4NewsList(newsList);
+			
 			return newsList;
 		}
 
