@@ -2,6 +2,7 @@
 <resources>
     <color name="ab_background">#ff20b4f1</color>
     <color name="ab_background_light">#ff00a2ed</color>
+    
     <color name="ab_title_dark">#ffffffff</color>
     <color name="ab_title_light">#ffffffff</color>
     <color name="abc_search_url_text_normal">#ff7fa87f</color>
@@ -143,4 +144,6 @@
     <drawable name="ab_bg_black">#aa000000</drawable>
     <color name="main_bg">#F0F0F0</color>
     <color name="listview_multi_sel_bg">#6FC4E4</color>
+    <color name="webview_light">#FFFFFF</color>
+    <color name="webview_dark">#272727</color>
 </resources>

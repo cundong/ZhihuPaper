@@ -15,6 +15,9 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -55,6 +58,7 @@ import com.cundong.izhihu.util.ZhihuUtils;
  * @date 	2014-9-20
  * @version 1.0
  */
+@SuppressLint("NewApi")
 public class NewsDetailFragment extends BaseFragment implements
 		ResponseListener {
 	
@@ -158,6 +162,27 @@ public class NewsDetailFragment extends BaseFragment implements
 		        return true;
 		    }
 		});
+		
+		//设置webView背景
+		Resources.Theme theme = getActivity().getTheme();
+		TypedArray typedArray = null;
+		
+		SharedPreferences mPerferences = PreferenceManager
+				.getDefaultSharedPreferences(getActivity());
+		
+		if (mPerferences.getBoolean("dark_theme?", false)) {
+			typedArray = theme.obtainStyledAttributes(R.style.Theme_Daily_AppTheme_Dark, 
+					new int[] { R.attr.webViewBackground });
+		} else {
+			typedArray = theme.obtainStyledAttributes(R.style.Theme_Daily_AppTheme_Light, 
+					new int[] { R.attr.webViewBackground }); 
+		}
+		
+		mWebView.setBackgroundColor(this.getResources().getColor(typedArray.getResourceId(0, 0)));
+		
+		if (Build.VERSION.SDK_INT >= 11) {
+			mWebView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+		}
 	}
 	
 	private void setWebViewShown(boolean shown) {
