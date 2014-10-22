@@ -38,6 +38,10 @@
 
 部分资源文件来源于知乎日报的官方客户端，其他图片资源获取自网络。另外，程序中所使用的所有Api，都是通过破解知乎日报官方客户端得来，最终解释权归知乎所有。
 
+## 体验
+
+[体验apk][13]
+
 ## 截图
 
 * 主页
@@ -90,3 +94,4 @@
   [10]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/three.png
   [11]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/four.png
   [12]: http://my.oschina.net/liucundong/blog
+  [13]: https://github.com/cundong/ZhihuPaper/blob/master/apk/iZhihuPaper%20V2.1.3.apk
