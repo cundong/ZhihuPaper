@@ -57,7 +57,6 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		super.onCreate(savedInstanceState);
 		
 		mCalendar.add(Calendar.DAY_OF_YEAR, 1);
-		
 		mNewsLatest = mSimpleDateFormat.format(mCalendar.getTime());
 		
 		new LoadCacheNewsTask().executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, mNewsLatest);
@@ -96,7 +95,6 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 				if (lastItem == totalItemCount) {
 					if (mListViewPreLast != lastItem) { // to avoid multiple calls for
 														// last item
-						
 						mCalendar.add(Calendar.DAY_OF_YEAR, -1);
 						
 						String formatedDate = mSimpleDateFormat.format(mCalendar.getTime());
@@ -107,7 +105,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 					}
 				}
 			}
-
+			
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				
@@ -115,42 +113,27 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		});
 	}
 
+	private void setAdapter(ArrayList<NewsEntity> newsList) {
+		if (mAdapter == null) {
+			mAdapter = new NewsAdapter(getActivity(), newsList);
+			mListView.setAdapter(mAdapter);
+		} else {
+			mAdapter.updateData(newsList);
+		}
+	}
+
 	private void setListShown(boolean isListViewShown){
 		mListView.setVisibility( isListViewShown ? View.VISIBLE : View.GONE);
 		mProgressBar.setVisibility( isListViewShown ? View.GONE : View.VISIBLE);
 	}
 	
-	//读取本地缓存展示
+	//读取缓存中的最新新闻
 	private class LoadCacheNewsTask extends MyAsyncTask<String, Void, ArrayList<NewsEntity>> {
 
 		@Override
 		protected ArrayList<NewsEntity> doInBackground(String... params) {
-			
-			//TODO 或许这是一个BUG
-			
-			/*
-			 * 当前策略：
-			 * 
-			 * 首先读取今天的缓存 如果读取不到今天的数据，则读取昨天的
-			 * 如果昨天的依然读取不到，则读取前天的，如果前天的依然读取不到，就认为是没有缓存了。。
-			 */
+
 			ArrayList<NewsEntity> newsList = ZhihuApplication.getDataSource().getNewsList(params[0]);
-			
-			if (ListUtils.isEmpty(newsList)) {
-				Calendar calendar = Calendar.getInstance();
-				
-				String yesterday = mSimpleDateFormat.format(calendar.getTime());
-				newsList = ZhihuApplication.getDataSource().getNewsList(yesterday);
-			} 
-			
-			if (ListUtils.isEmpty(newsList)) {
-				Calendar calendar = Calendar.getInstance();
-				calendar.add(Calendar.DAY_OF_YEAR, -1);
-				
-				String dayBeforeYesterday = mSimpleDateFormat.format(calendar.getTime());
-				newsList = ZhihuApplication.getDataSource().getNewsList(dayBeforeYesterday);
-			}
-			
 			ZhihuUtils.setReadStatus4NewsList(newsList);
 			
 			return newsList;
@@ -161,16 +144,17 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 			super.onPostExecute(result);
 			
 			if (isAdded()) {
-				if (result != null && !result.isEmpty()) {
+				if (!ListUtils.isEmpty(result)) {
 
 					mNewsList = result;
-
-					if (mAdapter == null) {
-						mAdapter = new NewsAdapter(getActivity(), mNewsList);
-						mListView.setAdapter(mAdapter);
-					} else {
-						mAdapter.updateData(mNewsList);
-					}
+					setAdapter(mNewsList);
+				}
+				else {
+					mCalendar.add(Calendar.DAY_OF_YEAR, -1);
+					
+					String formatedDate = mSimpleDateFormat.format(mCalendar.getTime());
+					
+					new GetMoreNewsTask(getActivity(), null).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, formatedDate);
 				}
 			}
 		}
@@ -231,16 +215,20 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		@Override
 		protected void onPostExecute(ArrayList<NewsEntity> resultList) {
 			super.onPostExecute(resultList);
-			
+
 			if (isAdded()) {
-				if (mNewsList != null) {
-					
-					if (resultList != null) {
-						mNewsList.addAll(resultList);
-						
-						mAdapter.updateData(mNewsList);
-					}
+
+				setListShown(true);
+
+				if (mNewsList == null) {
+					mNewsList = new ArrayList<NewsEntity>();
 				}
+
+				if (resultList != null) {
+					mNewsList.addAll(resultList);
+				}
+
+				setAdapter(mNewsList);
 			}
 		}
 	}
@@ -266,12 +254,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 			if (isRefreshSuccess && !isContentSame) {
 				mNewsList = resultList;
 
-				if (mAdapter != null) {
-					mAdapter.updateData(mNewsList);
-				} else {
-					mAdapter = new NewsAdapter(getActivity(), mNewsList);
-					mListView.setAdapter(mAdapter);
-				}
+				setAdapter(mNewsList);
 			}
 		}
 	}
