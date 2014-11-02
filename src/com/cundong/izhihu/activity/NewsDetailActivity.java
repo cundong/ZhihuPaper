@@ -159,8 +159,7 @@ public class NewsDetailActivity extends BaseActivity implements OnContentLoadLis
 					share_url = mNewsEntity.share_url;
 				}
 				
-				if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(image)
-						&& !TextUtils.isEmpty(share_url)) {
+				if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(share_url)) {
 					ZhihuApplication.getNewsFavoriteDataSource().add2Favorite(
 							String.valueOf(mNewsId), title, image, share_url);
 					

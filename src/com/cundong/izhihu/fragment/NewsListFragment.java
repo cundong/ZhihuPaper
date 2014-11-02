@@ -95,7 +95,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 				
 				if (lastItem == totalItemCount) {
 					if (mListViewPreLast != lastItem) { // to avoid multiple calls for
-												// last item
+														// last item
 						
 						mCalendar.add(Calendar.DAY_OF_YEAR, -1);
 						
@@ -125,6 +125,8 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 
 		@Override
 		protected ArrayList<NewsEntity> doInBackground(String... params) {
+			
+			//TODO 或许这是一个BUG
 			
 			/*
 			 * 当前策略：
