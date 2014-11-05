@@ -26,6 +26,7 @@
         <item name="newsToolbar">@drawable/news_toolbar_light</item>
         <item name="newsToolbarThemeNameColor">@color/news_tool_bar_theme_name_color_light</item>
         <item name="webViewBackground">@color/webview_light</item>
+        <item name="android:fastScrollThumbDrawable">@drawable/fastscroll_thumb</item>
     </style>
 
     <style name="Theme.Daily.AppTheme.Dark" parent="Theme.Sherlock">
@@ -45,6 +46,7 @@
         <item name="newsToolbar">@drawable/news_toolbar_dark</item>
         <item name="newsToolbarThemeNameColor">@color/news_tool_bar_theme_name_color_dark</item>
         <item name="webViewBackground">@color/webview_dark</item>
+        <item name="android:fastScrollThumbDrawable">@drawable/fastscroll_thumb</item>
     </style>
 
     <style name="Zhihu.Widget.ActionBar.Dark" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
