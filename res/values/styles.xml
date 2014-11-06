@@ -27,6 +27,7 @@
         <item name="listItemIntroTextColor">@color/list_item_intro_light</item>
         <item name="listItemTextNorColor">@color/black</item>
         <item name="listItemTextReadColor">@color/list_item_intro_light</item>
+        <item name="listItemDateTextColor">@color/list_item_date_light</item>
         <item name="listViewBackground">@color/list_view_bg_light</item>
         <item name="navigationDivider">@color/navigation_divider_light</item>
         <item name="newsToolbar">@drawable/news_toolbar_light</item>
@@ -47,6 +48,7 @@
         <item name="listItemIntroTextColor">@color/list_item_intro_dark</item>
         <item name="listItemTextNorColor">@color/list_item_title_dark</item>
         <item name="listItemTextReadColor">@color/list_item_intro_dark</item>
+        <item name="listItemDateTextColor">@color/list_item_date_dark</item>
         <item name="listViewBackground">@color/list_view_bg_dark</item>
         <item name="navigationDivider">@color/navigation_divider_dark</item>
         <item name="newsToolbar">@drawable/news_toolbar_dark</item>
