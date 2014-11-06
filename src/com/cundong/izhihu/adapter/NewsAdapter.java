@@ -13,13 +13,16 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.util.SparseBooleanArray;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cundong.izhihu.R;
 import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
 import com.cundong.izhihu.util.NetWorkHelper;
+import com.cundong.izhihu.util.ZhihuUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
@@ -32,8 +35,11 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
  * @date 	2014-9-7
  * @version 1.0
  */
-public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
+public class NewsAdapter extends MultiViewTypeBaseAdapter<NewsEntity> {
 
+	private static final int TYPE_0 = 0;
+	private static final int TYPE_1 = 1;
+	
 	private ImageLoader mImageLoader = ImageLoader.getInstance();
 
 	private ImageLoadingListener mAnimateFirstListener = new AnimateFirstDisplayListener();
@@ -53,6 +59,13 @@ public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
 		this.mSelectedItemsIds = new SparseBooleanArray();
 		
 		initStyle();
+	}
+	
+	public void updateData(ArrayList<NewsEntity> newsList) {
+		
+		this.mDataList = newsList;
+		
+		this.notifyDataSetChanged();
 	}
 	
 	private void initStyle() {
@@ -90,11 +103,6 @@ public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
 		this.mFavoriteFalg = favoriteFalg;
 	}
 	
-	public void updateData(ArrayList<NewsEntity> newsList) {
-		this.mDataList = newsList;
-		this.notifyDataSetChanged();
-	}
-	
 	public void toggleSelection(int position) {
 		selectView(position, !mSelectedItemsIds.get(position));
 	}
@@ -120,54 +128,132 @@ public class NewsAdapter extends SimpleBaseAdapter<NewsEntity> {
 	public SparseBooleanArray getSelectedIds() {
 		return mSelectedItemsIds;
 	}
+
+	@Override
+	public int getViewTypeCount() {
+		if (mFavoriteFalg) {
+			return 1;
+		} else {
+			return 2;
+		}
+	}
 	
 	@Override
-	public int getItemResourceId() {
-		return R.layout.list_item;
+	public int getItemViewType(int position) {
+
+		if (mFavoriteFalg) {
+			return TYPE_0;
+		} else {
+			NewsEntity newsEntity = mDataList.get(position);
+			if (newsEntity.isTag) {
+				return TYPE_1;
+			} else {
+				return TYPE_0;
+			}
+		}
+	}
+	
+	@Override
+	public int getItemResourceId(int type) {
+
+		if (mFavoriteFalg) {
+			return R.layout.list_item;
+		} else {
+			if (type == TYPE_0) {
+				return R.layout.list_item;
+			} else {
+				return R.layout.list_date_item;
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		int type = getItemViewType(position);
+
+		ViewHolder holder0 = null;
+		ViewHolder holder1 = null;
+
+		switch (type) {
+			case TYPE_0: {
+	
+				if (convertView == null) {
+					convertView = LayoutInflater.from(mContext).inflate(getItemResourceId(type), parent, false);
+					holder0 = new ViewHolder(convertView);
+					convertView.setTag(holder0);
+				} else {
+					holder0 = (ViewHolder) convertView.getTag();
+				}
+	
+				return getItemView(position, convertView, holder0, type);
+			}
+			case TYPE_1: {
+				if (convertView == null) {
+					convertView = LayoutInflater.from(mContext).inflate(getItemResourceId(type), parent, false);
+					holder1 = new ViewHolder(convertView);
+					convertView.setTag(holder1);
+				} else {
+					holder1 = (ViewHolder) convertView.getTag();
+				}
+	
+				return getItemView(position, convertView, holder1, type);
+			}
+		}
+
+		return null;
 	}
 
 	@Override
-	public View getItemView(int position, View convertView, ViewHolder holder) {
-
-		ImageView newsImageView = (ImageView) holder.getView(R.id.list_item_image);
-		TextView newsTitleView = (TextView) holder.getView(R.id.list_item_title);
-
+	public View getItemView(int position, View convertView, ViewHolder holder, int type) {
 		final NewsEntity newsEntity = mDataList.get(position);
-		newsTitleView.setText(newsEntity.title);
 		
-		if(mFavoriteFalg) {
-			
-		} else {
-			newsTitleView.setTextColor( newsEntity.is_read ? mContext.getResources().getColor(titleReadColorId) : mContext.getResources().getColor(titleColorNorId) );
-		}
-		
-		if (NetWorkHelper.isMobile(mContext) && PreferenceManager.getDefaultSharedPreferences(
-				mContext).getBoolean("noimage_nowifi?", false) ) {
-			newsImageView.setVisibility(View.GONE);
-		} else {
-			if (newsEntity.images != null && newsEntity.images.size() >= 1) {
+		switch (type) {
+			case TYPE_0: {
+				ImageView newsImageView = (ImageView) holder.getView(R.id.list_item_image);
+				TextView newsTitleView = (TextView) holder.getView(R.id.list_item_title);
+
+				newsTitleView.setText(newsEntity.title);
 				
-				newsImageView.setVisibility(View.VISIBLE);
-				mImageLoader.displayImage(newsEntity.images.get(0), newsImageView, mOptions, mAnimateFirstListener);
-			} else {
-				newsImageView.setVisibility(View.GONE);
+				if(mFavoriteFalg) {
+					
+				} else {
+					newsTitleView.setTextColor( newsEntity.is_read ? mContext.getResources().getColor(titleReadColorId) : mContext.getResources().getColor(titleColorNorId) );
+				}
+				
+				if (NetWorkHelper.isMobile(mContext) && PreferenceManager.getDefaultSharedPreferences(
+						mContext).getBoolean("noimage_nowifi?", false) ) {
+					newsImageView.setVisibility(View.GONE);
+				} else {
+					if (newsEntity.images != null && newsEntity.images.size() >= 1) {
+						
+						newsImageView.setVisibility(View.VISIBLE);
+						mImageLoader.displayImage(newsEntity.images.get(0), newsImageView, mOptions, mAnimateFirstListener);
+					} else {
+						newsImageView.setVisibility(View.GONE);
+					}
+				}
+				
+				convertView.setBackgroundColor(mSelectedItemsIds.get(position) ? mContext.getResources().getColor(R.color.listview_multi_sel_bg) : Color.TRANSPARENT);
+				
+				break;
+			}
+			case TYPE_1: {
+				TextView dateView = (TextView) holder.getView(R.id.date_text);
+				dateView.setText(ZhihuUtils.getDateTag(mContext, newsEntity.title));
+				break;
 			}
 		}
-		
-		convertView.setBackgroundColor(mSelectedItemsIds.get(position) ? mContext.getResources().getColor(R.color.listview_multi_sel_bg) : Color.TRANSPARENT);
 		
 		return convertView;
 	}
 	
-	private static class AnimateFirstDisplayListener extends
-			SimpleImageLoadingListener {
+	private static class AnimateFirstDisplayListener extends SimpleImageLoadingListener {
 
-		static final List<String> displayedImages = Collections
-				.synchronizedList(new LinkedList<String>());
+		static final List<String> displayedImages = Collections.synchronizedList(new LinkedList<String>());
 
 		@Override
-		public void onLoadingComplete(String imageUri, View view,
-				Bitmap loadedImage) {
+		public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 			if (loadedImage != null) {
 				ImageView imageView = (ImageView) view;
 				boolean firstDisplay = !displayedImages.contains(imageUri);

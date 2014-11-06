@@ -146,4 +146,8 @@
     <color name="listview_multi_sel_bg">#6FC4E4</color>
     <color name="webview_light">#FFFFFF</color>
     <color name="webview_dark">#272727</color>
+    
+    <color name="list_item_date_dark">#b6b6b6</color>
+    <color name="list_item_date_light">#272727</color>
+    
 </resources>

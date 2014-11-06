@@ -137,8 +137,15 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 			
 			if (isAdded()) {
 				if (result != null && !ListUtils.isEmpty(result.stories)) {
-
-					mNewsList = result.stories;
+					
+					NewsEntity tagNewsEntity = new NewsEntity();
+					tagNewsEntity.isTag = true;
+					tagNewsEntity.title = result.date;
+					
+					mNewsList = new ArrayList<NewsEntity>();
+					mNewsList.add(tagNewsEntity);
+					mNewsList.addAll(result.stories);
+					
 					setAdapter(mNewsList);
 				}
 			}
@@ -221,10 +228,15 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 				}
 
 				if (result != null && !ListUtils.isEmpty(result.stories)) {
+					
+					NewsEntity tagNewsEntity = new NewsEntity();
+					tagNewsEntity.isTag = true;
+					tagNewsEntity.title = result.date;
+					mNewsList.add(tagNewsEntity);
 					mNewsList.addAll(result.stories);
+					
+					setAdapter(mNewsList);
 				}
-
-				setAdapter(mNewsList);
 			}
 		}
 	}
@@ -249,7 +261,15 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 			
 			if (isRefreshSuccess) {
 				
-				mNewsList = result.stories;
+				mNewsList = new ArrayList<NewsEntity>();
+				
+				NewsEntity tagNewsEntity = new NewsEntity();
+				tagNewsEntity.isTag = true;
+				tagNewsEntity.title = result.date;
+				mNewsList.add(tagNewsEntity);
+				
+				mNewsList.addAll(result.stories);
+				
 				mCurrentDate = result.date;
 				
 				setAdapter(mNewsList);

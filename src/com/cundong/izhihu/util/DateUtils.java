@@ -12,8 +12,8 @@ import android.text.TextUtils;
 /**
  * 类说明： 日期时间工具类
  * 
- * @author 	Cundong
- * @date 	Feb 15, 2012 5:30:51 AM
+ * @author Cundong
+ * @date Feb 15, 2012 5:30:51 AM
  * @version 1.0
  */
 public class DateUtils {
@@ -41,7 +41,9 @@ public class DateUtils {
 	public static final String YYYY_MM_DD = "yyyy-MM-dd";
 
 	public static final String YYYYMMDD = "yyyyMMdd";
-	
+
+	public static final String MMDD = "MM月dd日";
+
 	/**
 	 * 时间格式：HH:mm:ss
 	 */
@@ -59,8 +61,7 @@ public class DateUtils {
 	public static String getCurrentTime() {
 
 		Date date = Calendar.getInstance().getTime();
-		SimpleDateFormat sf = new SimpleDateFormat(YYYY_MM_dd_HH_MM_SS,
-				Locale.getDefault());
+		SimpleDateFormat sf = new SimpleDateFormat(YYYY_MM_dd_HH_MM_SS, Locale.getDefault());
 		return sf.format(date);
 	}
 
@@ -76,7 +77,7 @@ public class DateUtils {
 
 		return sf.format(date);
 	}
-	
+
 	public static int getCurrentMonth() {
 		Date date = Calendar.getInstance().getTime();
 		SimpleDateFormat sf = new SimpleDateFormat("MM", Locale.getDefault());
@@ -90,29 +91,26 @@ public class DateUtils {
 	 * @return 样例：05.10 17:11
 	 */
 	public static String getFormatTime(String pubtime) {
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss",
-				Locale.getDefault());
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
 
 		Date date = null;
+
 		try {
 			date = df.parse(pubtime.replace("Z", " "));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 
-		return (null == date) ? null : (new SimpleDateFormat("MM.dd HH:mm",
-				Locale.getDefault())).format(date);
+		return (null == date) ? null : (new SimpleDateFormat("MM.dd HH:mm", Locale.getDefault())).format(date);
 	}
 
-	public static String getFormatTime(String pubtime, String inputFormat,
-			String outFormat) {
+	public static Date getFormatTimeDate(String pubtime, String inputFormat, String outFormat) {
 
 		if (TextUtils.isEmpty(pubtime)) {
-			return "";
+			return null;
 		}
 
-		SimpleDateFormat df = new SimpleDateFormat(inputFormat,
-				Locale.getDefault());
+		SimpleDateFormat df = new SimpleDateFormat(inputFormat, Locale.getDefault());
 
 		Date date = null;
 		try {
@@ -123,9 +121,15 @@ public class DateUtils {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		
+		return date;
+	}
+	
+	public static String getFormatTime(String pubtime, String inputFormat, String outFormat) {
 
-		return (null == date) ? null : (new SimpleDateFormat(outFormat,
-				Locale.getDefault())).format(date);
+		Date date = getFormatTimeDate(pubtime, inputFormat, outFormat);
+
+		return (null == date) ? null : (new SimpleDateFormat(outFormat, Locale.getDefault())).format(date);
 	}
 
 	/**
@@ -144,8 +148,25 @@ public class DateUtils {
 			e.printStackTrace();
 		}
 
-		return (null == date) ? null : (new SimpleDateFormat(format,
-				Locale.getDefault())).format(date);
+		return (null == date) ? null : (new SimpleDateFormat(format, Locale.getDefault())).format(date);
+	}
+
+	/**
+	 * 获取当前日期是星期几
+	 * 
+	 * @param dt
+	 * @return 当前日期是星期几
+	 */
+	public static String getWeekOfDate(Date dt) {
+		String[] weekDays = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(dt);
+
+		int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+		if (w < 0)
+			w = 0;
+
+		return weekDays[w];
 	}
 
 	/**
@@ -203,8 +224,7 @@ public class DateUtils {
 		}
 
 		if (null != date) {
-			SimpleDateFormat df1 = new SimpleDateFormat(format,
-					Locale.getDefault());
+			SimpleDateFormat df1 = new SimpleDateFormat(format, Locale.getDefault());
 			String time = df1.format(date);
 			timestamp = Timestamp.valueOf(time);
 		}
@@ -231,8 +251,7 @@ public class DateUtils {
 				format = DEFAULT_FORMAT;
 			}
 
-			SimpleDateFormat sdf = new SimpleDateFormat(format,
-					Locale.getDefault());
+			SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
 			try {
 				date = sdf.parse(str);
 			} catch (ParseException e) {
@@ -242,7 +261,7 @@ public class DateUtils {
 
 		return date;
 	}
-	
+
 	/**
 	 * 获取两个日期之间的差值
 	 * 
@@ -251,13 +270,14 @@ public class DateUtils {
 	 * @return
 	 */
 	public static int getDiff(String str1, String str2) {
-		
-		if(TextUtils.isEmpty(str1)||TextUtils.isEmpty(str2))	return 0;
-		
+
+		if (TextUtils.isEmpty(str1) || TextUtils.isEmpty(str2))
+			return 0;
+
 		Date date1 = str2Date(str1, YYYYMMDD);
 		Date date2 = str2Date(str2, YYYYMMDD);
-		
+
 		return (int) ((date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24));
-		
+
 	}
 }

@@ -4,21 +4,27 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.util.SparseArray;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-public abstract class SimpleBaseAdapter<T> extends BaseAdapter {
+public abstract class MultiViewTypeBaseAdapter<T> extends BaseAdapter {
 
+	protected static int TYPE_COUNTER = 1;
+	
 	protected Context mContext;
 	protected ArrayList<T> mDataList;
 
-	public SimpleBaseAdapter(Context context, ArrayList<T> list) {
+	public MultiViewTypeBaseAdapter(Context context, ArrayList<T> list) {
 		this.mContext = context;
 		this.mDataList = list == null ? new ArrayList<T>() : new ArrayList<T>(list);
 	}
 
+	public MultiViewTypeBaseAdapter(Context context, ArrayList<T> list, int viewTypeCount) {
+		this(context, list);
+		
+		TYPE_COUNTER = viewTypeCount;
+	}
+	
 	@Override
 	public int getCount() {
 		return mDataList!=null ? mDataList.size() : 0;
@@ -36,37 +42,29 @@ public abstract class SimpleBaseAdapter<T> extends BaseAdapter {
 		return position;
 	}
 	
+	@Override
+	public int getViewTypeCount() {
+		return TYPE_COUNTER;
+	}
+	
 	/**
-	 * 该方法需要子类实现，需要返回item布局的resource id
+	 * 该方法需要子类实现，需要根据type返回item布局的resource id
 	 * 
+	 * @param type
 	 * @return
 	 */
-	public abstract int getItemResourceId();
-    
+	public abstract int getItemResourceId(int type);
+	
 	 /**
-     * 使用该getItemView方法替换原来的getView方法，需要子类实现
+     * 使用该getItemView方法替换原来的getView方法中部分功能，需要子类实现
      * 
      * @param position
      * @param convertView
      * @param holder
+     * @param type
      * @return
      */
-    public abstract View getItemView(int position, View convertView, ViewHolder holder);
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder holder = null;
-		if( convertView == null ){
-			convertView = LayoutInflater.from(mContext).inflate(getItemResourceId(), parent, false);
-			holder = new ViewHolder( convertView );
-			convertView.setTag(holder);
-		} else {
-			holder = (ViewHolder) convertView.getTag();
-		}
-		
-		return getItemView(position, convertView, holder);
-	}
+	public abstract View getItemView(int position, View convertView, ViewHolder holder, int type);
 
 	public class ViewHolder {
 	    private SparseArray<View> views = new SparseArray<View>();

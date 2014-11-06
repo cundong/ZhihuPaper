@@ -92,6 +92,8 @@
     <attr name="listItemHeaderBackground" format="reference" />
     <attr name="listItemIntroTextColor" format="reference" />
     
+    <attr name="listItemDateTextColor" format="reference" />
+    
     <attr name="listItemTextNorColor" format="reference" />
     <attr name="listItemTextReadColor" format="reference" />
     

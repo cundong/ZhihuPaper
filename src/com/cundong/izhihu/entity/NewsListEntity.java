@@ -33,5 +33,8 @@ public class NewsListEntity extends BaseEntity implements Serializable {
 		
 		//已读、未读标识
 		public boolean is_read = false;
+		
+		//是否仅仅是个tag
+		public boolean isTag = false;
 	}
 }

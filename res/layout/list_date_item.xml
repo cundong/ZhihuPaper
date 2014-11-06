@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4.0dip"
+        android:background="?listViewBackground" >
+
+        <TextView
+            android:id="@+id/date_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="8.0dip"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:paddingBottom="8dip"
+            android:paddingTop="8dip"
+            android:textColor="?listItemDateTextColor"
+            android:textIsSelectable="false"
+            android:textSize="@dimen/text_size_small" />
+    </RelativeLayout>
+
+</FrameLayout>
