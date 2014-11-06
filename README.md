@@ -94,4 +94,4 @@
   [10]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/three.png
   [11]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/four.png
   [12]: http://my.oschina.net/liucundong/blog
-  [13]: https://github.com/cundong/ZhihuPaper/blob/master/apk/ZhihuPaper%20V2.1.4.apk
+  [13]: https://github.com/cundong/ZhihuPaper/blob/master/apk/ZhihuPaper.apk
