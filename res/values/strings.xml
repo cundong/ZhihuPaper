@@ -1,7 +1,7 @@
 <resources>
 
-    <string name="app_name">知乎小报</string>
-    <string name="app_sub_name">一个开源知乎日报客户端</string>
+    <string name="app_name">新奇日报</string>
+    <string name="app_sub_name">总有未知在身边</string>
     <string name="app_author">Cundong</string>
     
     <string name="settings_settings_title">偏好设置</string>
