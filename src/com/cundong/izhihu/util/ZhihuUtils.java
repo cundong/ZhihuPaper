@@ -1,6 +1,10 @@
 package com.cundong.izhihu.util;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import com.cundong.izhihu.ZhihuApplication;
 import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
@@ -9,6 +13,44 @@ import android.content.Context;
 
 public class ZhihuUtils {
 
+	/**
+	 * 将 "20141105" 转为 "20141106"
+	 * 
+	 * @param dateStr
+	 * @return
+	 */
+	public static String getAddedDate(String dateStr) {
+
+		Date date = DateUtils.str2Date(dateStr, DateUtils.YYYYMMDD);
+
+		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.DAY_OF_YEAR, 1);
+
+		return mSimpleDateFormat.format(cal.getTime());
+	}
+	
+	/**
+	 * 获取昨天的日期
+	 * 
+	 * @param dateStr
+	 * @return
+	 */
+	public static String getBeforeDate(String dateStr) {
+
+		Date date = DateUtils.str2Date(dateStr, DateUtils.YYYYMMDD);
+
+		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.DAY_OF_YEAR, -1);
+
+		return mSimpleDateFormat.format(cal.getTime());
+	}
+	
 	/**
 	 * 根据一个图片的url获取其在本机缓存中的存储url
 	 * 

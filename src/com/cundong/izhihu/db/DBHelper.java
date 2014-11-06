@@ -7,18 +7,21 @@ import android.database.sqlite.SQLiteOpenHelper;
 public final class DBHelper extends SQLiteOpenHelper {
 	
 	//db
-	public static final String DB_NAME = "zhihu_daily.db";
-	public static final int DB_VERSION = 5;
+	public static final String DB_NAME = "news_paper.db";
+	public static final int DB_VERSION = 7;
 	
-	//1.news_list
-	public static final String TABLE_NAME = "news_list";
-	public static final String COLUMN_ID = "_id";
-	public static final String COLUMN_KEY = "key";
-	public static final String COLUMN_CONTENT = "content";
+	//1.news_list 
+	//store news list and news detail
+	public static final String NEWS_TABLE_NAME = "news_list";
+	public static final String NEWS_COLUMN_ID = "_id";
+	public static final String NEWS_COLUMN_TYPE = "type";
+	public static final String NEWS_COLUMN_KEY = "key";
+	public static final String NEWS_COLUMN_CONTENT = "content";
 	
-	private static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME
-			+ "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-			+ COLUMN_KEY + " CHAR(256) UNIQUE, " + COLUMN_CONTENT
+	private static final String NEWS_TABLE_CREATE = "CREATE TABLE " + NEWS_TABLE_NAME
+			+ "(" + NEWS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ NEWS_COLUMN_TYPE + " INTEGER NOT NULL, "
+			+ NEWS_COLUMN_KEY + " CHAR(256) UNIQUE NOT NULL, " + NEWS_COLUMN_CONTENT
 			+ " TEXT NOT NULL);";
 
 	//2.news_read
@@ -51,14 +54,14 @@ public final class DBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(TABLE_CREATE);
+		db.execSQL(NEWS_TABLE_CREATE);
 		db.execSQL(READ_TABLE_CREATE);
 		db.execSQL(FAVORITE_TABLE_CREATE);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+		db.execSQL("DROP TABLE IF EXISTS " + NEWS_TABLE_NAME);
 		db.execSQL("DROP TABLE IF EXISTS " + READ_TABLE_NAME);
 		db.execSQL("DROP TABLE IF EXISTS " + FAVORITE_TABLE_NAME);
 		

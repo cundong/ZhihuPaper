@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
+import com.cundong.izhihu.Constants;
+import com.cundong.izhihu.entity.NewsListEntity;
 import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
 import com.cundong.izhihu.util.GsonUtils;
 
@@ -21,43 +23,48 @@ public final class NewsDataSource {
 
 	private SQLiteDatabase database;
 	private DBHelper dbHelper;
-	private String[] allColumns = { DBHelper.COLUMN_ID, DBHelper.COLUMN_KEY,
-			DBHelper.COLUMN_CONTENT };
+	private String[] allColumns = { 
+			DBHelper.NEWS_COLUMN_ID, 
+			DBHelper.NEWS_COLUMN_TYPE,
+			DBHelper.NEWS_COLUMN_KEY,
+			DBHelper.NEWS_COLUMN_CONTENT };
 
 	public NewsDataSource(Context context) {   
 		dbHelper = new DBHelper(context);
 		database = dbHelper.getWritableDatabase();
 	}
 
-	public ArrayList<NewsEntity> insertDailyNewsList(String key, String content) {
+	private ArrayList<NewsEntity> insertDailyNewsList(int type, String key, String content) {
 		ContentValues values = new ContentValues();
-		values.put(DBHelper.COLUMN_KEY, key);
-		values.put(DBHelper.COLUMN_CONTENT, content);
+		values.put(DBHelper.NEWS_COLUMN_TYPE, type);
+		values.put(DBHelper.NEWS_COLUMN_KEY, key);
+		values.put(DBHelper.NEWS_COLUMN_CONTENT, content);
 
-		long insertId = database.insert(DBHelper.TABLE_NAME, null, values);
-		Cursor cursor = database.query(DBHelper.TABLE_NAME, allColumns,
-				DBHelper.COLUMN_ID + " = " + insertId, null, null, null, null);
+		long insertId = database.insert(DBHelper.NEWS_TABLE_NAME, null, values);
+		Cursor cursor = database.query(DBHelper.NEWS_TABLE_NAME, allColumns,
+				DBHelper.NEWS_COLUMN_ID + " = " + insertId, null, null, null, null);
 		ArrayList<NewsEntity> newsList = cursorToNewsList(cursor);
 		cursor.close();
 		return newsList;
 	}
 
-	public void updateNewsList(String key, String content) {
+	private void updateNewsList(int type, String key, String content) {
 		ContentValues values = new ContentValues();
-		values.put(DBHelper.COLUMN_KEY, key);
-		values.put(DBHelper.COLUMN_CONTENT, content);
-		database.update(DBHelper.TABLE_NAME, values, DBHelper.COLUMN_KEY
+		values.put(DBHelper.NEWS_COLUMN_TYPE, type);
+		values.put(DBHelper.NEWS_COLUMN_KEY, key);
+		values.put(DBHelper.NEWS_COLUMN_CONTENT, content);
+		database.update(DBHelper.NEWS_TABLE_NAME, values, DBHelper.NEWS_COLUMN_KEY
 				+ "='" + key + "'", null);
 	}
 	
-	public void insertOrUpdateNewsList(String key, String content) {
+	public void insertOrUpdateNewsList(int type, String key, String content) {
 		if (TextUtils.isEmpty(content))
 			return;
 
 		if (isContentExist(key)) {
-			updateNewsList(key, content);
+			updateNewsList(type, key, content);
 		} else {
-			insertDailyNewsList(key, content);
+			insertDailyNewsList(type, key, content);
 		}
 	}
 
@@ -65,11 +72,11 @@ public final class NewsDataSource {
 		
 		boolean result = false;
 		
-		Cursor cursor = database.query(DBHelper.TABLE_NAME, allColumns,
-				DBHelper.COLUMN_KEY + " = '" + key + "'", null, null, null, null);
+		Cursor cursor = database.query(DBHelper.NEWS_TABLE_NAME, allColumns,
+				DBHelper.NEWS_COLUMN_KEY + " = '" + key + "'", null, null, null, null);
 		
 		if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
-			String content = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_CONTENT));
+			String content = cursor.getString(cursor.getColumnIndex(DBHelper.NEWS_COLUMN_CONTENT));
 			result  = !TextUtils.isEmpty(content);
 		} 
 		
@@ -78,12 +85,12 @@ public final class NewsDataSource {
 	}
 	
 	public String getContent(String key) {
-		Cursor cursor = database.query(DBHelper.TABLE_NAME, allColumns,
-				DBHelper.COLUMN_KEY + " = '" + key + "'", null, null, null,
+		Cursor cursor = database.query(DBHelper.NEWS_TABLE_NAME, allColumns,
+				DBHelper.NEWS_COLUMN_KEY + " = '" + key + "'", null, null, null,
 				null);
 
 		if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
-			String content = cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_CONTENT));
+			String content = cursor.getString(cursor.getColumnIndex(DBHelper.NEWS_COLUMN_CONTENT));
 			cursor.close();
 			return content;
 		} else {
@@ -92,8 +99,8 @@ public final class NewsDataSource {
 	}
 	
 	public ArrayList<NewsEntity> getNewsList(String key) {
-		Cursor cursor = database.query(DBHelper.TABLE_NAME, allColumns,
-				DBHelper.COLUMN_KEY + " = '" + key + "'", null, null, null,
+		Cursor cursor = database.query(DBHelper.NEWS_TABLE_NAME, allColumns,
+				DBHelper.NEWS_COLUMN_KEY + " = '" + key + "'", null, null, null,
 				null);
 
 		ArrayList<NewsEntity> newsList = cursorToNewsList(cursor);
@@ -104,11 +111,33 @@ public final class NewsDataSource {
 	
 	private ArrayList<NewsEntity> cursorToNewsList(Cursor cursor) {
 		if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
-			String content = cursor.getString(cursor
-					.getColumnIndex(DBHelper.COLUMN_CONTENT));
+			String content = cursor.getString(cursor.getColumnIndex(DBHelper.NEWS_COLUMN_CONTENT));
 			return GsonUtils.getNewsList(content);
 		} else {
 			return null;
 		}
+	}
+	
+	/**
+	 * 获取新闻表中，日期最新那天的数据
+	 * 
+	 * @return
+	 */
+	public NewsListEntity getLatestNews() {
+
+		NewsListEntity newsListEntity = null;
+
+		String orderBy = DBHelper.NEWS_COLUMN_KEY + " desc";
+
+		Cursor cursor = database.query(DBHelper.NEWS_TABLE_NAME, allColumns, DBHelper.NEWS_COLUMN_TYPE + "=" + Constants.NEWS_LIST, null, null, null, orderBy);
+
+		if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+			String content = cursor.getString(cursor.getColumnIndex(DBHelper.NEWS_COLUMN_CONTENT));
+			newsListEntity = (NewsListEntity) GsonUtils.getEntity(content, NewsListEntity.class);
+		}
+		
+		cursor.close();
+
+		return newsListEntity;
 	}
 }

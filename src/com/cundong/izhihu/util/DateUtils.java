@@ -242,4 +242,22 @@ public class DateUtils {
 
 		return date;
 	}
+	
+	/**
+	 * 获取两个日期之间的差值
+	 * 
+	 * @param date1
+	 * @param date2
+	 * @return
+	 */
+	public static int getDiff(String str1, String str2) {
+		
+		if(TextUtils.isEmpty(str1)||TextUtils.isEmpty(str2))	return 0;
+		
+		Date date1 = str2Date(str1, YYYYMMDD);
+		Date date2 = str2Date(str2, YYYYMMDD);
+		
+		return (int) ((date2.getTime() - date1.getTime()) / (1000 * 60 * 60 * 24));
+		
+	}
 }

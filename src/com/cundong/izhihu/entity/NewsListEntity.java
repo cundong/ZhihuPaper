@@ -13,7 +13,7 @@ public class NewsListEntity extends BaseEntity implements Serializable {
 	public String date;
 	public ArrayList<NewsEntity> stories;
 	
-	public static class NewsEntity implements Serializable {
+	public static class NewsEntity extends BaseEntity implements Serializable {
 		
 		/**
 		 * 

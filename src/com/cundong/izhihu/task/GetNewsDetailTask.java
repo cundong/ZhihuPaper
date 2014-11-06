@@ -48,7 +48,7 @@ public class GetNewsDetailTask extends BaseGetContentTask {
 		isContentSame = checkIsContentSame(params[0], content);
 		
 		if (isRefreshSuccess && !isContentSame) {
-			ZhihuApplication.getDataSource().insertOrUpdateNewsList(
+			ZhihuApplication.getDataSource().insertOrUpdateNewsList(Constants.NEWS_DETAIL, 
 					"detail_" + params[0], content);
 		}
 		

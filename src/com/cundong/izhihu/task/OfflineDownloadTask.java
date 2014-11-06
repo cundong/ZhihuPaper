@@ -60,7 +60,7 @@ public class OfflineDownloadTask extends BaseGetContentTask {
 						continue;
 					}
 					
-					ZhihuApplication.getDataSource().insertOrUpdateNewsList("detail_" + newsEntity.id, detailContent);
+					ZhihuApplication.getDataSource().insertOrUpdateNewsList(Constants.NEWS_DETAIL, "detail_" + newsEntity.id, detailContent);
 					
 					ArrayList<String> imageList = new ArrayList<String>();
 					

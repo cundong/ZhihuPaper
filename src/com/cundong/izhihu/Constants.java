@@ -23,4 +23,8 @@ public final class Constants {
 		// 获取过往新闻
 		public static final String URLDEFORE = "http://news.at.zhihu.com/api/3/news/before/";
 	}
+	
+	public static final int NEWS_LIST = 1;
+	public static final int NEWS_DETAIL = 2;
+	
 }
