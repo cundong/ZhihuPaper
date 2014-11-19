@@ -33,19 +33,20 @@ public class NewsDetailImageActivity extends BaseActivity {
 		
 		if (savedInstanceState == null) {
 			mImageUrl = getIntent().getStringExtra("imageUrl");
-			Bundle bundle = new Bundle();
-			bundle.putString("imageUrl", mImageUrl);
-			
-			// Add the Sample Fragment if there is one
-			Fragment newFragment = getFragment();
-			newFragment.setArguments(bundle);
-
-			if (newFragment != null) {
-				getSupportFragmentManager().beginTransaction()
-						.replace(android.R.id.content, newFragment).commit();
-			}
 		} else {
 			mImageUrl = savedInstanceState.getString(NEWS_DETAIL_IMAGE);
+		}
+		
+		Bundle bundle = new Bundle();
+		bundle.putString("imageUrl", mImageUrl);
+		
+		// Add the Sample Fragment if there is one
+		Fragment newFragment = getFragment();
+		newFragment.setArguments(bundle);
+
+		if (newFragment != null) {
+			getSupportFragmentManager().beginTransaction()
+					.replace(android.R.id.content, newFragment).commit();
 		}
 	}
 

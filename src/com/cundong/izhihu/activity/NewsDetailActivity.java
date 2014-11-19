@@ -91,20 +91,20 @@ public class NewsDetailActivity extends BaseActivity implements OnContentLoadLis
 				mNewsId = getIntent().getLongExtra("id", 0);
 				mNewsEntity = (NewsEntity) getIntent().getSerializableExtra("newsEntity");
 			}
-			
-			Bundle bundle = new Bundle();
-			bundle.putLong("id", mNewsId);
-
-			// Add the Sample Fragment if there is one
-			Fragment newFragment = getFragment();
-			newFragment.setArguments(bundle);
-
-			if (newFragment != null) {
-				getSupportFragmentManager().beginTransaction().replace(android.R.id.content, newFragment).commit();
-			}
 		} else {
 			mNewsEntity = (NewsEntity) savedInstanceState.getSerializable(NEWS_ENTIRY);
 			mNewsId = savedInstanceState.getLong(NEWS_ID);
+		}
+		
+		Bundle bundle = new Bundle();
+		bundle.putLong("id", mNewsId);
+
+		// Add the Sample Fragment if there is one
+		Fragment newFragment = getFragment();
+		newFragment.setArguments(bundle);
+
+		if (newFragment != null) {
+			getSupportFragmentManager().beginTransaction().replace(android.R.id.content, newFragment).commit();
 		}
 		
 		new FavoriteStatusGetTask().executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR);
