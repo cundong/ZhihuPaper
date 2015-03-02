@@ -202,14 +202,13 @@ public class NewsDetailFragment extends BaseFragment implements
 	}
 
 	@Override
-	public void onPostExecute(String content, boolean isRefreshSuccess,
-			boolean isContentSame) {
+	public void onPostExecute(String content) {
 		if (isAdded()) {
 			
 			// Notify PullToRefreshLayout that the refresh has finished
 			mPullToRefreshLayout.setRefreshComplete();
 
-			 if (isRefreshSuccess && !isContentSame && !TextUtils.isEmpty(content)) {
+			 if (!TextUtils.isEmpty(content)) {
 				 setWebView(content, true);
 			 }
 		}
@@ -384,9 +383,7 @@ public class NewsDetailFragment extends BaseFragment implements
 							}
 
 							@Override
-							public void onPostExecute(String content,
-									boolean isRefreshSuccess,
-									boolean isContentSame) {
+							public void onPostExecute(String content) {
 								
 								if (!isAdded()) {
 									return;

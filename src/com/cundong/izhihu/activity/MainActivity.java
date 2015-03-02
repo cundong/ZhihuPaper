@@ -81,8 +81,7 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 	}
 
 	@Override
-	public void onPostExecute(String content, boolean isRefreshSuccess,
-			boolean isContentSame) {
+	public void onPostExecute(String content) {
 		
 		if (!TextUtils.isEmpty(content) && content.equals("success")) {
 			Crouton.makeText(this, R.string.offline_download_done, Style.INFO)

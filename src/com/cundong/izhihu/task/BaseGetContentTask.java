@@ -55,7 +55,7 @@ public abstract class BaseGetContentTask extends MyAsyncTask<String, String, Str
 		
 		if (mListener != null) {
 			if (isRefreshSuccess) {
-				mListener.onPostExecute(content, isRefreshSuccess, isContentSame);
+				mListener.onPostExecute(content);
 			} else {
 				mListener.onFail(e);
 			}

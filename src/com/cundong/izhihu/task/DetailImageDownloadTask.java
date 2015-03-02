@@ -98,7 +98,7 @@ public class DetailImageDownloadTask extends BaseGetContentTask {
 	protected void onPostExecute(String content) {
 		super.onPostExecute(content);
 
-		mListener.onPostExecute(content, true, false);
+		mListener.onPostExecute(content);
 
 	}
 

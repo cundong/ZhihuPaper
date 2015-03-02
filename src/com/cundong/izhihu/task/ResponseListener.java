@@ -10,7 +10,7 @@ public interface ResponseListener {
 	
 	public void onPreExecute();
 
-	public void onPostExecute(String content, boolean isRefreshSuccess, boolean isContentSame);
+	public void onPostExecute(String content);
 
 	public void onProgressUpdate(String value);
 	
