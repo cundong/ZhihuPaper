@@ -75,4 +75,7 @@
         <item name="android:textColor">@color/ab_title_dark</item>
         <item name="android:textSize">18sp</item>
     </style>
+        <style name="Theme.splash" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 </resources>

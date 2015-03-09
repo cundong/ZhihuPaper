@@ -22,6 +22,9 @@ public final class Constants {
 
 		// 获取过往新闻
 		public static final String URLDEFORE = "http://news.at.zhihu.com/api/3/news/before/";
+		
+		//获取启动页面的图片
+		public static final String URL_LAUNCHER = "http://news-at.zhihu.com/api/3/start-image/";
 	}
 	
 	public static final int NEWS_LIST = 1;

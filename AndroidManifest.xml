@@ -12,7 +12,7 @@
 	
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="21" />
+        android:targetSdkVersion="19" />
 
     <application
         android:name=".ZhihuApplication"
@@ -20,16 +20,23 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Daily.AppTheme.Light" >
-        <activity
-            android:name=".activity.MainActivity"
+        
+        <activity android:name=".activity.SplashActivity"
             android:alwaysRetainTaskState="true"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name" >
+            android:screenOrientation="portrait"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:alwaysRetainTaskState="true"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".activity.NewsDetailActivity"
