@@ -7,12 +7,12 @@ package com.cundong.izhihu.task;
  * @version 1.0
  */
 public interface ResponseListener {
-	
+
 	public void onPreExecute();
 
 	public void onPostExecute(String content);
 
 	public void onProgressUpdate(String value);
-	
+
 	public void onFail(Exception e);
 }

@@ -14,7 +14,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Thank you, qii~ :-)
  */
-
 @SuppressLint("NewApi")
 public abstract class MyAsyncTask<Params, Progress, Result> {
     private static final String LOG_TAG = "AsyncTask";

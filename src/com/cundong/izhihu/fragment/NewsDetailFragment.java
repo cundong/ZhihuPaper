@@ -339,11 +339,6 @@ public class NewsDetailFragment extends BaseFragment implements
 		}
 	}
 
-	@Override
-	public void onProgressUpdate(String value) {
-		
-	}
-	
 	@SuppressLint("NewApi")
 	private WebViewClient mWebViewClient = new WebViewClient() {
 
@@ -508,5 +503,10 @@ public class NewsDetailFragment extends BaseFragment implements
 	 */
 	public interface OnContentLoadListener {
 		public void onComplete(NewsDetailEntity newsDetailEntity);
+	}
+
+	@Override
+	public void onProgressUpdate(String value) {
+		
 	}
 }

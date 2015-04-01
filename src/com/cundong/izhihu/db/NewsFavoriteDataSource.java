@@ -16,7 +16,7 @@ import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
  * @date 	2014-10-7
  * @version 1.0
  */
-public final class NewsFavoriteDataSource {
+public final class NewsFavoriteDataSource extends BaseDataSource {
 
 	private SQLiteDatabase database;
 	private DBHelper dbHelper;

@@ -33,12 +33,12 @@ public class DetailImageDownloadTask extends BaseGetContentTask {
 
 		String externalCacheDir = SDCardUtils.getExternalCacheDir(mContext);
 		
-		if ( params.length == 0 || TextUtils.isEmpty(externalCacheDir) )
+		if (params.length == 0 || TextUtils.isEmpty(externalCacheDir))
 			return null;
 	
 		File file = null;
 		for (String param : params) {
-			
+
 			if (TextUtils.isEmpty(param)) {
 				Logger.getLogger().e("no download, the image url is empty");
 				continue;
@@ -46,9 +46,9 @@ public class DetailImageDownloadTask extends BaseGetContentTask {
 
 			String filePath = ZhihuUtils.getCacheImgFilePath(mContext, param);
 			file = new File(filePath);
-			
+
 			boolean needDownload = true;
-			
+
 			if (!file.exists()) {
 				try {
 					file.createNewFile();
@@ -57,25 +57,25 @@ public class DetailImageDownloadTask extends BaseGetContentTask {
 				}
 			} else {
 				long fileSize = FileUtils.getFileSize(filePath);
-				
+
 				if (fileSize == 0) {
 					// need re download
 				} else {
 					needDownload = false;
 				}
 			}
-			
+
 			if (needDownload) {
 				InputStream in = null;
 				OutputStream out = null;
-				
+
 				// from web
 				try {
 					in = HttpClientUtils.getStream(mContext, param, null);
 					out = new FileOutputStream(file);
 
 					StreamUtils.copy(in, out);
-					
+
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (Exception e) {
@@ -87,25 +87,10 @@ public class DetailImageDownloadTask extends BaseGetContentTask {
 			} else {
 				// no need download
 			}
-			
+
 			publishProgress(param);
 		}
 
 		return null;
-	}
-
-	@Override
-	protected void onPostExecute(String content) {
-		super.onPostExecute(content);
-
-		mListener.onPostExecute(content);
-
-	}
-
-	@Override
-	protected void onProgressUpdate(String... values) {
-		super.onProgressUpdate(values);
-
-		mListener.onProgressUpdate(values[0]);
 	}
 }

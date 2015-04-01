@@ -19,7 +19,7 @@ import com.cundong.izhihu.util.GsonUtils;
  * @date 	2014-9-20
  * @version 1.0
  */
-public final class NewsDataSource {
+public final class NewsDataSource extends BaseDataSource {
 
 	private SQLiteDatabase database;
 	private DBHelper dbHelper;

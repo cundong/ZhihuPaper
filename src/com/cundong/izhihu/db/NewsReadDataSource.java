@@ -14,7 +14,7 @@ import android.text.TextUtils;
  * @date 2014-10-7
  * @version 1.0
  */
-public final class NewsReadDataSource {
+public final class NewsReadDataSource extends BaseDataSource {
 
 	private SQLiteDatabase database;
 	private DBHelper dbHelper;

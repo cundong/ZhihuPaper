@@ -5,7 +5,7 @@ import java.io.IOException;
 import android.content.Context;
 
 import com.cundong.izhihu.Constants;
-import com.cundong.izhihu.ZhihuApplication;
+import com.cundong.izhihu.db.NewsDataSource;
 import com.cundong.izhihu.entity.NewsListEntity;
 import com.cundong.izhihu.util.GsonUtils;
 import com.cundong.izhihu.util.ListUtils;
@@ -17,14 +17,14 @@ import com.cundong.izhihu.util.ZhihuUtils;
  * @date 	2014-9-15
  * @version 1.0
  */
-public class GetLatestNewsTask extends BaseGetNewsListTask {
+public class GetLatestNewsTask extends BaseGetContentTask {
 
 	public GetLatestNewsTask(Context context, ResponseListener listener) {
 		super(context, listener);
 	}
 	
 	@Override
-	protected NewsListEntity doInBackground(String... params) {
+	protected String doInBackground(String... params) {
 
 		String oldContent = null, newContent = null;
 
@@ -34,35 +34,35 @@ public class GetLatestNewsTask extends BaseGetNewsListTask {
 		
 		try {
 			newContent = getUrl(Constants.Url.URL_LATEST);
-			newsListEntity = (NewsListEntity)GsonUtils.getEntity(newContent, NewsListEntity.class);
+			newsListEntity = (NewsListEntity) GsonUtils.getEntity(newContent, NewsListEntity.class);
 			
 			date = newsListEntity != null ? newsListEntity.date : null;
 			
-			oldContent = ZhihuApplication.getDataSource().getContent(date);
+			oldContent = ((NewsDataSource) getDataSource()).getContent(date);
 			
 			isRefreshSuccess = !ListUtils.isEmpty(newsListEntity.stories);	
 		} catch (IOException e) {
 			e.printStackTrace();
 			
 			this.isRefreshSuccess = false;
-			this.e = e;
+			this.mException = e;
 		} catch (Exception e) {
 			e.printStackTrace();
 
 			this.isRefreshSuccess = false;
-			this.e = e;
+			this.mException = e;
 		}
 		
 		isContentSame = checkIsContentSame(oldContent, newContent);
 		
 		if (isRefreshSuccess && !isContentSame) {
-			ZhihuApplication.getDataSource().insertOrUpdateNewsList(Constants.NEWS_LIST, date, newContent);
+			((NewsDataSource) getDataSource()).insertOrUpdateNewsList(Constants.NEWS_LIST, date, newContent);
 		}
 		
 		if (newsListEntity != null) {
 			ZhihuUtils.setReadStatus4NewsList(newsListEntity.stories);
 		}
 		
-		return newsListEntity;
+		return newContent;
 	}
 }

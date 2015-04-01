@@ -5,7 +5,7 @@ import java.io.IOException;
 import android.content.Context;
 
 import com.cundong.izhihu.Constants;
-import com.cundong.izhihu.ZhihuApplication;
+import com.cundong.izhihu.db.NewsDataSource;
 import com.cundong.izhihu.entity.NewsDetailEntity;
 import com.cundong.izhihu.util.GsonUtils;
 
@@ -29,26 +29,25 @@ public class GetNewsDetailTask extends BaseGetContentTask {
 		try {
 			content = getUrl(Constants.Url.URL_DETAIL + params[0]);
 			
-			NewsDetailEntity newsDetailEntity = (NewsDetailEntity) GsonUtils.getEntity(
-					content, NewsDetailEntity.class);
+			NewsDetailEntity newsDetailEntity = (NewsDetailEntity) GsonUtils.getEntity(content, NewsDetailEntity.class);
 			
 			isRefreshSuccess = newsDetailEntity != null;
 		} catch (IOException e) {
 			e.printStackTrace();
 
 			isRefreshSuccess = false;
-			this.e = e;
+			this.mException = e;
 		} catch (Exception e) {
 			e.printStackTrace();
 			
 			isRefreshSuccess = false;
-			this.e = e;
+			this.mException = e;
 		}
 
 		isContentSame = checkIsContentSame(params[0], content);
 		
 		if (isRefreshSuccess && !isContentSame) {
-			ZhihuApplication.getDataSource().insertOrUpdateNewsList(Constants.NEWS_DETAIL, 
+			((NewsDataSource) getDataSource()).insertOrUpdateNewsList(Constants.NEWS_DETAIL, 
 					"detail_" + params[0], content);
 		}
 		

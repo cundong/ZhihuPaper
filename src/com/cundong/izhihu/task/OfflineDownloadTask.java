@@ -16,7 +16,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.cundong.izhihu.Constants;
-import com.cundong.izhihu.ZhihuApplication;
+import com.cundong.izhihu.db.NewsDataSource;
 import com.cundong.izhihu.entity.NewsDetailEntity;
 import com.cundong.izhihu.entity.NewsListEntity;
 import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
@@ -60,7 +60,7 @@ public class OfflineDownloadTask extends BaseGetContentTask {
 						continue;
 					}
 					
-					ZhihuApplication.getDataSource().insertOrUpdateNewsList(Constants.NEWS_DETAIL, "detail_" + newsEntity.id, detailContent);
+					((NewsDataSource) getDataSource()).insertOrUpdateNewsList(Constants.NEWS_DETAIL, "detail_" + newsEntity.id, detailContent);
 					
 					ArrayList<String> imageList = new ArrayList<String>();
 					

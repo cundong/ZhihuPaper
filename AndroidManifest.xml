@@ -1,15 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cundong.izhihu"
-    android:versionCode="16"
-    android:versionName="2.32" >
+    android:versionCode="17"
+    android:versionName="2.3.3" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-	
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="21" />
@@ -33,18 +33,35 @@
         </activity>
         <activity
             android:name=".activity.NewsDetailActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
             android:alwaysRetainTaskState="true"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" android:host="daily.zhihu.com" android:pathPattern="/story/.*" />
-                <data android:scheme="zhihudaily" android:host="story" android:pathPattern="/.*" />
-                <data android:scheme="zhihudaily" android:host="section" android:pathPattern="/.*" />
-                <data android:scheme="zhihudaily" android:host="theme" android:pathPattern="/.*" />
-                <data android:scheme="zhihudaily" android:host="editor" android:pathPattern="/.*" />
+
+                <data
+                    android:host="daily.zhihu.com"
+                    android:pathPattern="/story/.*"
+                    android:scheme="http" />
+                <data
+                    android:host="story"
+                    android:pathPattern="/.*"
+                    android:scheme="zhihudaily" />
+                <data
+                    android:host="section"
+                    android:pathPattern="/.*"
+                    android:scheme="zhihudaily" />
+                <data
+                    android:host="theme"
+                    android:pathPattern="/.*"
+                    android:scheme="zhihudaily" />
+                <data
+                    android:host="editor"
+                    android:pathPattern="/.*"
+                    android:scheme="zhihudaily" />
             </intent-filter>
         </activity>
         <activity
@@ -67,9 +84,13 @@
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" />
-        
-        <meta-data android:value="543c987afd98c536ba00c920" android:name="UMENG_APPKEY"/>
-		<meta-data android:value="WanDouJia" android:name="UMENG_CHANNEL"/>
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="543c987afd98c536ba00c920" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="WanDouJia" />
     </application>
 
 </manifest>
