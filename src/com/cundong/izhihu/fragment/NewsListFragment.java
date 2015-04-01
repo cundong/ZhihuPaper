@@ -27,10 +27,10 @@ import com.cundong.izhihu.adapter.NewsAdapter;
 import com.cundong.izhihu.db.NewsDataSource;
 import com.cundong.izhihu.entity.NewsListEntity;
 import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
-import com.cundong.izhihu.task.BaseGetContentTask;
+import com.cundong.izhihu.task.BaseGetNewsTask;
+import com.cundong.izhihu.task.BaseGetNewsTask.ResponseListener;
 import com.cundong.izhihu.task.GetLatestNewsTask;
 import com.cundong.izhihu.task.MyAsyncTask;
-import com.cundong.izhihu.task.ResponseListener;
 import com.cundong.izhihu.util.GsonUtils;
 import com.cundong.izhihu.util.ListUtils;
 import com.cundong.izhihu.util.ZhihuUtils;
@@ -136,32 +136,33 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		protected void onPostExecute(NewsListEntity result) {
 			super.onPostExecute(result);
 			
-			if (isAdded()) {
-				if (result != null && !ListUtils.isEmpty(result.stories)) {
-					
-					NewsEntity tagNewsEntity = new NewsEntity();
-					tagNewsEntity.isTag = true;
-					tagNewsEntity.title = result.date;
-					
-					mNewsList = new ArrayList<NewsEntity>();
-					mNewsList.add(tagNewsEntity);
-					mNewsList.addAll(result.stories);
-					
-					setAdapter(mNewsList);
-				}
+			if(!isAdded())
+				return;
+			
+			if (result != null && !ListUtils.isEmpty(result.stories)) {
+				
+				NewsEntity tagNewsEntity = new NewsEntity();
+				tagNewsEntity.isTag = true;
+				tagNewsEntity.title = result.date;
+				
+				mNewsList = new ArrayList<NewsEntity>();
+				mNewsList.add(tagNewsEntity);
+				mNewsList.addAll(result.stories);
+				
+				setAdapter(mNewsList);
 			}
 		}
 	}
 	
 	//下载过往的新闻
-	private class GetMoreNewsTask extends BaseGetContentTask {
+	private class GetMoreNewsTask extends BaseGetNewsTask {
 
 		public GetMoreNewsTask(Context context, ResponseListener listener) {
 			super(context, listener);
 		}
 		
 		@Override
-		protected String doInBackground(String... params) {
+		protected NewsListEntity doInBackground(String... params) {
 			
 			if (params.length == 0)
 				return null;
@@ -177,7 +178,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 				if (newsListEntity != null) {
 					ZhihuUtils.setReadStatus4NewsList(newsListEntity.stories);
 				}
-				return oldContent;
+				return newsListEntity;
 			} else {
 				
 				String newContent = null;
@@ -210,36 +211,34 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 					ZhihuUtils.setReadStatus4NewsList(newsListEntity.stories);
 				}
 				
-				return newContent;
+				return newsListEntity;
 			}
 		}
 
 		@Override
-		protected void onPostExecute(String result) {
+		protected void onPostExecute(NewsListEntity result) {
 			super.onPostExecute(result);
 
-			if (isAdded()) {
+			if(!isAdded())
+				return;
+			
+			setListShown(true);
 
-				setListShown(true);
-
-				mListViewPreLast = 0;
+			mListViewPreLast = 0;
+			
+			if (mNewsList == null) {
+				mNewsList = new ArrayList<NewsEntity>();
+			}
+			
+			if (result != null && !ListUtils.isEmpty(result.stories)) {
 				
-				if (mNewsList == null) {
-					mNewsList = new ArrayList<NewsEntity>();
-				}
+				NewsEntity tagNewsEntity = new NewsEntity();
+				tagNewsEntity.isTag = true;
+				tagNewsEntity.title = result.date;
+				mNewsList.add(tagNewsEntity);
+				mNewsList.addAll(result.stories);
 				
-				NewsListEntity newsListEntity = (NewsListEntity) GsonUtils.getEntity(result, NewsListEntity.class);
-				if (newsListEntity != null && !ListUtils.isEmpty(newsListEntity.stories)) {
-					
-					NewsEntity tagNewsEntity = new NewsEntity();
-					tagNewsEntity.isTag = true;
-					tagNewsEntity.title = newsListEntity.date;
-					mNewsList.add(tagNewsEntity);
-					mNewsList.addAll(newsListEntity.stories);
-					
-					setAdapter(mNewsList);
-				}
-				
+				setAdapter(mNewsList);
 			}
 		}
 	}
@@ -255,7 +254,7 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 	}
 	
 	@Override
-	public void onPostExecute(String content) {
+	public void onPostExecute(NewsListEntity result) {
 		if(!isAdded())
 			return;
 		
@@ -267,18 +266,17 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 			setListShown(true);
 		}
 		
-		NewsListEntity newsListEntity = (NewsListEntity) GsonUtils.getEntity(content, NewsListEntity.class);
-		if (newsListEntity != null) {
+		if (result != null) {
 			mNewsList = new ArrayList<NewsEntity>();
 
 			NewsEntity tagNewsEntity = new NewsEntity();
 			tagNewsEntity.isTag = true;
-			tagNewsEntity.title = newsListEntity.date;
+			tagNewsEntity.title = result.date;
 			mNewsList.add(tagNewsEntity);
 
-			mNewsList.addAll(newsListEntity.stories);
+			mNewsList.addAll(result.stories);
 
-			mCurrentDate = newsListEntity.date;
+			mCurrentDate = result.date;
 
 			setAdapter(mNewsList);
 		}
@@ -330,5 +328,20 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 	
 	public void updateList() {
 		new LoadCacheNewsTask().executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR);
+	}
+
+	@Override
+	protected void onRestoreState(Bundle savedInstanceState) {
+
+	}
+
+	@Override
+	protected void onSaveState(Bundle outState) {
+
+	}
+
+	@Override
+	protected void onFirstTimeLaunched() {
+
 	}
 }

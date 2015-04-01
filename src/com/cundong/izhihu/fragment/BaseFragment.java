@@ -15,6 +15,14 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
 	
 	protected Logger mLogger = Logger.getLogger();
 	
+	private Bundle savedState;
+	
+	public BaseFragment() {
+        super();
+        if (getArguments() == null)
+            setArguments(new Bundle());
+    }
+	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
@@ -23,6 +31,70 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
 				.listener(this)
 				.setup(this.mPullToRefreshLayout);
 	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		// Restore State Here
+		if (!restoreStateFromArguments()) {
+			// First Time, Initialize something here
+			onFirstTimeLaunched();
+		}
+	}
+	
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+
+		saveStateToArguments();
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		saveStateToArguments();
+	}
+
+	private void saveStateToArguments() {
+		if (getView() != null) {
+			savedState = saveState();
+		} 
+		
+		if (savedState != null) {
+			Bundle b = getArguments();
+			b.putBundle("internalSavedViewState", savedState);
+		}
+	}
+
+	private boolean restoreStateFromArguments() {
+		Bundle b = getArguments();
+		savedState = b.getBundle("internalSavedViewState");
+		if (savedState != null) {
+			restoreState();
+			return true;
+		}
+		return false;
+	}
+
+	private void restoreState() {
+		if (savedState != null) {
+			onRestoreState(savedState);
+		}
+	}
+
+	private Bundle saveState() {
+		Bundle state = new Bundle();
+		onSaveState(state);
+		return state;
+	}
+
+	protected abstract void onRestoreState(Bundle savedInstanceState);
+	
+	protected abstract void onSaveState(Bundle outState);
+
+	protected abstract void onFirstTimeLaunched();
 	
 	@Override
 	public void onRefreshStarted(View view) {
@@ -38,17 +110,5 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
 		if (isAdded()) {
 			mPullToRefreshLayout.setRefreshComplete();
 		}
-		
-//		if ( isAdded() && e != null) {
-//			// 无网络异常
-//			if (e != null && e instanceof SocketException) {
-//				Crouton.makeText( getActivity(), "网络连接失败", Style.ALERT).show();
-//			}
-//			// 网络超时
-//			else if (e != null && e instanceof SocketTimeoutException
-//					|| e instanceof UnknownHostException) {
-//				Crouton.makeText(getActivity(), "网络请求超时", Style.ALERT).show();
-//			}
-//		}
 	}
 }

@@ -34,9 +34,6 @@ import com.cundong.izhihu.task.MyAsyncTask;
  */
 public class NewsDetailActivity extends BaseActivity implements OnContentLoadListener {
 
-	private static final String NEWS_ID = "com.cundong.izhihu.activity.NewsDetailActivity.news_id";
-	private static final String NEWS_ENTIRY = "com.cundong.izhihu.activity.NewsDetailActivity.news_entity";
-
 	//手指在屏幕滑动，X轴最小变化值
 	private static final int FLING_MIN_DISTANCE_X = 200;
 	
@@ -92,8 +89,8 @@ public class NewsDetailActivity extends BaseActivity implements OnContentLoadLis
 				mNewsEntity = (NewsEntity) getIntent().getSerializableExtra("newsEntity");
 			}
 		} else {
-			mNewsEntity = (NewsEntity) savedInstanceState.getSerializable(NEWS_ENTIRY);
-			mNewsId = savedInstanceState.getLong(NEWS_ID);
+			mNewsEntity = (NewsEntity) savedInstanceState.getSerializable("newsEntity");
+			mNewsId = savedInstanceState.getLong("newsID");
 		}
 		
 		Bundle bundle = new Bundle();
@@ -121,8 +118,8 @@ public class NewsDetailActivity extends BaseActivity implements OnContentLoadLis
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		
-		outState.putLong(NEWS_ID, mNewsId);
-		outState.putSerializable(NEWS_ENTIRY, mNewsEntity);
+		outState.putLong("newsID", mNewsId);
+		outState.putSerializable("newsEntity", mNewsEntity);
 	}
 
 	@Override

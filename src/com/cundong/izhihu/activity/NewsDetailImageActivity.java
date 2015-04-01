@@ -20,8 +20,6 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
  */
 public class NewsDetailImageActivity extends BaseActivity {
 
-	private static final String NEWS_DETAIL_IMAGE= "com.cundong.izhihu.activity.NewsDetailImageActivity.news_detail_image";
-	
 	private String mImageUrl = null;
 	
 	@Override
@@ -34,7 +32,7 @@ public class NewsDetailImageActivity extends BaseActivity {
 		if (savedInstanceState == null) {
 			mImageUrl = getIntent().getStringExtra("imageUrl");
 		} else {
-			mImageUrl = savedInstanceState.getString(NEWS_DETAIL_IMAGE);
+			mImageUrl = savedInstanceState.getString("imageUrl");
 		}
 		
 		Bundle bundle = new Bundle();
@@ -52,7 +50,7 @@ public class NewsDetailImageActivity extends BaseActivity {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		outState.putString(NEWS_DETAIL_IMAGE, mImageUrl);
+		outState.putString("imageUrl", mImageUrl);
 		super.onSaveInstanceState(outState);
 	}
 	

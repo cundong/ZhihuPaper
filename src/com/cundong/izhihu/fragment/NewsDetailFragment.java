@@ -57,11 +57,8 @@ import com.cundong.izhihu.util.ZhihuUtils;
  * @date 	2014-9-20
  * @version 1.0
  */
-@SuppressLint("NewApi")
 public class NewsDetailFragment extends BaseFragment implements
 		ResponseListener {
-	
-	private static final String ID = "com.cundong.izhihu.fragment.NewsDetailFragment.id";
 	
 	private ProgressBar mProgressBar;
 	private WebView mWebView;
@@ -87,24 +84,11 @@ public class NewsDetailFragment extends BaseFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (savedInstanceState == null) {
-			Bundle bundle = getArguments();
-			mNewsId = bundle != null ? bundle.getLong("id") : 0;
-		} else {
-			mNewsId = savedInstanceState.getLong(ID);
-		}
-		
 		new LoadCacheDetailTask().executeOnExecutor(
 				MyAsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(mNewsId));
 		
 		new GetNewsDetailTask(getActivity(), this).executeOnExecutor(
 				MyAsyncTask.THREAD_POOL_EXECUTOR, String.valueOf(mNewsId));
-	}
-	
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putLong(ID, mNewsId);
 	}
 	
 	@Override
@@ -124,7 +108,7 @@ public class NewsDetailFragment extends BaseFragment implements
 		return rootView;
 	}
 	
-	@SuppressLint("SetJavaScriptEnabled")
+	@SuppressLint({ "SetJavaScriptEnabled", "NewApi" })
 	private void setUpWebViewDefaults(WebView webView) {
 		
 		mWebView.addJavascriptInterface(new JavaScriptObject(getActivity()), "injectedObject");
@@ -508,5 +492,21 @@ public class NewsDetailFragment extends BaseFragment implements
 	@Override
 	public void onProgressUpdate(String value) {
 		
+	}
+
+	@Override
+	protected void onRestoreState(Bundle savedInstanceState) {
+		mNewsId = savedInstanceState.getLong("id");
+	}
+
+	@Override
+	protected void onSaveState(Bundle outState) {
+		outState.putLong("id", mNewsId);
+	}
+
+	@Override
+	protected void onFirstTimeLaunched() {
+		Bundle bundle = getArguments();
+		mNewsId = bundle != null ? bundle.getLong("id") : 0;
 	}
 }

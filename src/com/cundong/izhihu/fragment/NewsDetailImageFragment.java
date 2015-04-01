@@ -14,29 +14,9 @@ import com.cundong.izhihu.R;
 
 public class NewsDetailImageFragment extends BaseFragment {
 
-	private static final String IMAGE_URL = "com.cundong.izhihu.fragment.NewsDetailImageFragment.imageUrl";
-	
 	private ImageView mImageView;
 	
 	private String mImageUrl = null;
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		if (savedInstanceState == null) {
-			Bundle bundle = getArguments();
-			mImageUrl = bundle != null ? bundle.getString("imageUrl") : "";
-		} else {
-			mImageUrl = savedInstanceState.getString(IMAGE_URL);
-		}
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putString(IMAGE_URL, mImageUrl);
-	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -62,5 +42,21 @@ public class NewsDetailImageFragment extends BaseFragment {
 		if (bitmap != null) {
 			mImageView.setImageBitmap(bitmap);
 		}
+	}
+
+	@Override
+	protected void onRestoreState(Bundle savedInstanceState) {
+		mImageUrl = savedInstanceState.getString("imageUrl");
+	}
+
+	@Override
+	protected void onSaveState(Bundle outState) {
+		outState.putString("imageUrl", mImageUrl);
+	}
+
+	@Override
+	protected void onFirstTimeLaunched() {
+		Bundle bundle = getArguments();
+		mImageUrl = bundle != null ? bundle.getString("imageUrl") : "";
 	}
 }

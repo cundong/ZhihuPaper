@@ -17,14 +17,14 @@ import com.cundong.izhihu.util.ZhihuUtils;
  * @date 	2014-9-15
  * @version 1.0
  */
-public class GetLatestNewsTask extends BaseGetContentTask {
+public class GetLatestNewsTask extends BaseGetNewsTask {
 
 	public GetLatestNewsTask(Context context, ResponseListener listener) {
 		super(context, listener);
 	}
 	
 	@Override
-	protected String doInBackground(String... params) {
+	protected NewsListEntity doInBackground(String... params) {
 
 		String oldContent = null, newContent = null;
 
@@ -63,6 +63,6 @@ public class GetLatestNewsTask extends BaseGetContentTask {
 			ZhihuUtils.setReadStatus4NewsList(newsListEntity.stories);
 		}
 		
-		return newContent;
+		return newsListEntity;
 	}
 }
