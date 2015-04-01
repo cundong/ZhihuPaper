@@ -78,6 +78,15 @@ public class DateUtils {
 		return sf.format(date);
 	}
 
+	/**
+	 * 获取今天的日期，格式为：YYYY_MM_DD
+	 * 
+	 * @return
+	 */
+	public static String getCurrentDate() {
+		return getCurrentDate(YYYY_MM_DD);
+	}
+	
 	public static int getCurrentMonth() {
 		Date date = Calendar.getInstance().getTime();
 		SimpleDateFormat sf = new SimpleDateFormat("MM", Locale.getDefault());

@@ -17,6 +17,9 @@ import com.cundong.izhihu.fragment.NewsListFragment;
 import com.cundong.izhihu.task.MyAsyncTask;
 import com.cundong.izhihu.task.OfflineDownloadTask;
 import com.cundong.izhihu.task.ResponseListener;
+import com.cundong.izhihu.util.DateUtils;
+import com.cundong.izhihu.util.NetWorkHelper;
+import com.cundong.izhihu.util.PreferencesUtils;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -38,6 +41,12 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 		
 		if (newFragment != null) {
 			getSupportFragmentManager().beginTransaction().replace(android.R.id.content, newFragment).commit();
+		}
+		
+		// WIFI下自动开启离线
+		if (NetWorkHelper.isWifi(this) && !PreferencesUtils.getBoolean(mInstance, DateUtils.getCurrentDate(), false)) {
+
+			new OfflineDownloadTask(this, this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR);
 		}
 	}
 	
@@ -84,6 +93,9 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 	public void onPostExecute(String content) {
 		
 		if (!TextUtils.isEmpty(content) && content.equals("success")) {
+			
+			PreferencesUtils.putBoolean(mInstance, DateUtils.getCurrentDate(), true);
+			
 			Crouton.makeText(this, R.string.offline_download_done, Style.INFO)
 					.show();
 		} else {
