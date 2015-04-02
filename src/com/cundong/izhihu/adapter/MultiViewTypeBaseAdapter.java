@@ -2,8 +2,6 @@ package com.cundong.izhihu.adapter;
 
 import java.util.ArrayList;
 
-import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
-
 import android.content.Context;
 import android.util.SparseArray;
 import android.view.View;
