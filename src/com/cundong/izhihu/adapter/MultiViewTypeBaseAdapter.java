@@ -2,6 +2,8 @@ package com.cundong.izhihu.adapter;
 
 import java.util.ArrayList;
 
+import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
+
 import android.content.Context;
 import android.util.SparseArray;
 import android.view.View;
@@ -23,6 +25,11 @@ public abstract class MultiViewTypeBaseAdapter<T> extends BaseAdapter {
 		this(context, list);
 		
 		TYPE_COUNTER = viewTypeCount;
+	}
+	
+	public void updateData(ArrayList<T> list) {
+		this.mDataList = list == null ? new ArrayList<T>() : new ArrayList<T>(list);
+		this.notifyDataSetChanged();
 	}
 	
 	@Override

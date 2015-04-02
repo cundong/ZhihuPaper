@@ -31,85 +31,68 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 /**
- * 类说明： 	新闻列表 Adapter
+ * 类说明： 新闻列表 Adapter
  * 
- * @date 	2014-9-7
+ * @date 2014-9-7
  * @version 1.0
  */
 public class NewsAdapter extends MultiViewTypeBaseAdapter<NewsEntity> {
 
-	//带图item
+	// 带图item
 	private static final int TYPE_0 = 0;
-	
-	//不带图item
+
+	// 不带图item
 	private static final int TYPE_1 = 1;
-	
-	//tag
+
+	// tag
 	private static final int TYPE_2 = 2;
-	
+
 	private ImageLoader mImageLoader = ImageLoader.getInstance();
 
 	private ImageLoadingListener mAnimateFirstListener = new AnimateFirstDisplayListener();
 
 	private int titleColorNorId, titleReadColorId, listItemDefaultImageId;
-	
-	//是否当前为收藏夹Adapter
+
+	// 是否当前为收藏夹Adapter
 	private boolean mFavoriteFalg = false;
-	
+
 	private DisplayImageOptions mOptions = null;
-	
+
 	private SparseBooleanArray mSelectedItemsIds = null;
-	
+
 	public NewsAdapter(Context context, ArrayList<NewsEntity> list) {
 		super(context, list);
-		
+
 		this.mSelectedItemsIds = new SparseBooleanArray();
-		
+
 		initStyle();
 	}
-	
-	public void updateData(ArrayList<NewsEntity> newsList) {
-		
-		this.mDataList = newsList;
-		
-		this.notifyDataSetChanged();
-	}
-	
+
 	private void initStyle() {
 		Resources.Theme theme = mContext.getTheme();
 		TypedArray typedArray = null;
-		
-		SharedPreferences mPerferences = PreferenceManager
-				.getDefaultSharedPreferences(mContext);
-		
+
+		SharedPreferences mPerferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+
 		if (mPerferences.getBoolean("dark_theme?", false)) {
-			typedArray = theme.obtainStyledAttributes(R.style.Theme_Daily_AppTheme_Dark, 
-					new int[] { R.attr.listItemTextNorColor, R.attr.listItemTextReadColor, R.attr.listItemDefaultImage });
+			typedArray = theme.obtainStyledAttributes(R.style.Theme_Daily_AppTheme_Dark, new int[] { R.attr.listItemTextNorColor, R.attr.listItemTextReadColor, R.attr.listItemDefaultImage });
 		} else {
-			typedArray = theme.obtainStyledAttributes(R.style.Theme_Daily_AppTheme_Light, 
-					new int[] { R.attr.listItemTextNorColor, R.attr.listItemTextReadColor, R.attr.listItemDefaultImage }); 
+			typedArray = theme.obtainStyledAttributes(R.style.Theme_Daily_AppTheme_Light, new int[] { R.attr.listItemTextNorColor, R.attr.listItemTextReadColor, R.attr.listItemDefaultImage });
 		}
-		
+
 		titleColorNorId = typedArray.getResourceId(0, 0);
 		titleReadColorId = typedArray.getResourceId(1, 0);
 		listItemDefaultImageId = typedArray.getResourceId(2, 0);
-		
+
 		typedArray.recycle();
-		
-		mOptions = new DisplayImageOptions.Builder()
-			.showImageOnLoading( mContext.getResources().getDrawable(listItemDefaultImageId) )
-			.showImageOnFail( mContext.getResources().getDrawable(listItemDefaultImageId) )
-			.showImageForEmptyUri( mContext.getResources().getDrawable(listItemDefaultImageId) )
-			.cacheInMemory(true)
-			.cacheOnDisk(true)
-			.considerExifParams(true)
-			.build();
+
+		mOptions = new DisplayImageOptions.Builder().showImageOnLoading(mContext.getResources().getDrawable(listItemDefaultImageId)).showImageOnFail(mContext.getResources().getDrawable(listItemDefaultImageId)).showImageForEmptyUri(mContext.getResources().getDrawable(listItemDefaultImageId)).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).build();
 	}
-	
-	public void setFavoriteFlag( boolean favoriteFalg ) {
+
+	public void setFavoriteFlag(boolean favoriteFalg) {
 		this.mFavoriteFalg = favoriteFalg;
 	}
-	
+
 	public void toggleSelection(int position) {
 		selectView(position, !mSelectedItemsIds.get(position));
 	}
@@ -122,12 +105,12 @@ public class NewsAdapter extends MultiViewTypeBaseAdapter<NewsEntity> {
 
 		notifyDataSetChanged();
 	}
-	
+
 	public void clearSelection() {
 		mSelectedItemsIds = new SparseBooleanArray();
 		notifyDataSetChanged();
 	}
-	
+
 	public int getSelectedCount() {
 		return mSelectedItemsIds.size();
 	}
@@ -144,7 +127,7 @@ public class NewsAdapter extends MultiViewTypeBaseAdapter<NewsEntity> {
 			return 3;
 		}
 	}
-	
+
 	@Override
 	public int getItemViewType(int position) {
 
@@ -164,7 +147,7 @@ public class NewsAdapter extends MultiViewTypeBaseAdapter<NewsEntity> {
 			}
 		}
 	}
-	
+
 	@Override
 	public int getItemResourceId(int type) {
 
@@ -178,7 +161,7 @@ public class NewsAdapter extends MultiViewTypeBaseAdapter<NewsEntity> {
 			return R.layout.list_date_item;
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -187,42 +170,42 @@ public class NewsAdapter extends MultiViewTypeBaseAdapter<NewsEntity> {
 		ViewHolder holder0 = null;
 		ViewHolder holder1 = null;
 		ViewHolder holder2 = null;
-		
+
 		switch (type) {
-			case TYPE_0: {
-	
-				if (convertView == null) {
-					convertView = LayoutInflater.from(mContext).inflate(getItemResourceId(type), parent, false);
-					holder0 = new ViewHolder(convertView);
-					convertView.setTag(holder0);
-				} else {
-					holder0 = (ViewHolder) convertView.getTag();
-				}
-	
-				return getItemView(position, convertView, holder0, type);
+		case TYPE_0: {
+
+			if (convertView == null) {
+				convertView = LayoutInflater.from(mContext).inflate(getItemResourceId(type), parent, false);
+				holder0 = new ViewHolder(convertView);
+				convertView.setTag(holder0);
+			} else {
+				holder0 = (ViewHolder) convertView.getTag();
 			}
-			case TYPE_1: {
-				if (convertView == null) {
-					convertView = LayoutInflater.from(mContext).inflate(getItemResourceId(type), parent, false);
-					holder1 = new ViewHolder(convertView);
-					convertView.setTag(holder1);
-				} else {
-					holder1 = (ViewHolder) convertView.getTag();
-				}
-	
-				return getItemView(position, convertView, holder1, type);
+
+			return getItemView(position, convertView, holder0, type);
+		}
+		case TYPE_1: {
+			if (convertView == null) {
+				convertView = LayoutInflater.from(mContext).inflate(getItemResourceId(type), parent, false);
+				holder1 = new ViewHolder(convertView);
+				convertView.setTag(holder1);
+			} else {
+				holder1 = (ViewHolder) convertView.getTag();
 			}
-			case TYPE_2: {
-				if (convertView == null) {
-					convertView = LayoutInflater.from(mContext).inflate(getItemResourceId(type), parent, false);
-					holder2 = new ViewHolder(convertView);
-					convertView.setTag(holder2);
-				} else {
-					holder2 = (ViewHolder) convertView.getTag();
-				}
-	
-				return getItemView(position, convertView, holder2, type);
+
+			return getItemView(position, convertView, holder1, type);
+		}
+		case TYPE_2: {
+			if (convertView == null) {
+				convertView = LayoutInflater.from(mContext).inflate(getItemResourceId(type), parent, false);
+				holder2 = new ViewHolder(convertView);
+				convertView.setTag(holder2);
+			} else {
+				holder2 = (ViewHolder) convertView.getTag();
 			}
+
+			return getItemView(position, convertView, holder2, type);
+		}
 		}
 
 		return null;
@@ -231,52 +214,52 @@ public class NewsAdapter extends MultiViewTypeBaseAdapter<NewsEntity> {
 	@Override
 	public View getItemView(int position, View convertView, ViewHolder holder, int type) {
 		final NewsEntity newsEntity = mDataList.get(position);
-		
+
 		switch (type) {
-			case TYPE_0: {
-				ImageView newsImageView = (ImageView) holder.getView(R.id.list_item_image);
-				TextView newsTitleView = (TextView) holder.getView(R.id.list_item_title);
+		case TYPE_0: {
+			ImageView newsImageView = (ImageView) holder.getView(R.id.list_item_image);
+			TextView newsTitleView = (TextView) holder.getView(R.id.list_item_title);
 
-				newsTitleView.setText(newsEntity.title);
-				
-				if(mFavoriteFalg) {
-					
-				} else {
-					newsTitleView.setTextColor( newsEntity.is_read ? mContext.getResources().getColor(titleReadColorId) : mContext.getResources().getColor(titleColorNorId) );
-				}
-				
-				newsImageView.setVisibility(View.VISIBLE);
-				mImageLoader.displayImage(newsEntity.images.get(0), newsImageView, mOptions, mAnimateFirstListener);
-				
-				convertView.setBackgroundColor(mSelectedItemsIds.get(position) ? mContext.getResources().getColor(R.color.listview_multi_sel_bg) : Color.TRANSPARENT);
-				
-				break;
-			}
-			case TYPE_1: {
-				TextView newsTitleView = (TextView) holder.getView(R.id.list_item_title);
+			newsTitleView.setText(newsEntity.title);
 
-				newsTitleView.setText(newsEntity.title);
-				
-				if(mFavoriteFalg) {
-					
-				} else {
-					newsTitleView.setTextColor( newsEntity.is_read ? mContext.getResources().getColor(titleReadColorId) : mContext.getResources().getColor(titleColorNorId) );
-				}
-				
-				convertView.setBackgroundColor(mSelectedItemsIds.get(position) ? mContext.getResources().getColor(R.color.listview_multi_sel_bg) : Color.TRANSPARENT);
-				
-				break;
+			if (mFavoriteFalg) {
+
+			} else {
+				newsTitleView.setTextColor(newsEntity.is_read ? mContext.getResources().getColor(titleReadColorId) : mContext.getResources().getColor(titleColorNorId));
 			}
-			case TYPE_2: {
-				TextView dateView = (TextView) holder.getView(R.id.date_text);
-				dateView.setText(ZhihuUtils.getDateTag(mContext, newsEntity.title));
-				break;
-			}
+
+			newsImageView.setVisibility(View.VISIBLE);
+			mImageLoader.displayImage(newsEntity.images.get(0), newsImageView, mOptions, mAnimateFirstListener);
+
+			convertView.setBackgroundColor(mSelectedItemsIds.get(position) ? mContext.getResources().getColor(R.color.listview_multi_sel_bg) : Color.TRANSPARENT);
+
+			break;
 		}
-		
+		case TYPE_1: {
+			TextView newsTitleView = (TextView) holder.getView(R.id.list_item_title);
+
+			newsTitleView.setText(newsEntity.title);
+
+			if (mFavoriteFalg) {
+
+			} else {
+				newsTitleView.setTextColor(newsEntity.is_read ? mContext.getResources().getColor(titleReadColorId) : mContext.getResources().getColor(titleColorNorId));
+			}
+
+			convertView.setBackgroundColor(mSelectedItemsIds.get(position) ? mContext.getResources().getColor(R.color.listview_multi_sel_bg) : Color.TRANSPARENT);
+
+			break;
+		}
+		case TYPE_2: {
+			TextView dateView = (TextView) holder.getView(R.id.date_text);
+			dateView.setText(ZhihuUtils.getDateTag(mContext, newsEntity.title));
+			break;
+		}
+		}
+
 		return convertView;
 	}
-	
+
 	private static class AnimateFirstDisplayListener extends SimpleImageLoadingListener {
 
 		static final List<String> displayedImages = Collections.synchronizedList(new LinkedList<String>());
