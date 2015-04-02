@@ -14,7 +14,6 @@ import android.widget.ListView;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.cundong.izhihu.Constants;
 import com.cundong.izhihu.R;
 import com.cundong.izhihu.ZhihuApplication;
 import com.cundong.izhihu.adapter.NewsAdapter;
@@ -28,6 +27,8 @@ import com.cundong.izhihu.task.MyAsyncTask;
  * @version 1.0
  */
 public class FavoriteActivity extends BaseActivity {
+	
+	private static final int REQUESTCODE_DETAIL = 8010;
 	
 	private ListView mListView;
 	private NewsAdapter mAdapter = null;
@@ -64,7 +65,7 @@ public class FavoriteActivity extends BaseActivity {
 					intent.putExtra("newsEntity", newsEntity);
 					
 					intent.setClass(mInstance, NewsDetailActivity.class);
-					startActivityForResult(intent, Constants.REQUESTCODE_DETAIL);
+					startActivityForResult(intent, REQUESTCODE_DETAIL);
 				} else {
 					
 					// add or remove selection for current list item
@@ -172,7 +173,7 @@ public class FavoriteActivity extends BaseActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
-		if (requestCode == Constants.REQUESTCODE_DETAIL) {
+		if (requestCode == REQUESTCODE_DETAIL) {
 			new LoadCacheNewsTask().executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR);
 		}
 	}

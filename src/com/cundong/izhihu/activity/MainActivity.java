@@ -11,7 +11,6 @@ import android.text.TextUtils;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.cundong.izhihu.Constants;
 import com.cundong.izhihu.R;
 import com.cundong.izhihu.fragment.NewsListFragment;
 import com.cundong.izhihu.task.MyAsyncTask;
@@ -32,6 +31,8 @@ import de.keyboardsurfer.android.widget.crouton.Style;
  */
 public class MainActivity extends BaseActivity implements ResponseListener {
 
+	private static final int REQUESTCODE_SETTING = 8009;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
@@ -73,9 +74,9 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 		case R.id.action_setting:
 			
 			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-				startActivityForResult(new Intent(this, PrefsActivity.class), Constants.REQUESTCODE_SETTING);
+				startActivityForResult(new Intent(this, PrefsActivity.class), REQUESTCODE_SETTING);
 			} else {
-				startActivityForResult(new Intent(this, OtherPrefsActivity.class), Constants.REQUESTCODE_SETTING);
+				startActivityForResult(new Intent(this, OtherPrefsActivity.class), REQUESTCODE_SETTING);
 			}
 			
 			return true;
@@ -121,7 +122,7 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
-		if (requestCode == Constants.REQUESTCODE_SETTING) {
+		if (requestCode == REQUESTCODE_SETTING) {
 
 			//Activity关闭后，如果改变了主题，则需要recreate this Activity
 			SharedPreferences mPerferences = PreferenceManager.getDefaultSharedPreferences(this);

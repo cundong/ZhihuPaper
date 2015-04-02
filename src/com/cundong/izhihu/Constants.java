@@ -4,13 +4,8 @@ public final class Constants {
 	
 	// 默认模板路径
 	public static final String TEMPLATE_DEF_URL = "www/template.html";
-
+	
 	public static final String GITGUB_PROJECT = "https://github.com/cundong/ZhihuPaper";
-	
-	//startActivity requestCode
-	public static final int REQUESTCODE_SETTING = 8009;
-	
-	public static final int REQUESTCODE_DETAIL = 8010;
 	
 	public static final class Url {
 
