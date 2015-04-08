@@ -315,15 +315,9 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 		intent.putExtra("newsEntity", newsEntity);
 
 		intent.setClass(getActivity(), NewsDetailActivity.class);
-		getActivity().startActivity(intent);
-
-		// 设置已读标识
-		boolean setReadFlag = ZhihuApplication.getNewsReadDataSource().readNews(String.valueOf(newsEntity.id));
-
-		if (setReadFlag) {
-			ZhihuUtils.setReadStatus4NewsEntity(mNewsList, newsEntity);
-			mAdapter.updateData(mNewsList);
-		}
+		startActivity(intent);
+		
+		new SetReadFlagTask(newsEntity).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR);
 	}
 	
 	public void updateList() {
@@ -343,5 +337,29 @@ public class NewsListFragment extends BaseFragment implements ResponseListener, 
 	@Override
 	protected void onFirstTimeLaunched() {
 
+	}
+	
+	private class SetReadFlagTask extends MyAsyncTask<String, Void, Boolean> {
+
+		private NewsEntity mNewsEntity;
+
+		public SetReadFlagTask(NewsEntity newsEntity) {
+			mNewsEntity = newsEntity;
+		}
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+			return ZhihuApplication.getNewsReadDataSource().readNews(String.valueOf(mNewsEntity.id));
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+
+			if (result) {
+				ZhihuUtils.setReadStatus4NewsEntity(mNewsList, mNewsEntity);
+				mAdapter.updateData(mNewsList);
+			}
+		}
 	}
 }
