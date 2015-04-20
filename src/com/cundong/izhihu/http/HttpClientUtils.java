@@ -25,6 +25,8 @@ import org.apache.http.client.params.ClientPNames;
 import org.apache.http.client.params.CookiePolicy;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.conn.params.ConnManagerParams;
+import org.apache.http.conn.params.ConnPerRouteBean;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
@@ -64,9 +66,24 @@ public class HttpClientUtils {
 
 	private static final String CHARSET = HTTP.UTF_8;
 
+	/** 
+     * 最大连接数 
+     */  
+    public final static int MAX_TOTAL_CONNECTIONS = 200;  
+    
+    /** 
+     * 每个路由最大连接数 
+     */  
+    public final static int MAX_ROUTE_CONNECTIONS = 200;  
+
+    /** 
+     * 获取连接的最大等待时间
+     */  
+    public final static int RETRIVE_CONNECT_TIMEOUT = 6 * 1000;  
+    
 	private static final int RETRIED_TIME = 3;
 
-	private static final int TIMEOUT = 6 * 1000;
+	private static final int COMMON_TIMEOUT = 6 * 1000;
 
 	private static Logger mLogger = Logger.getLogger();
 
@@ -91,10 +108,10 @@ public class HttpClientUtils {
 							+ " Mozilla/5.0 Firefox/26.0");
 
 					/* 连接超时 */
-					HttpConnectionParams.setConnectionTimeout(params, TIMEOUT);
+					HttpConnectionParams.setConnectionTimeout(params, COMMON_TIMEOUT);
 
 					/* 请求超时 */
-					HttpConnectionParams.setSoTimeout(params, TIMEOUT);
+					HttpConnectionParams.setSoTimeout(params, COMMON_TIMEOUT);
 
 					// 支持http和https两种模式
 					SchemeRegistry schReg = new SchemeRegistry();
@@ -108,9 +125,17 @@ public class HttpClientUtils {
 							params, schReg);
 
 					customerHttpClient = new DefaultHttpClient(conMgr, params);
-					customerHttpClient
-							.setHttpRequestRetryHandler(requestRetryHandler);
+					customerHttpClient.setHttpRequestRetryHandler(requestRetryHandler);
 
+					ConnManagerParams.setMaxTotalConnections(params, MAX_TOTAL_CONNECTIONS);  
+					
+					// 设置每个路由最大连接数  
+			        ConnPerRouteBean connPerRoute = new ConnPerRouteBean(MAX_ROUTE_CONNECTIONS);  
+			        ConnManagerParams.setMaxConnectionsPerRoute(params, connPerRoute);
+			        
+			        // 设置获取连接的最大等待时间  
+			        ConnManagerParams.setTimeout(params, RETRIVE_CONNECT_TIMEOUT);  
+			        
 					ConnectivityManager manager = (ConnectivityManager) context
 							.getSystemService(Context.CONNECTIVITY_SERVICE);
 
