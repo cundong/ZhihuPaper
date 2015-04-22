@@ -3,6 +3,7 @@ package com.cundong.izhihu;
 import android.app.Application;
 import android.content.Context;
 
+import com.cundong.izhihu.db.DatabaseHelper;
 import com.cundong.izhihu.db.NewsDataSource;
 import com.cundong.izhihu.db.NewsFavoriteDataSource;
 import com.cundong.izhihu.db.NewsReadDataSource;
@@ -14,6 +15,9 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 public class ZhihuApplication extends Application {
 
 	private static ZhihuApplication mApplication;
+	
+	private DatabaseHelper mDatabaseHelper;  
+	
 	private static NewsDataSource mNewsDataSource;
 	private static NewsReadDataSource mNewsReadDataSource;
 	private static NewsFavoriteDataSource mNewsFavoriteDataSource;
@@ -24,11 +28,27 @@ public class ZhihuApplication extends Application {
 		super.onCreate();
 
 		mApplication = this;
-		mNewsDataSource = new NewsDataSource(getApplicationContext());
-		mNewsReadDataSource = new NewsReadDataSource(getApplicationContext());
-		mNewsFavoriteDataSource = new NewsFavoriteDataSource(getApplicationContext());
+		
+		mDatabaseHelper = DatabaseHelper.getInstance(getApplicationContext());  
+		
+		mNewsDataSource = new NewsDataSource(mDatabaseHelper);
+		mNewsReadDataSource = new NewsReadDataSource(mDatabaseHelper);
+		mNewsFavoriteDataSource = new NewsFavoriteDataSource(mDatabaseHelper);
 		
 		initImageLoader(getApplicationContext());
+	}
+
+	@Override
+	public void onLowMemory() {
+		super.onLowMemory();
+	}
+
+
+	@Override
+	public void onTerminate() {
+		super.onTerminate();
+		
+		mDatabaseHelper.close();  
 	}
 
 	public static ZhihuApplication getInstance() {

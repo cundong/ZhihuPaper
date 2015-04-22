@@ -3,7 +3,6 @@ package com.cundong.izhihu.db;
 import java.util.ArrayList;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
@@ -19,29 +18,27 @@ import com.cundong.izhihu.entity.NewsListEntity.NewsEntity;
 public final class NewsFavoriteDataSource extends BaseDataSource {
 
 	private SQLiteDatabase database;
-	private DBHelper dbHelper;
 	
 	private String[] allColumns = { 
-			DBHelper.FAVORITE_COLUMN_ID,
-			DBHelper.FAVORITE_COLUMN_NEWS_ID,
-			DBHelper.FAVORITE_COLUMN_NEWS_TITLE,
-			DBHelper.FAVORITE_COLUMN_NEWS_LOGO,
-			DBHelper.FAVORITE_COLUMN_NEWS_SHARE_URL 
+			DatabaseHelper.FAVORITE_COLUMN_ID,
+			DatabaseHelper.FAVORITE_COLUMN_NEWS_ID,
+			DatabaseHelper.FAVORITE_COLUMN_NEWS_TITLE,
+			DatabaseHelper.FAVORITE_COLUMN_NEWS_LOGO,
+			DatabaseHelper.FAVORITE_COLUMN_NEWS_SHARE_URL 
 			};
 	
-	public NewsFavoriteDataSource(Context context) {
-		dbHelper = new DBHelper(context);
+	public NewsFavoriteDataSource(DatabaseHelper dbHelper) {
 		database = dbHelper.getWritableDatabase();
 	}
 
 	private void insert(String newsId, String newsTitle, String newsLogo, String newsShareUrl) {
 		ContentValues values = new ContentValues();
-		values.put(DBHelper.FAVORITE_COLUMN_NEWS_ID, newsId);
-		values.put(DBHelper.FAVORITE_COLUMN_NEWS_TITLE, newsTitle);
-		values.put(DBHelper.FAVORITE_COLUMN_NEWS_LOGO, newsLogo);
-		values.put(DBHelper.FAVORITE_COLUMN_NEWS_SHARE_URL, newsShareUrl);
+		values.put(DatabaseHelper.FAVORITE_COLUMN_NEWS_ID, newsId);
+		values.put(DatabaseHelper.FAVORITE_COLUMN_NEWS_TITLE, newsTitle);
+		values.put(DatabaseHelper.FAVORITE_COLUMN_NEWS_LOGO, newsLogo);
+		values.put(DatabaseHelper.FAVORITE_COLUMN_NEWS_SHARE_URL, newsShareUrl);
 		
-		database.insert(DBHelper.FAVORITE_TABLE_NAME, null, values);
+		database.insert(DatabaseHelper.FAVORITE_TABLE_NAME, null, values);
 	}
 
 	/**
@@ -75,8 +72,8 @@ public final class NewsFavoriteDataSource extends BaseDataSource {
 
 		boolean result = false;
 
-		Cursor cursor = database.query(DBHelper.FAVORITE_TABLE_NAME, allColumns,
-				DBHelper.FAVORITE_COLUMN_NEWS_ID + " = '" + newsId + "'", null,
+		Cursor cursor = database.query(DatabaseHelper.FAVORITE_TABLE_NAME, allColumns,
+				DatabaseHelper.FAVORITE_COLUMN_NEWS_ID + " = '" + newsId + "'", null,
 				null, null, null);
 		
 		if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -96,9 +93,9 @@ public final class NewsFavoriteDataSource extends BaseDataSource {
 		
 		ArrayList<NewsEntity> newsList = new ArrayList<NewsEntity>();
 		
-		String orderBy = DBHelper.FAVORITE_COLUMN_ID + " DESC";
+		String orderBy = DatabaseHelper.FAVORITE_COLUMN_ID + " DESC";
 		
-		Cursor cursor = database.query(DBHelper.FAVORITE_TABLE_NAME, allColumns,
+		Cursor cursor = database.query(DatabaseHelper.FAVORITE_TABLE_NAME, allColumns,
 				null, null, null, null, orderBy);
 		
 		if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -107,10 +104,10 @@ public final class NewsFavoriteDataSource extends BaseDataSource {
 				
 				NewsEntity newsEntity = new NewsEntity();
 				
-				String newsId = cursor.getString(cursor.getColumnIndex(DBHelper.FAVORITE_COLUMN_NEWS_ID));
-				String newsTitle = cursor.getString(cursor.getColumnIndex(DBHelper.FAVORITE_COLUMN_NEWS_TITLE));
-				String newsLogo = cursor.getString(cursor.getColumnIndex(DBHelper.FAVORITE_COLUMN_NEWS_LOGO));
-				String newsShareUrl = cursor.getString(cursor.getColumnIndex(DBHelper.FAVORITE_COLUMN_NEWS_SHARE_URL));
+				String newsId = cursor.getString(cursor.getColumnIndex(DatabaseHelper.FAVORITE_COLUMN_NEWS_ID));
+				String newsTitle = cursor.getString(cursor.getColumnIndex(DatabaseHelper.FAVORITE_COLUMN_NEWS_TITLE));
+				String newsLogo = cursor.getString(cursor.getColumnIndex(DatabaseHelper.FAVORITE_COLUMN_NEWS_LOGO));
+				String newsShareUrl = cursor.getString(cursor.getColumnIndex(DatabaseHelper.FAVORITE_COLUMN_NEWS_SHARE_URL));
 				
 				newsEntity.id = Long.parseLong(newsId);
 				newsEntity.title = newsTitle;
@@ -138,15 +135,15 @@ public final class NewsFavoriteDataSource extends BaseDataSource {
 	
 	public void deleteFromFavorite(String newsId) {
 		
-		String whereClause = DBHelper.FAVORITE_COLUMN_NEWS_ID + "=?";
+		String whereClause = DatabaseHelper.FAVORITE_COLUMN_NEWS_ID + "=?";
 		
 		String [] whereArgs = { String.valueOf(newsId) };
 		
-		database.delete(DBHelper.FAVORITE_TABLE_NAME, whereClause, whereArgs);
+		database.delete(DatabaseHelper.FAVORITE_TABLE_NAME, whereClause, whereArgs);
 	}
 	
 	public void deleteFromFavorite() {
 		
-		database.delete(DBHelper.FAVORITE_TABLE_NAME, null, null);
+		database.delete(DatabaseHelper.FAVORITE_TABLE_NAME, null, null);
 	}
 }

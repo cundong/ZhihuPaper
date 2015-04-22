@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public final class DBHelper extends SQLiteOpenHelper {
+public final class DatabaseHelper extends SQLiteOpenHelper {
 	
 	//db
 	public static final String DB_NAME = "news_paper.db";
@@ -48,10 +48,20 @@ public final class DBHelper extends SQLiteOpenHelper {
 			+ FAVORITE_COLUMN_NEWS_LOGO + " CHAR(1024), "
 			+ FAVORITE_COLUMN_NEWS_SHARE_URL + " CHAR(1024));";
 	
-	public DBHelper(Context context) {
+	private static DatabaseHelper mDBHelper;
+	
+	public DatabaseHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 	}
 
+	public static synchronized DatabaseHelper getInstance(Context context) {
+		if (mDBHelper == null) {
+			mDBHelper = new DatabaseHelper(context);
+		}
+
+		return mDBHelper;
+	}
+	
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(NEWS_TABLE_CREATE);

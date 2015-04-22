@@ -3,7 +3,6 @@ package com.cundong.izhihu.db;
 import java.util.ArrayList;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
@@ -17,19 +16,18 @@ import android.text.TextUtils;
 public final class NewsReadDataSource extends BaseDataSource {
 
 	private SQLiteDatabase database;
-	private DBHelper dbHelper;
-	private String[] allColumns = { DBHelper.READ_COLUMN_ID,
-			DBHelper.READ_COLUMN_NEWSID };
 	
-	public NewsReadDataSource(Context context) {
-		dbHelper = new DBHelper(context);
+	private String[] allColumns = { DatabaseHelper.READ_COLUMN_ID,
+			DatabaseHelper.READ_COLUMN_NEWSID };
+	
+	public NewsReadDataSource(DatabaseHelper dbHelper) {
 		database = dbHelper.getWritableDatabase();
 	}
 
 	private void insert(String newsId) {
 		ContentValues values = new ContentValues();
-		values.put(DBHelper.READ_COLUMN_NEWSID, newsId);
-		database.insert(DBHelper.READ_TABLE_NAME, null, values);
+		values.put(DatabaseHelper.READ_COLUMN_NEWSID, newsId);
+		database.insert(DatabaseHelper.READ_TABLE_NAME, null, values);
 	}
 
 	/**
@@ -60,8 +58,8 @@ public final class NewsReadDataSource extends BaseDataSource {
 
 		boolean result = false;
 
-		Cursor cursor = database.query(DBHelper.READ_TABLE_NAME, allColumns,
-				DBHelper.READ_COLUMN_NEWSID + " = '" + newsId + "'", null,
+		Cursor cursor = database.query(DatabaseHelper.READ_TABLE_NAME, allColumns,
+				DatabaseHelper.READ_COLUMN_NEWSID + " = '" + newsId + "'", null,
 				null, null, null);
 
 		if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -81,13 +79,13 @@ public final class NewsReadDataSource extends BaseDataSource {
 		
 		ArrayList<String> newsList = new ArrayList<String>();
 		
-		Cursor cursor = database.query(DBHelper.READ_TABLE_NAME, allColumns,
+		Cursor cursor = database.query(DatabaseHelper.READ_TABLE_NAME, allColumns,
 				null, null, null, null, null);
 		
 		if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
 			
 			while (!cursor.isAfterLast()) {
-				String newsId = cursor.getString(cursor.getColumnIndex(DBHelper.READ_COLUMN_NEWSID));
+				String newsId = cursor.getString(cursor.getColumnIndex(DatabaseHelper.READ_COLUMN_NEWSID));
 				newsList.add(newsId);
 				
 				cursor.moveToNext();
