@@ -48,17 +48,21 @@ public final class DatabaseHelper extends SQLiteOpenHelper {
 			+ FAVORITE_COLUMN_NEWS_LOGO + " CHAR(1024), "
 			+ FAVORITE_COLUMN_NEWS_SHARE_URL + " CHAR(1024));";
 	
-	private static DatabaseHelper mDBHelper;
+	private volatile static DatabaseHelper mDBHelper;
 	
-	public DatabaseHelper(Context context) {
+	private DatabaseHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 	}
 
 	public static synchronized DatabaseHelper getInstance(Context context) {
 		if (mDBHelper == null) {
-			mDBHelper = new DatabaseHelper(context);
+			synchronized (DatabaseHelper.class) {
+				if (mDBHelper == null) {
+					mDBHelper = new DatabaseHelper(context);
+				}
+			}
 		}
-
+		
 		return mDBHelper;
 	}
 	
