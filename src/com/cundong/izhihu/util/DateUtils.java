@@ -79,6 +79,35 @@ public class DateUtils {
 	}
 
 	/**
+	 * 获取昨天的日期，格式为：yyyy/MM/dd
+	 * 
+	 * @return
+	 */
+	public static String getYesterdayDate(String format) {
+
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -1);
+		Date date = cal.getTime();
+		SimpleDateFormat sf = new SimpleDateFormat(format, Locale.getDefault());
+
+		return sf.format(date);
+	}
+	
+	/**
+	 * 获取前天的日期，格式为：yyyy/MM/dd
+	 * 
+	 * @return
+	 */
+	public static String getTheDayBeforeYesterday(String format) {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -2);
+		Date date = cal.getTime();
+		SimpleDateFormat sf = new SimpleDateFormat(format, Locale.getDefault());
+
+		return sf.format(date);
+	}
+	
+	/**
 	 * 获取今天的日期，格式为：YYYY_MM_DD
 	 * 
 	 * @return

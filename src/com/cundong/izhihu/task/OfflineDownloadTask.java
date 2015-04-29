@@ -27,12 +27,14 @@ import com.cundong.izhihu.util.StreamUtils;
 import com.cundong.izhihu.util.ZhihuUtils;
 
 /**
- * 类说明： 	离线下载最新新闻，Task
+ * 类说明： 	离线下载新闻，Task
  * 
  * @date 	2014-9-7
  * @version 1.0
  */
 public class OfflineDownloadTask extends BaseGetContentTask {
+	
+	private String mUrl = null;
 	
 	public OfflineDownloadTask(Context context, ResponseListener listener) {
 		super(context, listener);
@@ -41,10 +43,11 @@ public class OfflineDownloadTask extends BaseGetContentTask {
 	@Override
 	protected String doInBackground(String... params) {
 
+		mUrl = params[0];
 		String content = null;
 
 		try {
-			content = getUrl(Constants.Url.URL_LATEST);
+			content = getUrl(mUrl);
 			
 			NewsListEntity newsListEntity = (NewsListEntity) GsonUtils.getEntity(content, NewsListEntity.class);
 			ArrayList<NewsEntity> stories = newsListEntity != null ? newsListEntity.stories : null;

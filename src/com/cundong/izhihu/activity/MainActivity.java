@@ -11,6 +11,7 @@ import android.text.TextUtils;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.cundong.izhihu.Constants;
 import com.cundong.izhihu.R;
 import com.cundong.izhihu.fragment.NewsListFragment;
 import com.cundong.izhihu.task.MyAsyncTask;
@@ -46,8 +47,8 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 		
 		// WIFI下自动开启离线
 		if (NetWorkHelper.isWifi(this) && !PreferencesUtils.getBoolean(mInstance, DateUtils.getCurrentDate(), false)) {
-
-			new OfflineDownloadTask(this, this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR);
+			
+			startOfflineDownload();
 		}
 	}
 	
@@ -66,7 +67,7 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_download:
-			new OfflineDownloadTask(this, this).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR);
+			startOfflineDownload();
 			return true;
 		case R.id.action_favorite:
 			startActivity(new Intent(this, FavoriteActivity.class));
@@ -136,5 +137,23 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 	protected void onDestroy() {
 		Crouton.clearCroutonsForActivity(this);
 		super.onDestroy();
+	}
+	
+	/**
+	 * 开始离线下载
+	 * 
+	 */
+	private void startOfflineDownload() {
+		String getLatestUrl = Constants.Url.URL_LATEST;
+		String todayUrl = Constants.Url.URLDEFORE + DateUtils.getCurrentDate(DateUtils.YYYYMMDD);
+		String yesterdayUrl = Constants.Url.URLDEFORE + DateUtils.getYesterdayDate(DateUtils.YYYYMMDD);
+		String theDayBeforeYesterdayUrl = Constants.Url.URLDEFORE + DateUtils.getTheDayBeforeYesterday(DateUtils.YYYYMMDD);
+
+		String[] urls = { getLatestUrl, todayUrl, yesterdayUrl, theDayBeforeYesterdayUrl };
+		for (String url : urls) {
+
+			ResponseListener listener = url.equals(getLatestUrl) ? this : null;
+			new OfflineDownloadTask(this, listener).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, url);
+		}
 	}
 }
