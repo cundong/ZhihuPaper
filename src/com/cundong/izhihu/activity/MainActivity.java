@@ -153,7 +153,7 @@ public class MainActivity extends BaseActivity implements ResponseListener {
 		for (String url : urls) {
 
 			ResponseListener listener = url.equals(getLatestUrl) ? this : null;
-			new OfflineDownloadTask(this, listener).executeOnExecutor(MyAsyncTask.THREAD_POOL_EXECUTOR, url);
+			new OfflineDownloadTask(this, listener).executeOnExecutor(MyAsyncTask.DOWNLOAD_THREAD_POOL_EXECUTOR, url);
 		}
 	}
 }
