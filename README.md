@@ -36,7 +36,7 @@
 
 ## 体验
 
-[体验apk][13]
+[体验apk][12]
 
 ## 截图
 
@@ -58,7 +58,6 @@
 
 ## 关于我
 
-* Blog: [http://my.oschina.net/liucundong/blog][12]
 * Mail: cundong.liu#gmail.com
 
 ## License
@@ -89,5 +88,4 @@
   [9]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/two.png
   [10]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/three.png
   [11]: https://raw.githubusercontent.com/cundong/ZhihuPaper/master/screenshot/four.png
-  [12]: http://my.oschina.net/liucundong/blog
-  [13]: http://www.wandoujia.com/apps/com.cundong.izhihu
+  [12]: http://www.wandoujia.com/apps/com.cundong.izhihu
