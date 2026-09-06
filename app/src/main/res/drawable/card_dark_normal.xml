@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/list_item_bg_dark_normal" />
-    <corners android:radius="20dp" />
-    <stroke
-        android:width="1dp"
-        android:color="#1f94a3b8" />
-</shape>
