@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_item_fav_action_bar"
+        android:icon="@drawable/ic_action_favorite_outline"
+        android:title="@string/actionbar_item_fav_add"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_item_evernote_action_bar"
+        android:icon="@drawable/ic_action_note_save"
+        android:orderInCategory="10"
+        android:title="@string/action_save_to_evernote"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_item_toc_action_bar"
+        android:icon="@drawable/ic_action_toc"
+        android:orderInCategory="15"
+        android:title="@string/reader_toc_action"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_item_library_action_bar"
+        android:icon="@drawable/ic_action_library"
+        android:orderInCategory="16"
+        android:title="@string/library_action_edit"
+        app:showAsAction="ifRoom" />
+
+    <!-- androidx.appcompat's ShareActionProvider replaces the ActionBarSherlock one. -->
+    <item
+        android:id="@+id/menu_item_share_action_provider_action_bar"
+        android:icon="@drawable/ic_action_share_modern"
+        android:orderInCategory="20"
+        android:title="@string/action_bar_share_with"
+        app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"
+        app:showAsAction="always" />
+
+</menu>

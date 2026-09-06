@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Magazine cover and layered pages; kept inside the adaptive icon safe area. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#FFFDF3"
+        android:pathData="M77,30 Q83,30 82,36 L77,80 Q76.5,84 72,83.5 L31,81 Q29,80.8 28,79 L70,79 Q74,79 74.5,75 Z" />
+    <path android:fillColor="#FFFDF3" android:fillType="evenOdd"
+        android:pathData="M34,25 L74,22 Q79,21.7 78.5,27 L74,74 Q73.6,78 69,78 L27,78 Q23,78 23.5,74 L28,31 Q28.4,25.4 34,25 Z M36,30 L71,27.5 Q73.5,27.3 73.2,30 L70.6,54 Q70.3,56 68,56 L32.7,56 Q30.5,56 30.7,53.5 L33,33 Q33.2,30.2 36,30 Z M33,60 L67,60 Q69.5,60 69.3,62 Q69.1,64 66.5,64 L32.5,64 Q30,64 30.2,62 Q30.4,60 33,60 Z M32,67 L59,67 Q61.5,67 61.3,69 Q61.1,71 58.5,71 L31.5,71 Q29,71 29.2,69 Q29.4,67 32,67 Z" />
+    <path android:fillColor="#FFFDF3"
+        android:pathData="M33,45 L42,40 Q43,39 44,40 L48,43 L56,36 Q58,34 60,36 L69,43 L68.5,46 Q53,43 42,45 Q63,46 67.5,50 L67,54 L37,54 Q61,50 49,47 Z" />
+    <path android:fillColor="#FFFDF3"
+        android:pathData="M46,35 A3.5,3.5 0,1 1,39,35 A3.5,3.5 0,1 1,46,35 Z" />
+</vector>

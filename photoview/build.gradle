@@ -1,0 +1,20 @@
+apply plugin: 'com.android.library'
+
+android {
+    namespace 'uk.co.senab.photoview'
+    compileSdk 36
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 36
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation 'androidx.annotation:annotation:1.10.0'
+}

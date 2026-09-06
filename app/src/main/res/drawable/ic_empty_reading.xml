@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Decorative empty state: a folded paper rising toward a small morning sun. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="112dp"
+    android:height="112dp"
+    android:viewportWidth="112"
+    android:viewportHeight="112">
+    <path android:fillColor="#E9E3D8" android:pathData="M28,14H84C92,14 98,20 98,28V84C98,92 92,98 84,98H28C20,98 14,92 14,84V28C14,20 20,14 28,14Z" />
+    <path android:fillColor="#C9785C" android:pathData="M14,77C31,70 48,71 64,78C78,84 89,84 98,79V98H14Z" />
+    <path android:fillColor="#2D638B" android:pathData="M70,28A15,15 0,1 0,70,58A15,15 0,1 0,70,28Z" />
+    <path android:fillColor="#FFFEFA" android:pathData="M30,40L65,49L55,81L20,72L30,40Z" />
+    <path android:fillColor="#9DB8CA" android:pathData="M34,50L54,55L53,58L33,53ZM31,59L51,64L50,67L30,62Z" />
+    <path android:fillColor="#2D638B" android:pathData="M37,45L53,49L52,52L36,48Z" />
+</vector>
