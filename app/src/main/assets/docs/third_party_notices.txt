@@ -1,0 +1,9 @@
+开源许可
+
+AndroidX、Material Components、OkHttp、Gson、PhotoView：Apache License 2.0
+
+Glide：BSD 2-Clause License
+
+jsoup：MIT License
+
+具体版本以应用构建配置为准。各组件版权归其作者和贡献者所有。文章、远端图片、知乎名称及相关品牌元素不属于本项目开源许可范围，其权利归相应权利人所有。

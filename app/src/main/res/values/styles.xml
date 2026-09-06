@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Material 3 themes. Replaces the ActionBarSherlock (Theme.Sherlock.*) styles.
+
+    Light and dark are declared as two explicit themes rather than relying on
+    -night resource qualifiers alone, because the app exposes its own in-app
+    "夜间模式" switch and NewsAdapter/NewsDetailFragment resolve attributes
+    against a specific theme via obtainStyledAttributes(R.style.Theme_Daily_*).
+-->
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ==================== Light ==================== -->
+    <style name="Theme.Daily.AppTheme.Light" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/md_primary_light</item>
+        <item name="colorOnPrimary">@color/md_on_primary_light</item>
+        <item name="colorPrimaryContainer">@color/md_primary_container_light</item>
+        <item name="colorOnPrimaryContainer">@color/md_on_primary_container_light</item>
+        <item name="colorSecondary">@color/md_secondary_light</item>
+        <item name="colorOnSecondary">@color/md_on_secondary_light</item>
+        <item name="colorSecondaryContainer">@color/md_secondary_container_light</item>
+        <item name="colorOnSecondaryContainer">@color/md_on_secondary_container_light</item>
+        <item name="android:colorBackground">@color/md_background_light</item>
+        <item name="colorOnBackground">@color/md_on_background_light</item>
+        <item name="colorSurface">@color/md_surface_light</item>
+        <item name="colorOnSurface">@color/md_on_surface_light</item>
+        <item name="colorSurfaceVariant">@color/md_surface_variant_light</item>
+        <item name="colorOnSurfaceVariant">@color/md_on_surface_variant_light</item>
+        <item name="colorOutline">@color/md_outline_light</item>
+        <item name="colorControlNormal">@color/md_on_surface_light</item>
+        <!-- colorOutlineVariant 需 Material 1.7.0+；当前锁定 1.6.1（AGP 7.2.2 限制），
+             md_outline_variant_light 仍被 list_view_divider 等直接引用，不受影响。 -->
+        <item name="colorError">@color/md_error_light</item>
+        <item name="colorOnError">@color/md_on_error_light</item>
+
+        <item name="android:windowBackground">@color/list_view_bg_light</item>
+        <item name="android:statusBarColor">@color/status_bar_light</item>
+        <item name="android:navigationBarColor">@color/md_surface_light</item>
+
+        <item name="toolbarStyle">@style/Zhihu.Widget.Toolbar</item>
+        <item name="materialAlertDialogTheme">@style/Zhihu.AlertDialog</item>
+
+        <!-- App-specific attributes read by layouts and adapters. -->
+        <item name="listItemBackground">@drawable/card_light</item>
+        <item name="listItemDefaultImage">@drawable/image_small_default_modern</item>
+        <item name="listItemTextNorColor">@color/list_item_title_light</item>
+        <item name="listItemTextReadColor">@color/list_item_title_read_light</item>
+        <item name="listItemDateTextColor">@color/list_item_date_light</item>
+        <item name="listViewBackground">@color/list_view_bg_light</item>
+        <item name="webViewBackground">@color/webview_light</item>
+    </style>
+
+    <!-- ==================== Dark ==================== -->
+    <style name="Theme.Daily.AppTheme.Dark" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/md_primary_dark</item>
+        <item name="colorOnPrimary">@color/md_on_primary_dark</item>
+        <item name="colorPrimaryContainer">@color/md_primary_container_dark</item>
+        <item name="colorOnPrimaryContainer">@color/md_on_primary_container_dark</item>
+        <item name="colorSecondary">@color/md_secondary_dark</item>
+        <item name="colorOnSecondary">@color/md_on_secondary_dark</item>
+        <item name="colorSecondaryContainer">@color/md_secondary_container_dark</item>
+        <item name="colorOnSecondaryContainer">@color/md_on_secondary_container_dark</item>
+        <item name="android:colorBackground">@color/md_background_dark</item>
+        <item name="colorOnBackground">@color/md_on_background_dark</item>
+        <item name="colorSurface">@color/md_surface_dark</item>
+        <item name="colorOnSurface">@color/md_on_surface_dark</item>
+        <item name="colorSurfaceVariant">@color/md_surface_variant_dark</item>
+        <item name="colorOnSurfaceVariant">@color/md_on_surface_variant_dark</item>
+        <item name="colorOutline">@color/md_outline_dark</item>
+        <item name="colorControlNormal">@color/md_on_surface_dark</item>
+        <!-- 同上：colorOutlineVariant 需 Material 1.7.0+。 -->
+        <item name="colorError">@color/md_error_dark</item>
+        <item name="colorOnError">@color/md_on_error_dark</item>
+
+        <item name="android:windowBackground">@color/list_view_bg_dark</item>
+        <item name="android:statusBarColor">@color/status_bar_dark</item>
+        <item name="android:navigationBarColor">@color/status_bar_dark</item>
+
+        <item name="toolbarStyle">@style/Zhihu.Widget.Toolbar</item>
+        <item name="materialAlertDialogTheme">@style/Zhihu.AlertDialog</item>
+
+        <item name="listItemBackground">@drawable/card_dark</item>
+        <item name="listItemDefaultImage">@drawable/dark_image_small_default_modern</item>
+        <item name="listItemTextNorColor">@color/list_item_title_dark</item>
+        <item name="listItemTextReadColor">@color/list_item_title_read_dark</item>
+        <item name="listItemDateTextColor">@color/list_item_date_dark</item>
+        <item name="listViewBackground">@color/list_view_bg_dark</item>
+        <item name="webViewBackground">@color/webview_dark</item>
+    </style>
+
+    <!-- Image preview owns an opaque black window surface. Its layouts stay
+         transparent so the window is painted exactly once. -->
+    <style name="Theme.Daily.ImagePreview.Light" parent="Theme.Daily.AppTheme.Light">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+    <style name="Theme.Daily.ImagePreview.Dark" parent="Theme.Daily.AppTheme.Dark">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+    <!-- ==================== Widgets ==================== -->
+    <style name="Zhihu.Widget.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="titleTextAppearance">@style/Zhihu.TextAppearance.Toolbar.Title</item>
+        <item name="subtitleTextAppearance">@style/Zhihu.TextAppearance.Toolbar.Subtitle</item>
+        <item name="android:background">?attr/colorSurface</item>
+        <item name="titleTextColor">?attr/colorOnSurface</item>
+        <item name="subtitleTextColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:elevation">0dp</item>
+    </style>
+
+    <style name="Zhihu.TextAppearance.Toolbar.Title" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textSize">19sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Zhihu.TextAppearance.Toolbar.Subtitle" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textSize">12sp</item>
+        <item name="android:alpha">0.85</item>
+    </style>
+
+    <style name="Zhihu.AlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/Zhihu.ShapeAppearance.Dialog</item>
+    </style>
+
+    <style name="Zhihu.ShapeAppearance.Dialog" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">28dp</item>
+    </style>
+
+    <!-- Rounded thumbnail inside the news card. -->
+    <style name="Zhihu.ShapeAppearance.Thumbnail" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">14dp</item>
+    </style>
+
+    <!-- Overlay applied to the transparent toolbar on the news detail page so its
+         icons stay light against the article hero image. -->
+    <style name="Zhihu.ThemeOverlay.Toolbar.Transparent" parent="ThemeOverlay.Material3.Dark">
+        <item name="colorOnSurface">#FFFFFF</item>
+        <item name="colorOnSurfaceVariant">#FFFFFF</item>
+    </style>
+
+</resources>
