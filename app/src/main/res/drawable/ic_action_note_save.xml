@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A compact note with a save mark; intentionally generic rather than using a third-party trademark. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:tint="?attr/colorOnSurface"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M6,3C4.9,3 4,3.9 4,5V19C4,20.1 4.9,21 6,21H18C19.1,21 20,20.1 20,19V9L14,3H6ZM13,4.5L18.5,10H13V4.5ZM8,13H16V15H8V13ZM8,17H13V19H8V17Z" />
+</vector>

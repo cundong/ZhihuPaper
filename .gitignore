@@ -34,3 +34,16 @@ build/
 
 # Mac system files
 .DS_Store
+
+# Signing credentials and distributable build outputs
+keystore.properties
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.apk
+*.aab
+.env
+.env.*
+!.env.example
+*.hprof

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Host layout for MainActivity. Under Material 3 the theme is *.NoActionBar,
+    so the app bar is a real view in the hierarchy instead of a window decor
+    action bar supplied by ActionBarSherlock.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
+        android:stateListAnimator="@null"
+        android:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/app_name"
+            app:titleCentered="true">
+
+            <!-- Material 1.6 cannot geometrically center the built-in title when
+                 action icons occupy only the right edge. This overlay is centered
+                 against the full toolbar width, independent of menu asymmetry. -->
+            <TextView
+                android:id="@+id/toolbar_center_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:importantForAccessibility="no"
+                android:text="@string/app_name"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
+        android:id="@+id/content_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

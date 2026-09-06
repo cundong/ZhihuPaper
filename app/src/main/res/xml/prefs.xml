@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Consumed by androidx.preference.PreferenceFragmentCompat. -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:key="settings_settings"
+        android:title="@string/settings_category_reading" >
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="noimage_nowifi?"
+            android:summary="@string/setting_noimage_nowifi_summary"
+            android:title="@string/setting_noimage_nowifi_title" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="dark_theme?"
+            android:summary="@string/setting_dark_theme_summary"
+            android:title="@string/setting_dark_theme_title" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="reader_restore_progress"
+            android:summary="@string/reader_restore_progress_summary"
+            android:title="@string/reader_restore_progress_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_category_about" >
+        <Preference
+            android:key="offline_storage"
+            android:summary="@string/setting_offline_storage_summary"
+            android:title="@string/setting_offline_storage_title" />
+        <Preference
+            android:key="privacy"
+            android:summary="@string/setting_privacy_summary"
+            android:title="@string/setting_privacy_title" />
+        <Preference
+            android:key="licenses"
+            android:summary="@string/setting_licenses_summary"
+            android:title="@string/setting_licenses_title" />
+        <Preference
+            android:key="version"
+            android:summary="查看当前版本号"
+            android:title="@string/setting_version_title" />
+        <Preference
+            android:key="about"
+            android:summary="项目作者与源码地址"
+            android:title="@string/setting_aboutme_title" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
